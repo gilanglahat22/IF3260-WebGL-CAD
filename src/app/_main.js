@@ -27,9 +27,7 @@ let fragmentShaderSource = `
     }
 `
 
-let type = "LINE";
 let objects = [];
-
 
 // get canvas dari html
 const gl_canvas = document.getElementById("gl-canvas");
@@ -43,7 +41,6 @@ const methodMap = {
     "line": gl.LINES,
 }
 
-
 const shaderProgram = initShaders(gl, vertexShaderSource, fragmentShaderSource);
 
 const programInfo = {
@@ -54,12 +51,9 @@ const programInfo = {
     }
 }
 
-gl_canvas.addEventListener("mousedown", (e) => {
-    let coords = getCoords(gl_canvas, e)
-    render(coords);
-})
 
-export const loadObject = (obj) => {
+export const renderObject = (obj) => {
+    //load 1 object
     drawObject(gl, programInfo, obj.vertices, methodMap[obj.type], obj.vertexCount);
 
     for (var i = 0; i < obj.vertices.length; i++){
@@ -69,19 +63,33 @@ export const loadObject = (obj) => {
 }
 
 export const renderAllObjects = () => {
+    // render semua object
     for (var i = 0; i < objects.length; i++){
-        loadObject(objects[i]);
+        renderObject(objects[i]);
     }
 }
 
-const render = (coords) => {
-    if (objects.length > 0 && objects[objects.length - 1].completed == false){
-        objects[objects.length - 1].draw(coords["x"], coords["y"])
-    } else {
-        if (type == "LINE") {
-            let obj = new Line();
+
+const render = (type) => {
+    // pass type nya antara LINE, SQUARE, RECT, ato POLY
+    if (type == "LINE") {
+        // bikin object baru
+        let obj = new Line();
+
+        // tambahin event listener
+        gl_canvas.addEventListener("click", function lineDraw(e){
+            let coords = getCoords(gl_canvas, e)
             obj.draw(coords["x"], coords["y"]);
-            objects.push(obj);
-        }
+
+            if (obj.vertexCount == 2){
+                gl_canvas.removeEventListener("click", lineDraw)
+            }
+        })
+
+        objects.push(obj);
     }
 }
+
+// tambahin onclick di sini
+document.getElementById("line-button").onclick = () => {render("LINE")}
+document.getElementById("square-button").onclick = () => {render("SQUARE")}

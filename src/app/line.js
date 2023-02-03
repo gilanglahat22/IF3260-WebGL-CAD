@@ -1,4 +1,4 @@
-import { loadObject, renderAllObjects } from "./_main.js";
+import { renderObject, renderAllObjects } from "./_main.js";
 
 
 export class Line {
@@ -27,7 +27,7 @@ export class Line {
 
             renderAllObjects();
         } 
-        loadObject(this);
+        renderObject(this);
     }
 }
 
