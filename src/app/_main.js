@@ -1,6 +1,6 @@
 import { Line } from "./line.js";
 import { getCoords, getSquarePoint } from "./utils/coords.js";
-import { drawObj } from "./utils/draw_utils.js";
+import { drawObject } from "./utils/draw_utils.js";
 import { initShaders } from "./utils/shaders.js";
 
 let vertexShaderSource = `
@@ -35,22 +35,16 @@ let objects = [];
 const gl_canvas = document.getElementById("gl-canvas");
 const gl = gl_canvas.getContext("webgl");
 
-
 if (!!!gl) {
     alert("Unable to start program; is WebGL supported in your browser?");
 }
 
-const shaderProgram = initShaders(gl, vertexShaderSource, fragmentShaderSource);
-
 const methodMap = {
-    "line": gl.LINES,
+    "line": gl.LINEs,
 }
 
-// set warna background canvas
-gl.clearColor(0.5, 0.5, 0.5, 1);
-gl.clear(gl.COLOR_BUFFER_BIT);
+const shaderProgram = initShaders(gl, vertexShaderSource, fragmentShaderSource);
 
-    // inisiasi shader
 const programInfo = {
     program: shaderProgram,
     attribLocations: {
@@ -62,23 +56,30 @@ const programInfo = {
 gl_canvas.addEventListener("mousedown", (e) => {
     let coords = getCoords(gl_canvas, e)
     render(coords);
+    console.log(objects);
 })
 
 
 export const loadObject = (obj) => {
-    console.log(methodMap[obj.type])
-    drawObj(gl, programInfo, obj.vertices, obj.color, methodMap[obj.type], obj.points);
+    drawObject(gl, programInfo, obj.vertices, obj.color, methodMap[obj.type], obj.vertexCount);
 }
 
 
-export const renderObject = (obj) => {
-    console.log("\n");
-    console.log(obj)
-    loadObject(obj);
+// export const renderObject = (obj) => {
+//     loadObject(obj);
 
-    for (var i = 0; i < obj.vertices.length; i++){
-        let square_point = getSquarePoint(obj.vertices[i], obj.vertices[i + 1]);
-        drawObj(gl, programInfo, square_point, obj.color, gl.TRIANGLE_FAN, 4);
+//     for (var i = 0; i < obj.vertices.length; i += 2){
+//         let square_point = getSquarePoint(obj.vertices[i], obj.vertices[i + 1]);
+//         drawObject(gl, programInfo, square_point, [1.0, 1.0, 1.0], gl.TRIANGLE_FAN, 4);
+//     }
+// }
+
+export const renderAllObjects = () => {
+    for (var i = 0; i < objects.length; i++){
+        loadObject(objects[i]);
+        for (var j = 0; j < objects[i].length; j++){
+            drawObject(gl, programInfo, objects[i].vertices[j], objects[i].color, gl.TRIANGLE_FAN, 4);
+        }
     }
 }
 
@@ -93,5 +94,4 @@ const render = (coords) => {
             objects.push(obj);
         }
     }
-    console.log(objects);
 }

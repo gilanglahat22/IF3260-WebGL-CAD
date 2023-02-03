@@ -1,7 +1,7 @@
 import { initPositionBuffer, initColorBuffer} from "./buffers.js ";
 
 let normalize = false;      // gaperlu dinormalisasi
-let stride = 0;             // berapa banyak byte dari 1 set of values, kalo 0 berarti ngikutin numComponents dan Type
+let stride = 5 * Float32Array.BYTES_PER_ELEMENT;             // berapa banyak byte dari 1 set of values, kalo 0 berarti ngikutin numComponents dan Type
 let offset = 0;             // offset untuk buffer
 
 const setPositionAttribute = (gl, programInfo, vertices) => {
@@ -9,9 +9,8 @@ const setPositionAttribute = (gl, programInfo, vertices) => {
     const type = gl.FLOAT;
 
     const positionBuffer = initPositionBuffer(gl, vertices);
-
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    console.log("vertex position: " + programInfo.attribLocations.vertexPosition);
+
     gl.vertexAttribPointer(
         programInfo.attribLocations.vertexPosition,
         numComponents,
@@ -29,29 +28,27 @@ const setColorAttribute = (gl, programInfo, colors) => {
     const type = gl.FLOAT;
 
     const colorBuffer = initColorBuffer(gl, colors);
-
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-    console.log("vertex color " + programInfo.attribLocations.vertexColor);
 
     gl.vertexAttribPointer(
         programInfo.attribLocations.vertexColor,
         numComponents,
         type,
         normalize,
-        stride,
+        0,
         offset
     )
 
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
 }
 
-export const drawObj = (gl, programInfo, vertices, color, mode, points) => {
-
+export const drawObject = (gl, programInfo, vertices, color, mode, vertexCount) => {
+    console.log("vertices from draw obj ", vertices);
+    console.log("colors from draw obj", color    );
     setPositionAttribute(gl, programInfo, vertices);
     setColorAttribute(gl, programInfo, color);
 
     gl.useProgram(programInfo.program);
-
-    gl.drawArrays(mode, 0, points);
+    gl.drawArrays(mode, 0, vertexCount);
 }
 

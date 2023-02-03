@@ -1,29 +1,28 @@
-import { loadObject, renderObject } from "./_main.js";
+import { loadObject, renderAllObjects } from "./_main.js";
 
 
 export class Line {
-    constructor(vertices = [], points = 0, colors = [0.0, 0.0, 0.0], completed = false) {
+    constructor(vertices = [], vertexCount = 0, color = [0.0, 1.0, 0.0], completed = false) {
         this.vertices = vertices;
-        this.points = points;
+        this.vertexCount = vertexCount;
         this.type = "line";
-        this.colors = colors;
+        this.color = color;
         this.completed = completed;
     }
 
     draw(x, y){
-        if (this.points < 2) {
+        if (this.vertexCount < 2) {
             this.vertices.push(x);
             this.vertices.push(y);
-            console.log("load object");
-            this.points++;
-        } 
 
-        if (this.points == 2){
-            renderObject(this);
-            this.completed = true;
-        } else {
-            loadObject(this);
-        }
+            this.vertexCount++;
+
+            if (this.vertexCount == 2){
+                this.completed = true;
+            }
+
+            renderAllObjects();
+        } 
     }
 }
 
