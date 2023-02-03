@@ -1,5 +1,5 @@
 import { Line } from "./line.js";
-import { getCoords, getSquarePoint } from "./utils/coords.js";
+import { getCoords, getPoint } from "./utils/coords.js";
 import { drawObject } from "./utils/draw_utils.js";
 import { initShaders } from "./utils/shaders.js";
 
@@ -23,7 +23,7 @@ let fragmentShaderSource = `
     varying lowp vec4 vColor;
 
     void main(){
-        gl_FragColor = vColor, 1.0;
+        gl_FragColor = vColor;
     }
 `
 
@@ -63,11 +63,8 @@ export const loadObject = (obj) => {
     drawObject(gl, programInfo, obj.vertices, methodMap[obj.type], obj.vertexCount);
 
     for (var i = 0; i < obj.vertices.length; i++){
-        let square_point = getSquarePoint(obj.vertices[i].position[0], obj.vertices[i].position[1]);
-        drawObject(gl, programInfo, {
-            positions: square_point,
-            colors: [1.0, 1.0, 1.0, 1.0],
-        }, gl.TRIANGLE_FAN, 4);
+        let point = getPoint(obj.vertices[i].position[0], obj.vertices[i].position[1]);
+        drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
     }
 }
 

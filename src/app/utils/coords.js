@@ -14,11 +14,20 @@ export const getCoords = (canvas, event) => {
     }
 }
 
-export const getSquarePoint = (x, y) => {
-    return [
-        x - 0.01, y + 0.01, 
-        x + 0.01, y + 0.01, 
-        x + 0.01, y - 0.01, 
-        x - 0.01, y - 0.01, 
-    ]
+export const getPoint= (x, y) => {
+    let vertices = {
+        positions: [
+            x - 0.01, y + 0.01, 
+            x + 0.01, y + 0.01, 
+            x + 0.01, y - 0.01, 
+            x - 0.01, y - 0.01, 
+        ],
+        colors: [
+            1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0,
+        ]
+    }
+    return vertices;
 }

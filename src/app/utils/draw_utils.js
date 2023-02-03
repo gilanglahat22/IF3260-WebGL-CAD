@@ -24,6 +24,7 @@ const setPositionAttribute = (gl, programInfo, vertices) => {
 }
 
 const setColorAttribute = (gl, programInfo, colors) => {
+    console.log(colors);
     const numComponents = 4; 
     const type = gl.FLOAT;
     
@@ -43,22 +44,25 @@ const setColorAttribute = (gl, programInfo, colors) => {
 }
 
 export const drawObject = (gl, programInfo, vertices, mode, vertexCount) => {
-
     let positions = [];
     let colors = [];
 
     if (Array.isArray(vertices)){
         for (var i = 0; i < vertices.length; i++){
-            positions.push(vertices[i].position[0])
-            positions.push(vertices[i].position[1])
+            positions.push(vertices[i].position[0]);
+            positions.push(vertices[i].position[1]);
             colors.push(vertices[i].color[0]);
             colors.push(vertices[i].color[1]);
             colors.push(vertices[i].color[2]);
+            colors.push(vertices[i].color[3]);
         }
     } else {
+        console.log(vertices)
         positions = vertices.positions;
         colors = vertices.colors;
     }
+    
+    console.log(positions)
 
     setPositionAttribute(gl, programInfo, positions);
     setColorAttribute(gl, programInfo, colors);
