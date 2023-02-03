@@ -11,7 +11,7 @@ const setPositionAttribute = (gl, programInfo, vertices) => {
     const positionBuffer = initPositionBuffer(gl, vertices);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
+    console.log("vertex position: " + programInfo.attribLocations.vertexPosition);
     gl.vertexAttribPointer(
         programInfo.attribLocations.vertexPosition,
         numComponents,
@@ -31,6 +31,7 @@ const setColorAttribute = (gl, programInfo, colors) => {
     const colorBuffer = initColorBuffer(gl, colors);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    console.log("vertex color " + programInfo.attribLocations.vertexColor);
 
     gl.vertexAttribPointer(
         programInfo.attribLocations.vertexColor,
@@ -45,14 +46,12 @@ const setColorAttribute = (gl, programInfo, colors) => {
 }
 
 export const drawObj = (gl, programInfo, vertices, color, mode, points) => {
-    var vertexBufferObject = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferObject);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
     setPositionAttribute(gl, programInfo, vertices);
     setColorAttribute(gl, programInfo, color);
 
     gl.useProgram(programInfo.program);
+
     gl.drawArrays(mode, 0, points);
 }
 

@@ -14,13 +14,15 @@ export class Line {
         if (this.points < 2) {
             this.vertices.push(x);
             this.vertices.push(y);
-            loadObject(this);
+            console.log("load object");
+            this.points++;
         } 
-        this.points++;
 
         if (this.points == 2){
             renderObject(this);
             this.completed = true;
+        } else {
+            loadObject(this);
         }
     }
 }
