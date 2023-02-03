@@ -40,8 +40,9 @@ if (!!!gl) {
 }
 
 const methodMap = {
-    "line": gl.LINEs,
+    "line": gl.LINES,
 }
+
 
 const shaderProgram = initShaders(gl, vertexShaderSource, fragmentShaderSource);
 
@@ -77,9 +78,9 @@ export const loadObject = (obj) => {
 export const renderAllObjects = () => {
     for (var i = 0; i < objects.length; i++){
         loadObject(objects[i]);
-        for (var j = 0; j < objects[i].length; j++){
-            drawObject(gl, programInfo, objects[i].vertices[j], objects[i].color, gl.TRIANGLE_FAN, 4);
-        }
+        // for (var j = 0; j < objects[i].length; j++){
+        //     drawObject(gl, programInfo, objects[i].vertices[j], objects[i].color, gl.TRIANGLE_FAN, 4);
+        // }
     }
 }
 

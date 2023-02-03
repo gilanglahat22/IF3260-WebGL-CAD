@@ -1,7 +1,7 @@
 import { initPositionBuffer, initColorBuffer} from "./buffers.js ";
 
 let normalize = false;      // gaperlu dinormalisasi
-let stride = 5 * Float32Array.BYTES_PER_ELEMENT;             // berapa banyak byte dari 1 set of values, kalo 0 berarti ngikutin numComponents dan Type
+let stride = 0;             // berapa banyak byte dari 1 set of values, kalo 0 berarti ngikutin numComponents dan Type
 let offset = 0;             // offset untuk buffer
 
 const setPositionAttribute = (gl, programInfo, vertices) => {
@@ -35,7 +35,7 @@ const setColorAttribute = (gl, programInfo, colors) => {
         numComponents,
         type,
         normalize,
-        0,
+        stride,
         offset
     )
 
