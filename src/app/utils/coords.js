@@ -7,7 +7,6 @@ export const getCoords = (canvas, event) => {
     const width = rectangle.width;
     const height = rectangle.height;
 
-    console.log(width, height);
     
     return {
         x : 2 * (xCoord / width) - 1,
@@ -17,9 +16,9 @@ export const getCoords = (canvas, event) => {
 
 export const getSquarePoint = (x, y) => {
     return [
-        x-0.025, y+0.025, 1.0, 1.0, 1.0,
-        x+0.025, y+0.025, 1.0, 1.0, 1.0,
-        x+0.025, y-0.025, 1.0, 1.0, 1.0,
-        x-0.025, y-0.025, 1.0, 1.0, 1.0
+        x - 0.01, y + 0.01, 
+        x + 0.01, y + 0.01, 
+        x + 0.01, y - 0.01, 
+        x - 0.01, y - 0.01, 
     ]
 }

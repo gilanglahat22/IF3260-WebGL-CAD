@@ -3,8 +3,7 @@ export const initPositionBuffer = (gl, positions) => {
 
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-    console.log(positions);
-    
+
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
     
     return positionBuffer;

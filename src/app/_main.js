@@ -7,9 +7,9 @@ let vertexShaderSource = `
     precision mediump float;
 
     attribute vec2 aVertexPosition;
-    attribute vec3 aVertexColor;
+    attribute vec4 aVertexColor;
 
-    varying vec3 vColor;
+    varying lowp vec4 vColor;
 
     void main(){
         gl_Position = vec4(aVertexPosition, 0.0, 1.0);
@@ -20,10 +20,10 @@ let vertexShaderSource = `
 let fragmentShaderSource = `
     precision mediump float;
 
-    varying vec3 vColor;
+    varying lowp vec4 vColor;
 
     void main(){
-        gl_FragColor = vec4(vColor, 1.0);
+        gl_FragColor = vColor, 1.0;
     }
 `
 
@@ -57,33 +57,25 @@ const programInfo = {
 gl_canvas.addEventListener("mousedown", (e) => {
     let coords = getCoords(gl_canvas, e)
     render(coords);
-    console.log(objects);
 })
 
-
 export const loadObject = (obj) => {
-    drawObject(gl, programInfo, obj.vertices, obj.color, methodMap[obj.type], obj.vertexCount);
+    drawObject(gl, programInfo, obj.vertices, methodMap[obj.type], obj.vertexCount);
+
+    for (var i = 0; i < obj.vertices.length; i++){
+        let square_point = getSquarePoint(obj.vertices[i].position[0], obj.vertices[i].position[1]);
+        drawObject(gl, programInfo, {
+            positions: square_point,
+            colors: [1.0, 1.0, 1.0, 1.0],
+        }, gl.TRIANGLE_FAN, 4);
+    }
 }
-
-
-// export const renderObject = (obj) => {
-//     loadObject(obj);
-
-//     for (var i = 0; i < obj.vertices.length; i += 2){
-//         let square_point = getSquarePoint(obj.vertices[i], obj.vertices[i + 1]);
-//         drawObject(gl, programInfo, square_point, [1.0, 1.0, 1.0], gl.TRIANGLE_FAN, 4);
-//     }
-// }
 
 export const renderAllObjects = () => {
     for (var i = 0; i < objects.length; i++){
         loadObject(objects[i]);
-        // for (var j = 0; j < objects[i].length; j++){
-        //     drawObject(gl, programInfo, objects[i].vertices[j], objects[i].color, gl.TRIANGLE_FAN, 4);
-        // }
     }
 }
-
 
 const render = (coords) => {
     if (objects.length > 0 && objects[objects.length - 1].completed == false){
