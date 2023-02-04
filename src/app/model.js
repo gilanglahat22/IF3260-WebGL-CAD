@@ -1,17 +1,18 @@
 import { renderObject, renderAllObjects } from "./_main.js";
 import { getPoint } from "./utils/coords.js";
 
-export class Line {
-    constructor(vertices = [], vertexCount = 0, color = [0.0, 1.0, 0.0, 1.0], completed = false) {
+export class Model {
+    constructor(vertices = [], vertexCount = 0, type = "LINE", color = [0.0, 1.0, 0.0, 1.0], completed = false, count = 2) {
         this.vertices = vertices;
         this.vertexCount = vertexCount;
-        this.type = "line";
+        this.count = count;
+        this.type = type;
         this.color = color;
         this.completed = completed;
     }
 
     draw(x, y){
-        if (this.vertexCount < 2) {
+        if (this.vertexCount < this.count) {
             let vertex = {
                 position: [x, y],
                 color: this.color
@@ -21,7 +22,7 @@ export class Line {
 
             this.vertexCount++;
 
-            if (this.vertexCount == 2){
+            if (this.vertexCount == this.count){
                 this.completed = true;
             } 
 
@@ -53,7 +54,6 @@ export class Line {
             }
             index++;
         }
-
 
         return -1
     }

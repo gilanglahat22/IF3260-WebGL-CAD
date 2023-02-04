@@ -3,6 +3,15 @@ import { loadFile, render, saveFile } from "./_main.js"
 // tambahin onclick di sini
 document.getElementById("line-button").onclick = () => {render("LINE")}
 document.getElementById("square-button").onclick = () => {render("SQUARE")}
+document.getElementById("polygon-button").onclick = () => {
+  const verticesNum = document.getElementById("polygon-vertices").value;
+
+  if (!!!verticesNum || verticesNum < 3) {
+    alert("Please input the vertices number! (min. 3)");
+    return;
+  }
+  render("POLY")
+}
 
 document.getElementById("save-button").onclick = () => {saveFile()}
 document.getElementById("load-file").onchange = () => {loadFile()}
