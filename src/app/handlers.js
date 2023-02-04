@@ -1,9 +1,11 @@
-import { render } from "./_main.js" 
+import { loadFile, render, saveFile } from "./_main.js" 
 
 // tambahin onclick di sini
 document.getElementById("line-button").onclick = () => {render("LINE")}
 document.getElementById("square-button").onclick = () => {render("SQUARE")}
 
+document.getElementById("save-button").onclick = () => {saveFile()}
+document.getElementById("load-file").onchange = () => {loadFile()}
 
 export const getColor = () => {
     let hex = document.getElementById("color-picker").value
@@ -14,4 +16,4 @@ export const getColor = () => {
       g: parseInt(result[2], 16),
       b: parseInt(result[3], 16)
     } : null;
-  }
+}

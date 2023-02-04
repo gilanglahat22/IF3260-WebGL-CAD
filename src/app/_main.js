@@ -65,6 +65,7 @@ export const renderObject = (obj) => {
 export const renderAllObjects = () => {
     // render semua object
     objects.forEach((object) => {renderObject(object)});
+    console.log(JSON.stringify(objects));
 }
 
 
@@ -73,7 +74,6 @@ export const render = (type) => {
     if (type == "LINE") {
         let color = getColor();
         let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
-
         // bikin object baru
         let obj = new Line();
         obj.color = rgbColor;
@@ -105,8 +105,7 @@ const dragObject = (canvas, event, selectedObject, idx) => {
     renderAllObjects();
 }
 
-// untuk dragging
-gl_canvas.addEventListener("mousedown", (event) => {
+const getObject = (gl_canvas, event) => {
     let selectedObject = null;
     let vertexIndex = -1;
     
@@ -128,18 +127,122 @@ gl_canvas.addEventListener("mousedown", (event) => {
 
     if (selectedObject == null){
         console.log("no object selected");
+        return null;
+    }
+
+    return {
+        selected: selectedObject,
+        vertexIndex: vertexIndex
+    }
+}
+
+// untuk dragging
+gl_canvas.addEventListener("mousedown", (event) => {
+    let object = getObject(gl_canvas, event);
+
+    if (object) {
+        let selectedObject = object["selected"]
+        let vertexIndex = object["vertexIndex"]
+
+        function drag(event) {
+            dragObject(gl_canvas, event, selectedObject, vertexIndex);
+        }
+
+        gl_canvas.addEventListener('mousemove', drag);
+        gl_canvas.addEventListener("mouseup", function end() {
+            gl_canvas.removeEventListener("mousemove", drag);
+            gl_canvas.removeEventListener("mouseup", end);
+        });
+    }
+})
+
+gl_canvas.addEventListener("click", (event) => {
+    let object = getObject(gl_canvas, event);
+    
+    if (object){
+        let selectedObject = object["selected"]
+        let vertexIndex = object["vertexIndex"]
+    
+        let point = getPoint(
+            selectedObject.vertices[vertexIndex].position[0], 
+            selectedObject.vertices[vertexIndex].position[1],
+        true);
+    
+        renderAllObjects();
+        drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
+    
+        let colorPicker = document.getElementById("color-picker");
+    
+        colorPicker.addEventListener("change", function update() {
+            console.log("hehe")
+    
+            let color = getColor();
+            let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
+            console.log(rgbColor);
+            selectedObject.vertices[vertexIndex].color = rgbColor;
+            console.log(selectedObject.vertices[vertexIndex].color);
+    
+            renderAllObjects();
+
+            colorPicker.removeEventListener("change", update);
+        })
+    }
+})
+
+export const saveFile = () => {
+    const fileName = document.getElementById("filename").value;
+
+    if (fileName == ""){
+        alert("Please input the output file name!");
         return;
     }
 
-    function drag(event) {
-        dragObject(gl_canvas, event, selectedObject, vertexIndex);
-    }
+    const content = JSON.stringify(objects);
 
-    gl_canvas.addEventListener('mousemove', drag);
+    const file = new Blob([content], {
+        type: "json/javascript"
+    })
+
+    const link = document.createElement("a");
     
-    gl_canvas.addEventListener("mouseup", function end() {
-        gl_canvas.removeEventListener("mousemove", drag);
-        gl_canvas.removeEventListener("mouseup", end);
-    });
-})
+    link.href = URL.createObjectURL(file);
+    link.download = `${fileName}.json`
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
+
+export const loadFile = () => {
+    const selectedFile = document.getElementById("load-file").files[0];
+
+    const reader = new FileReader();
+
+    reader.readAsText(selectedFile, "UTF-8");
+
+    console.log("hjehe")
+    reader.onload = (evt) => {
+        const temp = JSON.parse(evt.target.result);
+        
+        let tempObjects = [];
+
+        temp.forEach((item) => {
+            let obj = null
+            if (item.type == "line") {
+                obj = new Line(
+                    item.vertices,
+                    item.vertexCount,
+                    item.type,
+                    item.color,
+                    item.completed
+                )
+            } else {
+                alert(`Error in loading file: object type ${item.type} not recognized!`);
+            }
+            tempObjects.push(obj);
+        })
+
+        objects = tempObjects;
+        renderAllObjects();
+        alert("Successfully loaded file!")
+    }
+}
 
