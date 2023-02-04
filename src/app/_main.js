@@ -1,5 +1,5 @@
 import { getColor } from "./handlers.js";
-import { Line } from "./line.js";
+import { Model } from "./model.js";
 import { getCoords, getPoint } from "./utils/coords.js";
 import { drawObject } from "./utils/draw_utils.js";
 import { initShaders } from "./utils/shaders.js";
@@ -39,7 +39,8 @@ if (!!!gl) {
 }
 
 const methodMap = {
-    "line": gl.LINES,
+    "LINE": gl.LINES,
+    "POLY": gl.TRIANGLE_FAN
 }
 
 const shaderProgram = initShaders(gl, vertexShaderSource, fragmentShaderSource);
@@ -71,19 +72,23 @@ export const renderAllObjects = () => {
 
 export const render = (type) => {
     // pass type nya antara LINE, SQUARE, RECT, ato POLY
-    if (type == "LINE") {
-        let color = getColor();
-        let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
+    if (type == "LINE" || type == "POLY") {
+        const count = type == "POLY" ? document.getElementById("polygon-vertices").value : 2
+
+        const color = getColor();
+        const rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
         // bikin object baru
-        let obj = new Line();
+        let obj = new Model();
         obj.color = rgbColor;
+        obj.type = type;
+        obj.count = count;
 
         // tambahin event listener
         gl_canvas.addEventListener("click", function lineDraw(e){
             let coords = getCoords(gl_canvas, e)
             obj.draw(coords["x"], coords["y"]);
 
-            if (obj.vertexCount == 2){
+            if (obj.vertexCount == count){
                 gl_canvas.removeEventListener("click", lineDraw)
             }
         })
@@ -97,7 +102,7 @@ const dragObject = (canvas, event, selectedObject, idx) => {
     let x = coords["x"];
     let y = coords["y"];
 
-    if (selectedObject.type != "square"){
+    if (selectedObject.type != "SQUARE"){
         selectedObject.vertices[idx].position[0] = x;
         selectedObject.vertices[idx].position[1] = y;
     }
@@ -218,7 +223,6 @@ export const loadFile = () => {
 
     reader.readAsText(selectedFile, "UTF-8");
 
-    console.log("hjehe")
     reader.onload = (evt) => {
         const temp = JSON.parse(evt.target.result);
         
@@ -226,13 +230,14 @@ export const loadFile = () => {
 
         temp.forEach((item) => {
             let obj = null
-            if (item.type == "line") {
-                obj = new Line(
+            if (item.type == "LINE" || item.type == "POLY") {
+                obj = new Model(
                     item.vertices,
                     item.vertexCount,
                     item.type,
                     item.color,
-                    item.completed
+                    item.completed,
+                    item.count
                 )
             } else {
                 alert(`Error in loading file: object type ${item.type} not recognized!`);
@@ -242,6 +247,7 @@ export const loadFile = () => {
 
         objects = tempObjects;
         renderAllObjects();
+
         alert("Successfully loaded file!")
     }
 }
