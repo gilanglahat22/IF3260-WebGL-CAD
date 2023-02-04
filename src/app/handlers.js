@@ -3,6 +3,7 @@ import { loadFile, render, saveFile } from "./_main.js"
 // tambahin onclick di sini
 document.getElementById("line-button").onclick = () => {render("LINE")}
 document.getElementById("rectangle-button").onclick = () => {render("RECT")}
+document.getElementById("square-button").onclick = () => {render("SQUARE")}
 document.getElementById("polygon-button").onclick = () => {
   const verticesNum = document.getElementById("polygon-vertices").value;
 

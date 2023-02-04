@@ -1,5 +1,6 @@
 import { getColor } from "./handlers.js";
 import { Rectangle } from "./rectangle.js";
+import { Square } from "./square.js";
 import { Model } from "./model.js";
 import { getCoords, getPoint } from "./utils/coords.js";
 import { drawObject } from "./utils/draw_utils.js";
@@ -42,7 +43,8 @@ if (!!!gl) {
 const methodMap = {
     "LINE": gl.LINES,
     "POLY": gl.TRIANGLE_FAN,
-    "RECT": gl.TRIANGLE_FAN
+    "RECT": gl.TRIANGLE_FAN,
+    "SQUARE": gl.TRIANGLE_FAN
 }
 
 const shaderProgram = initShaders(gl, vertexShaderSource, fragmentShaderSource);
@@ -74,7 +76,7 @@ export const renderAllObjects = () => {
 
 export const render = (type) => {
     // pass type nya antara LINE, SQUARE, RECT, ato POLY
-    if (type == "LINE" || type == "POLY" || type == 'RECT') {
+    if (type == "LINE" || type == "POLY" || type == 'RECT' || type == 'SQUARE') {
         //const count = type == "POLY" ? document.getElementById("polygon-vertices").value : 2
         var count;
         let obj;
@@ -87,6 +89,9 @@ export const render = (type) => {
         }else if(type == 'RECT'){
             count = 2;
             obj = new Rectangle();
+        }else if(type == 'SQUARE'){
+            count = 1;
+            obj = new Square();
         }
         const color = getColor();
         const rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
