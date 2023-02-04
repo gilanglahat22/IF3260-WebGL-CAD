@@ -73,7 +73,6 @@ export const render = (type) => {
     if (type == "LINE") {
         let color = getColor();
         let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
-
         // bikin object baru
         let obj = new Line();
         obj.color = rgbColor;
@@ -141,5 +140,53 @@ gl_canvas.addEventListener("mousedown", (event) => {
         gl_canvas.removeEventListener("mousemove", drag);
         gl_canvas.removeEventListener("mouseup", end);
     });
+})
+
+gl_canvas.addEventListener("click", (event) => {
+    let selectedObject = null;
+    let vertexIndex = -1;
+    
+    let coords = getCoords(gl_canvas, event);
+    let x = coords["x"];
+    let y = coords["y"];
+    console.log(objects)
+    for (const obj of objects) {
+        let index = obj.checkCoords(x, y);
+
+        if (index == -1){
+            continue;
+        }
+
+        selectedObject = obj;
+        vertexIndex = index;
+        break;
+    }
+
+    if (selectedObject == null){
+        console.log("no object selected");
+        return;
+    }
+
+    let point = getPoint(
+        selectedObject.vertices[vertexIndex].position[0], 
+        selectedObject.vertices[vertexIndex].position[1],
+        true);
+
+    renderAllObjects();
+    drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
+
+    let colorPicker = document.getElementById("color-picker");
+
+    colorPicker.addEventListener("change", () => {
+        console.log("hehe")
+
+        let color = getColor();
+        let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
+        console.log(rgbColor);
+        selectedObject.vertices[vertexIndex].color = rgbColor;
+        console.log(selectedObject.vertices[vertexIndex].color);
+
+        renderAllObjects();
+    })
 })
 
