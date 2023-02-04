@@ -1,3 +1,4 @@
+import { getColor } from "./handlers.js";
 import { Line } from "./line.js";
 import { getCoords, getPoint } from "./utils/coords.js";
 import { drawObject } from "./utils/draw_utils.js";
@@ -70,8 +71,12 @@ export const renderAllObjects = () => {
 export const render = (type) => {
     // pass type nya antara LINE, SQUARE, RECT, ato POLY
     if (type == "LINE") {
+        let color = getColor();
+        let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
+
         // bikin object baru
         let obj = new Line();
+        obj.color = rgbColor;
 
         // tambahin event listener
         gl_canvas.addEventListener("click", function lineDraw(e){
