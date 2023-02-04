@@ -184,8 +184,17 @@ gl_canvas.addEventListener("click", (event) => {
             let color = getColor();
             let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
             console.log(rgbColor);
-            selectedObject.vertices[vertexIndex].color = rgbColor;
-            console.log(selectedObject.vertices[vertexIndex].color);
+
+            const checked = document.getElementById("all-vertices").checked
+
+            if (checked) {
+                selectedObject.vertices.forEach((vertex) => {
+                    vertex.color = rgbColor;
+                })
+            } else {
+                selectedObject.vertices[vertexIndex].color = rgbColor;
+            }
+
     
             renderAllObjects();
 
