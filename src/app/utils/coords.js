@@ -14,7 +14,7 @@ export const getCoords = (canvas, event) => {
     }
 }
 
-export const getPoint= (x, y) => {
+export const getPoint = (x, y) => {
     let vertices = {
         positions: [
             x - 0.01, y + 0.01, 

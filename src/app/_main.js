@@ -51,22 +51,19 @@ const programInfo = {
     }
 }
 
-
 export const renderObject = (obj) => {
     //load 1 object
     drawObject(gl, programInfo, obj.vertices, methodMap[obj.type], obj.vertexCount);
 
-    for (var i = 0; i < obj.vertices.length; i++){
-        let point = getPoint(obj.vertices[i].position[0], obj.vertices[i].position[1]);
+    obj.vertices.forEach((vertex) => {
+        let point = getPoint(vertex.position[0], vertex.position[1]);
         drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
-    }
+    })
 }
 
 export const renderAllObjects = () => {
     // render semua object
-    for (var i = 0; i < objects.length; i++){
-        renderObject(objects[i]);
-    }
+    objects.forEach((object) => {renderObject(object)});
 }
 
 
@@ -89,4 +86,55 @@ export const render = (type) => {
         objects.push(obj);
     }
 }
+
+const dragObject = (canvas, event, selectedObject, idx) => {
+    let coords = getCoords(canvas, event);
+    let x = coords["x"];
+    let y = coords["y"];
+
+    if (selectedObject.type != "square"){
+        selectedObject.vertices[idx].position[0] = x;
+        selectedObject.vertices[idx].position[1] = y;
+    }
+
+    renderAllObjects();
+}
+
+// untuk dragging
+gl_canvas.addEventListener("mousedown", (event) => {
+    let selectedObject = null;
+    let vertexIndex = -1;
+    
+    let coords = getCoords(gl_canvas, event);
+    let x = coords["x"];
+    let y = coords["y"];
+    console.log(objects)
+    for (const obj of objects) {
+        let index = obj.checkCoords(x, y);
+
+        if (index == -1){
+            continue;
+        }
+
+        selectedObject = obj;
+        vertexIndex = index;
+        break;
+    }
+
+    if (selectedObject == null){
+        console.log("no object selected");
+        return;
+    }
+
+    function drag(event) {
+        dragObject(gl_canvas, event, selectedObject, vertexIndex);
+    }
+
+    gl_canvas.addEventListener('mousemove', drag);
+    
+    gl_canvas.addEventListener("mouseup", function end() {
+        gl_canvas.removeEventListener("mousemove", drag);
+        gl_canvas.removeEventListener("mouseup", end);
+    });
+})
 
