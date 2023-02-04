@@ -1,4 +1,5 @@
 import { getColor } from "./handlers.js";
+import { Rectangle } from "./rectangle.js";
 import { Model } from "./model.js";
 import { getCoords, getPoint } from "./utils/coords.js";
 import { drawObject } from "./utils/draw_utils.js";
@@ -40,7 +41,8 @@ if (!!!gl) {
 
 const methodMap = {
     "LINE": gl.LINES,
-    "POLY": gl.TRIANGLE_FAN
+    "POLY": gl.TRIANGLE_FAN,
+    "RECT": gl.TRIANGLE_FAN
 }
 
 const shaderProgram = initShaders(gl, vertexShaderSource, fragmentShaderSource);
@@ -72,13 +74,23 @@ export const renderAllObjects = () => {
 
 export const render = (type) => {
     // pass type nya antara LINE, SQUARE, RECT, ato POLY
-    if (type == "LINE" || type == "POLY") {
-        const count = type == "POLY" ? document.getElementById("polygon-vertices").value : 2
-
+    if (type == "LINE" || type == "POLY" || type == 'RECT') {
+        //const count = type == "POLY" ? document.getElementById("polygon-vertices").value : 2
+        var count;
+        let obj;
+        if(type == "LINE"){
+            count = 2;
+            obj = new Model();
+        }else if(type == 'POLY'){
+            count = document.getElementById("polygon-vertices").value;
+            obj = new Model();
+        }else if(type == 'RECT'){
+            count = 2;
+            obj = new Rectangle();
+        }
         const color = getColor();
         const rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
         // bikin object baru
-        let obj = new Model();
         obj.color = rgbColor;
         obj.type = type;
         obj.count = count;
