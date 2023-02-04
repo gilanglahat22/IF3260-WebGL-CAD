@@ -65,6 +65,7 @@ export const renderObject = (obj) => {
 export const renderAllObjects = () => {
     // render semua object
     objects.forEach((object) => {renderObject(object)});
+    console.log(JSON.stringify(objects));
 }
 
 
@@ -187,4 +188,61 @@ gl_canvas.addEventListener("click", (event) => {
         })
     }
 })
+
+export const saveFile = () => {
+    const fileName = document.getElementById("filename").value;
+
+    if (fileName == ""){
+        alert("Please input the output file name!");
+        return;
+    }
+
+    const content = JSON.stringify(objects);
+
+    const file = new Blob([content], {
+        type: "json/javascript"
+    })
+
+    const link = document.createElement("a");
+    
+    link.href = URL.createObjectURL(file);
+    link.download = `${fileName}.json`
+    link.click();
+    URL.revokeObjectURL(link.href);
+}
+
+export const loadFile = () => {
+    const selectedFile = document.getElementById("load-file").files[0];
+
+    const reader = new FileReader();
+
+    reader.readAsText(selectedFile, "UTF-8");
+
+    console.log("hjehe")
+    reader.onload = (evt) => {
+        const temp = JSON.parse(evt.target.result);
+        
+        let tempObjects = [];
+
+        temp.forEach((item) => {
+            let obj = null
+            if (item.type == "line") {
+                obj = new Line(
+                    item.vertices,
+                    item.vertexCount,
+                    item.type,
+                    item.color,
+                    item.completed
+                )
+            } else {
+                alert(`Error in loading file: object type ${item.type} not recognized!`);
+            }
+            tempObjects.push(obj);
+        })
+
+        objects = tempObjects;
+        renderAllObjects();
+        alert("Successfully loaded file!")
+    }
+}
 
