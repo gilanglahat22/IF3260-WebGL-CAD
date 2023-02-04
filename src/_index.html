@@ -10,10 +10,19 @@
 
     <body>
         <h1>WebGL CAD</h1>
-        <canvas id = "gl-canvas" width = "1280" height = "720" style = "background-color: #525252; border-radius: 20px"></canvas>
-        
-        <button id = "line-button">Line</button>
-        <button id = "square-button">Square</button>
+
+        <div>
+            <div>
+                <canvas id = "gl-canvas" width = "1280" height = "720" style = "background-color: #525252; border-radius: 20px"></canvas>
+            </div>
+
+            <div> 
+                <button id = "line-button">Line</button>
+                <button id = "square-button">Square</button>
+                <input type = "color" id = "color-picker" value = #00FF00>
+            </div>
+        </div>
+
     </body>
 
     <script src = "app/handlers.js" type = "module"></script>
