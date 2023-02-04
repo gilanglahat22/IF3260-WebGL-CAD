@@ -70,7 +70,7 @@ export const renderAllObjects = () => {
 }
 
 
-const render = (type) => {
+export const render = (type) => {
     // pass type nya antara LINE, SQUARE, RECT, ato POLY
     if (type == "LINE") {
         // bikin object baru
@@ -90,6 +90,3 @@ const render = (type) => {
     }
 }
 
-// tambahin onclick di sini
-document.getElementById("line-button").onclick = () => {render("LINE")}
-document.getElementById("square-button").onclick = () => {render("SQUARE")}
