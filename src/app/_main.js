@@ -250,6 +250,11 @@ export const deleteVertex = () => {
     // renderAllObjects();
 }
 
+export const clearCanvas = () => {
+    objects = [];
+    gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
+}
+
 export const saveFile = () => {
     const fileName = document.getElementById("filename").value;
 

@@ -1,6 +1,7 @@
-import { loadFile, render, saveFile, deleteVertex, renderAllObjects } from "./_main.js" 
+import { loadFile, render, saveFile, deleteVertex, clearCanvas} from "./_main.js" 
 
 // tambahin onclick di sini
+document.getElementById("clear-canvas").onclick = () => {clearCanvas();}
 document.getElementById("line-button").onclick = () => {render("LINE")}
 document.getElementById("rectangle-button").onclick = () => {render("RECT")}
 document.getElementById("square-button").onclick = () => {render("SQUARE")}

@@ -40,6 +40,5 @@ export class Square extends Model {
         } 
         renderAllObjects();
     }
-    renderObject(this);
   }
 }

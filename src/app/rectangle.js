@@ -34,6 +34,5 @@ export class Rectangle extends Model {
         } 
         renderAllObjects();
     }
-    renderObject(this);
   }
 }
