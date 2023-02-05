@@ -226,7 +226,6 @@ const selectObject = (x, y) => {
 
     for (var i = objects.length - 1; i >= 0; i--){
         if (objects[i].isClicked(x, y)){
-            alert("KONTOOOOOOL")
             selectedObject = objects[i];
             break;
         }
@@ -259,7 +258,6 @@ const selectObject = (x, y) => {
         selectedObject.vertices.splice(index, 1);
         selectedObject.vertexCount--;
         selectedObject.count--;
-        alert("DeleteVERTEX DIHAPUS")
 
         gl_canvas.removeEventListener("contextmenu", deleteVertex);
         
@@ -285,7 +283,6 @@ const selectObject = (x, y) => {
         selectedObject.vertices.push(newVertex);
         selectedObject.vertexCount++;
         selectedObject.count++;
-        alert("ADDVERTEX DIHAPUS")
         gl_canvas.removeEventListener("click", addVertex);
         
         renderAllObjects();
@@ -299,22 +296,21 @@ const selectObject = (x, y) => {
         const obj = getObject(gl_canvas, event);
 
         if (!!!obj&& !selectedObject.isClicked(x, y)){
-            alert("MAMPUS")
             gl_canvas.removeEventListener("contextmenu", deleteVertex);
-            gl_canvas.removeEventListener("auxclick", addVertex);
-            gl_canvas.removeEventListener("auxclick", remove);
+            gl_canvas.removeEventListener("click", addVertex);
+            gl_canvas.removeEventListener("click", remove);
             gl_canvas.removeEventListener("contextmenu", remove);
         }
     }
 
     gl_canvas.addEventListener("contextmenu", deleteVertex);
-    gl_canvas.addEventListener("auxclick", addVertex);
+    gl_canvas.addEventListener("click", addVertex);
     gl_canvas.addEventListener("contextmenu", remove);
-    gl_canvas.addEventListener("auxclick", remove);
+    gl_canvas.addEventListener("click", remove);
 
 }
 
-gl_canvas.addEventListener("click", function select(event){    
+gl_canvas.addEventListener("dblclick", function select(event){    
     let coords = getCoords(gl_canvas, event);
     selectObject(coords["x"], coords["y"]);
 })
