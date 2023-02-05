@@ -1,4 +1,4 @@
-import { loadFile, render, saveFile } from "./_main.js" 
+import { loadFile, render, saveFile, deleteVertex, renderAllObjects } from "./_main.js" 
 
 // tambahin onclick di sini
 document.getElementById("line-button").onclick = () => {render("LINE")}
@@ -16,6 +16,8 @@ document.getElementById("polygon-button").onclick = () => {
 
 document.getElementById("save-button").onclick = () => {saveFile()}
 document.getElementById("load-file").onchange = () => {loadFile()}
+
+document.getElementById("delete-button").onclick = () => {deleteVertex()}
 
 export const getColor = () => {
     let hex = document.getElementById("color-picker").value

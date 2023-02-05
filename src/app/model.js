@@ -31,17 +31,17 @@ export class Model {
         renderObject(this);
     }
 
-    checkCoords(x, y){
+    checkVertex(x, y){
         let index = 0;
 
         for (const vertex of this.vertices) {
             let point = getPoint(vertex.position[0], vertex.position[1]);
 
-            let topRightX = point.positions[2];
-            let topRightY = point.positions[3];
+            let topRightX = point.position[2];
+            let topRightY = point.position[3];
             
-            let bottomLeftX = point.positions[6];
-            let bottomLeftY = point.positions[7];
+            let bottomLeftX = point.position[6];
+            let bottomLeftY = point.position[7];
 
             let left = Math.min(topRightX, bottomLeftX);
             let right = Math.max(topRightX, bottomLeftX);

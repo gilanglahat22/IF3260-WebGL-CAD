@@ -18,13 +18,13 @@ export const getPoint = (x, y, onclick = false) => {
     let color = onclick ? 1.0 : 0.75
     
     let vertices = {
-        positions: [
+        position: [
             x - 0.01, y + 0.01, 
             x + 0.01, y + 0.01, 
             x + 0.01, y - 0.01, 
             x - 0.01, y - 0.01, 
         ],
-        colors: Array(16).fill(color),
+        color: Array(16).fill(color),
     }
     return vertices;
 }

@@ -59,7 +59,9 @@ const programInfo = {
 
 export const renderObject = (obj) => {
     //load 1 object
-    drawObject(gl, programInfo, obj.vertices, methodMap[obj.type], obj.vertexCount);
+    const method = obj.vertexCount == 2 ? gl.LINES : gl.TRIANGLE_FAN;
+    console.log(obj.vertices);
+    drawObject(gl, programInfo, obj.vertices, method, obj.vertexCount);
 
     obj.vertices.forEach((vertex) => {
         let point = getPoint(vertex.position[0], vertex.position[1]);
@@ -68,50 +70,50 @@ export const renderObject = (obj) => {
 }
 
 export const renderAllObjects = () => {
+    gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
     // render semua object
     objects.forEach((object) => {renderObject(object)});
-    console.log(JSON.stringify(objects));
 }
 
 
 export const render = (type) => {
     // pass type nya antara LINE, SQUARE, RECT, ato POLY
-    if (type == "LINE" || type == "POLY" || type == 'RECT' || type == 'SQUARE') {
-        //const count = type == "POLY" ? document.getElementById("polygon-vertices").value : 2
-        var count;
-        let obj;
-        if(type == "LINE"){
-            count = 2;
-            obj = new Model();
-        }else if(type == 'POLY'){
-            count = document.getElementById("polygon-vertices").value;
-            obj = new Model();
-        }else if(type == 'RECT'){
-            count = 2;
-            obj = new Rectangle();
-        }else if(type == 'SQUARE'){
-            count = 1;
-            obj = new Square();
-        }
-        const color = getColor();
-        const rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
-        // bikin object baru
-        obj.color = rgbColor;
-        obj.type = type;
-        obj.count = count;
 
-        // tambahin event listener
-        gl_canvas.addEventListener("click", function lineDraw(e){
-            let coords = getCoords(gl_canvas, e)
-            obj.draw(coords["x"], coords["y"]);
-
-            if (obj.vertexCount == count){
-                gl_canvas.removeEventListener("click", lineDraw)
-            }
-        })
-
-        objects.push(obj);
+    //const count = type == "POLY" ? document.getElementById("polygon-vertices").value : 2
+    var count;
+    let obj;
+    if(type == "LINE"){
+        count = 2;
+        obj = new Model();
+    }else if(type == 'POLY'){
+        count = document.getElementById("polygon-vertices").value;
+        obj = new Model();
+    }else if(type == 'RECT'){
+        count = 2;
+        obj = new Rectangle();
+    }else if(type == 'SQUARE'){
+        count = 1;
+        obj = new Square();
     }
+    const color = getColor();
+    const rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
+    // bikin object baru
+    obj.color = rgbColor;
+    obj.type = type;
+    obj.count = count;
+
+    // tambahin event listener
+    gl_canvas.addEventListener("click", function lineDraw(e){
+        let coords = getCoords(gl_canvas, e)
+        obj.draw(coords["x"], coords["y"]);
+
+        if (obj.vertexCount == count){
+            gl_canvas.removeEventListener("click", lineDraw)
+        }
+    })
+
+    objects.push(obj);
+    
 }
 
 const dragObject = (canvas, event, selectedObject, idx) => {
@@ -134,9 +136,9 @@ const getObject = (gl_canvas, event) => {
     let coords = getCoords(gl_canvas, event);
     let x = coords["x"];
     let y = coords["y"];
-    console.log(objects)
+
     for (const obj of objects) {
-        let index = obj.checkCoords(x, y);
+        let index = obj.checkVertex(x, y);
 
         if (index == -1){
             continue;
@@ -196,11 +198,9 @@ gl_canvas.addEventListener("click", (event) => {
         let colorPicker = document.getElementById("color-picker");
     
         colorPicker.addEventListener("change", function update() {
-            console.log("hehe")
     
             let color = getColor();
             let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
-            console.log(rgbColor);
 
             const checked = document.getElementById("all-vertices").checked
 
@@ -219,6 +219,36 @@ gl_canvas.addEventListener("click", (event) => {
         })
     }
 })
+
+export const deleteVertex = () => {
+    // untuk dragging
+    gl_canvas.addEventListener("click", function delVertex(event){
+        const object = getObject(gl_canvas, event);
+
+        if (object) {
+            const selectedObject = object["selected"]
+            const vertexIndex = object["vertexIndex"]
+
+            if (selectedObject.type != "POLY"){
+                alert("Not a polygon!");
+                gl_canvas.removeEventListener("click", delVertex);
+                return;
+            }
+
+            selectedObject.vertices.splice(vertexIndex, 1);
+            selectedObject.vertexCount--;
+            selectedObject.count--;
+
+            renderAllObjects();
+            renderObject(selectedObject);
+            gl_canvas.removeEventListener("click", delVertex);
+        }
+        renderAllObjects();
+    })
+
+    console.log("initiated listener")
+    // renderAllObjects();
+}
 
 export const saveFile = () => {
     const fileName = document.getElementById("filename").value;

@@ -56,10 +56,10 @@ export const drawObject = (gl, programInfo, vertices, mode, vertexCount) => {
             colors.push(vertices[i].color[3]);
         }
     } else {
-        positions = vertices.positions;
-        colors = vertices.colors;
+        positions = vertices.position;
+        colors = vertices.color;
     }
-    
+
     setPositionAttribute(gl, programInfo, positions);
     setColorAttribute(gl, programInfo, colors);
 
