@@ -121,7 +121,20 @@ const dragObject = (canvas, event, selectedObject, idx) => {
     let x = coords["x"];
     let y = coords["y"];
 
-    if (selectedObject.type != "SQUARE"){
+    if(selectedObject.type == "RECT"){
+        let a = (idx+1) % 4;
+        let b = (idx+2) % 4;
+        let c = (idx+3) % 4;
+
+        selectedObject.vertices[idx].position[0] = x;
+        selectedObject.vertices[idx].position[1] = y;
+
+        selectedObject.vertices[a].position[0] = x;
+        selectedObject.vertices[a].position[1] = selectedObject.vertices[b].position[1];
+
+        selectedObject.vertices[c].position[0] = selectedObject.vertices[b].position[0];
+        selectedObject.vertices[c].position[1] = y;
+    }else if (selectedObject.type != "SQUARE"){
         selectedObject.vertices[idx].position[0] = x;
         selectedObject.vertices[idx].position[1] = y;
     }else if(selectedObject.type == "SQUARE"){
