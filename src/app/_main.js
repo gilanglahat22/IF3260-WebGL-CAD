@@ -124,6 +124,8 @@ const dragObject = (canvas, event, selectedObject, idx) => {
     if (selectedObject.type != "SQUARE"){
         selectedObject.vertices[idx].position[0] = x;
         selectedObject.vertices[idx].position[1] = y;
+    }else if(selectedObject.type == "SQUARE"){
+        selectedObject.resize(idx,x,y);
     }
 
     renderAllObjects();

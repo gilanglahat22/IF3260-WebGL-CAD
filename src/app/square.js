@@ -19,20 +19,29 @@ export class Square extends Model {
         if (this.vertexCount == this.count){
             this.completed = true;
             console.log("masuk");
+            var absisGeser = this.vertices[0]['position'][0]+0.5;
+            var ordinatGeser = this.vertices[0]['position'][1]+0.5;
+            if(absisGeser>=0.97){
+              absisGeser -= 1;
+            }
+            if(ordinatGeser>=0.97){
+              ordinatGeser -= 1;
+            }
             let v1 = {
-              position: [this.vertices[0]['position'][0]+0.5, this.vertices[0]['position'][1]],
+              position: [absisGeser, this.vertices[0]['position'][1]],
               color: this.color
             }
 
             let v2 = {
-              position: [this.vertices[0]['position'][0], this.vertices[0]['position'][1]+0.5],
+              position: [this.vertices[0]['position'][0], ordinatGeser],
               color: this.color
             }
 
             let v3 = {
-                position: [this.vertices[0]['position'][0]+0.5, this.vertices[0]['position'][1]+0.5],
+                position: [absisGeser, ordinatGeser],
                 color: this.color
             }
+            
             this.vertices.push(v1);
             this.vertices.push(v3);
             this.vertices.push(v2);
@@ -41,4 +50,7 @@ export class Square extends Model {
         renderAllObjects();
     }
   }
+  // resize(idx,xCurr,yCurr){
+  //   if(idx)
+  // }
 }
