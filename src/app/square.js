@@ -50,7 +50,38 @@ export class Square extends Model {
         renderAllObjects();
     }
   }
-  // resize(idx,xCurr,yCurr){
-  //   if(idx)
-  // }
+  resize(idx,xCurr,yCurr){
+    let adjY = 3-idx;
+    let adjX;
+    if(idx==2 || idx==3){
+      adjX = 5-idx;
+    }else{
+      adjX = 1-idx;
+    } 
+    let idxNotGeser = (idx+2)%4;
+    let geser;
+    if(this.vertices[idx].position[0]>=this.vertices[idxNotGeser].position[0]){
+      geser = yCurr-this.vertices[idx].position[1];
+    }else{
+      geser = xCurr-this.vertices[idx].position[0];
+    }
+    if(this.vertices[idx].position[0]<this.vertices[idxNotGeser].position[0]
+      && this.vertices[idx].position[1]>this.vertices[idxNotGeser].position[1]){
+        this.vertices[idx].position[0] += geser;
+        this.vertices[idx].position[1] -= geser;
+        this.vertices[adjY].position[0] += geser;
+        this.vertices[adjX].position[1] -= geser;
+    }else if(this.vertices[idx].position[0]>this.vertices[idxNotGeser].position[0]
+      && this.vertices[idx].position[1]<this.vertices[idxNotGeser].position[1]){
+        this.vertices[idx].position[0] -= geser;
+        this.vertices[idx].position[1] += geser;
+        this.vertices[adjY].position[0] -= geser;
+        this.vertices[adjX].position[1] += geser;
+      }else{
+        this.vertices[idx].position[0] += geser;
+        this.vertices[idx].position[1] += geser;
+        this.vertices[adjX].position[1] += geser;
+        this.vertices[adjY].position[0] += geser;
+      }
+  }
 }
