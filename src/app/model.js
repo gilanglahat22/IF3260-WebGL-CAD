@@ -57,5 +57,23 @@ export class Model {
 
         return -1
     }
+
+    isClicked(x, y){
+        if (this.completed){
+            let minX = this.vertices[0].position[0]
+            let minY = this.vertices[0].position[1]
+            let maxX = this.vertices[0].position[0]
+            let maxY = this.vertices[0].position[1]
+    
+            for (var i = 1; i < this.vertexCount; i++){
+                minX = Math.min(minX, this.vertices[i].position[0])
+                maxX = Math.max(maxX, this.vertices[i].position[0])
+                minY = Math.min(minY, this.vertices[i].position[1])
+                maxY = Math.max(maxY, this.vertices[i].position[1])
+            }
+    
+            return (minX <= x && x <= maxX && minY <= y && y <= maxY)
+        }
+    }
 }
 

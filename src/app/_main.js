@@ -222,35 +222,101 @@ gl_canvas.addEventListener("click", (event) => {
     }
 })
 
-export const deleteVertex = () => {
-    // untuk dragging
-    gl_canvas.addEventListener("click", function delVertex(event){
-        const object = getObject(gl_canvas, event);
 
-        if (object) {
-            const selectedObject = object["selected"]
-            const vertexIndex = object["vertexIndex"]
+const selectObject = (x, y) => {
+    let selectedObject = null;
 
-            if (selectedObject.type != "POLY"){
-                alert("Not a polygon!");
-                gl_canvas.removeEventListener("click", delVertex);
-                return;
-            }
-
-            selectedObject.vertices.splice(vertexIndex, 1);
-            selectedObject.vertexCount--;
-            selectedObject.count--;
-
-            renderAllObjects();
-            renderObject(selectedObject);
-            gl_canvas.removeEventListener("click", delVertex);
+    for (var i = objects.length - 1; i >= 0; i--){
+        if (objects[i].isClicked(x, y)){
+            selectedObject = objects[i];
+            break;
         }
-        renderAllObjects();
+    }
+
+    if (selectedObject == null){
+        return;
+    }
+
+    renderAllObjects();
+
+    selectedObject.vertices.forEach((vertex) => {
+        let point = getPoint(vertex.position[0], vertex.position[1], true);
+        drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
     })
 
-    console.log("initiated listener")
-    // renderAllObjects();
+    function deleteVertex(event){
+        event.preventDefault();
+        let coords = getCoords(gl_canvas, event);
+        let x = coords["x"];
+        let y = coords["y"];
+    
+        let index = selectedObject.checkVertex(x, y);
+    
+        if (index == -1){
+            gl_canvas.removeEventListener("contextmenu", deleteVertex);
+            return;
+        }
+    
+        selectedObject.vertices.splice(index, 1);
+        selectedObject.vertexCount--;
+        selectedObject.count--;
+
+        gl_canvas.removeEventListener("contextmenu", deleteVertex);
+        
+        renderAllObjects();
+    }
+
+    function addVertex(event){
+        console.log("test")
+        let coords = getCoords(gl_canvas, event);
+        let x = coords["x"];
+        let y = coords["y"];
+        let object = getObject(gl_canvas, event);
+
+        if (object != null){
+            gl_canvas.removeEventListener("click", addVertex);
+            return;
+        }
+
+        const newVertex = {
+            position: [x, y],
+            color: selectedObject.color
+        }
+        selectedObject.vertices.push(newVertex);
+        selectedObject.vertexCount++;
+        selectedObject.count++;
+        gl_canvas.removeEventListener("click", addVertex);
+        
+        renderAllObjects();
+    }
+
+    function remove(event) {
+        let coords = getCoords(gl_canvas, event);
+        let x = coords["x"];
+        let y = coords["y"];
+
+        const obj = getObject(gl_canvas, event);
+
+        if (!!!obj&& !selectedObject.isClicked(x, y)){
+            gl_canvas.removeEventListener("contextmenu", deleteVertex);
+            gl_canvas.removeEventListener("click", addVertex);
+            gl_canvas.removeEventListener("click", remove);
+            gl_canvas.removeEventListener("contextmenu", remove);
+        }
+    }
+
+    gl_canvas.addEventListener("contextmenu", deleteVertex);
+    gl_canvas.addEventListener("click", addVertex);
+    gl_canvas.addEventListener("contextmenu", remove);
+    gl_canvas.addEventListener("click", remove);
+
 }
+
+gl_canvas.addEventListener("dblclick", function select(event){    
+    let coords = getCoords(gl_canvas, event);
+    selectObject(coords["x"], coords["y"]);
+})
+
 
 export const clearCanvas = () => {
     objects = [];

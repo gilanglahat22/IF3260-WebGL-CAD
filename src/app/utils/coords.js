@@ -15,7 +15,7 @@ export const getCoords = (canvas, event) => {
 }
 
 export const getPoint = (x, y, onclick = false) => {
-    let color = onclick ? 1.0 : 0.75
+    let color = onclick ? 1.0 : 0.5
     
     let vertices = {
         position: [
