@@ -5,6 +5,7 @@ import { Model } from "./model.js";
 import { getCoords, getPoint } from "./utils/coords.js";
 import { drawObject } from "./utils/draw_utils.js";
 import { initShaders } from "./utils/shaders.js";
+import { ConvexHull } from "./utils/convex/process.js";
 
 let vertexShaderSource = `
     precision mediump float;
@@ -165,7 +166,7 @@ const getObject = (gl_canvas, event) => {
     }
 
     if (selectedObject == null){
-        console.log("no object selected");
+        // console.log("no object selected");
         renderAllObjects();
         return null;
     }
@@ -297,6 +298,7 @@ const selectObject = (x, y) => {
         }
 
         selectedObject.vertices.push(newVertex);
+        selectedObject.vertices = ConvexHull(selectedObject.vertices)
         selectedObject.vertexCount++;
         selectedObject.count++;
         gl_canvas.removeEventListener("click", addVertex);
