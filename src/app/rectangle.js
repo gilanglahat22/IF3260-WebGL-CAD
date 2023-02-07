@@ -1,3 +1,4 @@
+import { enableAllButtons } from "./handlers.js";
 import { Model } from "./model.js";
 import { renderObject, renderAllObjects } from "./_main.js";
 
@@ -18,6 +19,7 @@ export class Rectangle extends Model {
 
         if (this.vertexCount == this.count){
             this.completed = true;
+            enableAllButtons();
             console.log("masuk");
             let v1 = {
               position: [this.vertices[0]['position'][0], this.vertices[1]['position'][1]],

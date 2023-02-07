@@ -1,3 +1,4 @@
+import { enableAllButtons } from "./handlers.js";
 import { Model } from "./model.js";
 import { renderObject, renderAllObjects } from "./_main.js";
 
@@ -18,6 +19,7 @@ export class Square extends Model {
 
         if (this.vertexCount == this.count){
             this.completed = true;
+            enableAllButtons();
             console.log("masuk");
             let absisGeser = this.vertices[0]['position'][0]+0.5;
             let ordinatGeser = this.vertices[0]['position'][1]+0.5;

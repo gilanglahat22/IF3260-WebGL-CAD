@@ -110,7 +110,6 @@ export const render = (type) => {
 
         if (obj.vertexCount == count){
             gl_canvas.removeEventListener("click", lineDraw)
-            enableAllButtons();
         }
     })
 
@@ -287,7 +286,7 @@ const selectObject = (x, y) => {
         let y = coords["y"];
         let object = getObject(gl_canvas, event);
 
-        if (object != null){
+        if (object != null || selectedObject.isClicked(x, y)){
             gl_canvas.removeEventListener("click", addVertex);
             return;
         }
@@ -296,6 +295,7 @@ const selectObject = (x, y) => {
             position: [x, y],
             color: selectedObject.color
         }
+
         selectedObject.vertices.push(newVertex);
         selectedObject.vertexCount++;
         selectedObject.count++;
