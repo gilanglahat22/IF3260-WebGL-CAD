@@ -65,7 +65,7 @@ export class Model {
             let maxX = this.vertices[0].position[0]
             let maxY = this.vertices[0].position[1]
     
-            for (var i = 1; i < this.vertexCount; i++){
+            for (let i = 1; i < this.vertexCount; i++){
                 minX = Math.min(minX, this.vertices[i].position[0])
                 maxX = Math.max(maxX, this.vertices[i].position[0])
                 minY = Math.min(minY, this.vertices[i].position[1])

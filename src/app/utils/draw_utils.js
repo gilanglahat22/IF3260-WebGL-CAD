@@ -47,7 +47,7 @@ export const drawObject = (gl, programInfo, vertices, mode, vertexCount) => {
     let colors = [];
 
     if (Array.isArray(vertices)){
-        for (var i = 0; i < vertices.length; i++){
+        for (let i = 0; i < vertices.length; i++){
             positions.push(vertices[i].position[0]);
             positions.push(vertices[i].position[1]);
             colors.push(vertices[i].color[0]);

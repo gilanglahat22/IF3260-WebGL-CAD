@@ -19,8 +19,8 @@ export class Square extends Model {
         if (this.vertexCount == this.count){
             this.completed = true;
             console.log("masuk");
-            var absisGeser = this.vertices[0]['position'][0]+0.5;
-            var ordinatGeser = this.vertices[0]['position'][1]+0.5;
+            let absisGeser = this.vertices[0]['position'][0]+0.5;
+            let ordinatGeser = this.vertices[0]['position'][1]+0.5;
             if(absisGeser>=0.97){
               absisGeser -= 1;
             }

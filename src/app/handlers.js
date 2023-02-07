@@ -15,13 +15,26 @@ document.getElementById("polygon-button").onclick = () => {
   render("POLY")
 }
 
+export const disableAllButtons = () => {
+  document.getElementById("line-button").disabled = true
+  document.getElementById("rectangle-button").disabled = true
+  document.getElementById("square-button").disabled = true
+  document.getElementById("polygon-button").disabled = true
+}
+
+export const enableAllButtons = () => {
+  document.getElementById("line-button").disabled = false
+  document.getElementById("rectangle-button").disabled = false
+  document.getElementById("square-button").disabled = false
+  document.getElementById("polygon-button").disabled = false
+}
 document.getElementById("save-button").onclick = () => {saveFile()}
 document.getElementById("load-file").onchange = () => {loadFile()}
 
 export const getColor = () => {
     let hex = document.getElementById("color-picker").value
     
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
       r: parseInt(result[1], 16),
       g: parseInt(result[2], 16),

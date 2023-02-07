@@ -1,4 +1,4 @@
-import { getColor } from "./handlers.js";
+import { disableAllButtons, enableAllButtons, getColor } from "./handlers.js";
 import { Rectangle } from "./rectangle.js";
 import { Square } from "./square.js";
 import { Model } from "./model.js";
@@ -60,7 +60,7 @@ const programInfo = {
 export const renderObject = (obj) => {
     //load 1 object
     const method = obj.vertexCount == 2 ? gl.LINES : gl.TRIANGLE_FAN;
-    console.log(obj.vertices);
+    // console.log(obj.vertices);
     drawObject(gl, programInfo, obj.vertices, method, obj.vertexCount);
 
     obj.vertices.forEach((vertex) => {
@@ -80,7 +80,7 @@ export const render = (type) => {
     // pass type nya antara LINE, SQUARE, RECT, ato POLY
 
     //const count = type == "POLY" ? document.getElementById("polygon-vertices").value : 2
-    var count;
+    let count;
     let obj;
     if(type == "LINE"){
         count = 2;
@@ -102,6 +102,7 @@ export const render = (type) => {
     obj.type = type;
     obj.count = count;
 
+    disableAllButtons();
     // tambahin event listener
     gl_canvas.addEventListener("click", function lineDraw(e){
         let coords = getCoords(gl_canvas, e)
@@ -109,14 +110,14 @@ export const render = (type) => {
 
         if (obj.vertexCount == count){
             gl_canvas.removeEventListener("click", lineDraw)
+            enableAllButtons();
         }
     })
 
     objects.push(obj);
-    
 }
 
-const dragObject = (canvas, event, selectedObject, idx) => {
+const dragVertex = (canvas, event, selectedObject, idx) => {
     let coords = getCoords(canvas, event);
     let x = coords["x"];
     let y = coords["y"];
@@ -166,6 +167,7 @@ const getObject = (gl_canvas, event) => {
 
     if (selectedObject == null){
         console.log("no object selected");
+        renderAllObjects();
         return null;
     }
 
@@ -184,7 +186,7 @@ gl_canvas.addEventListener("mousedown", (event) => {
         let vertexIndex = object["vertexIndex"]
 
         function drag(event) {
-            dragObject(gl_canvas, event, selectedObject, vertexIndex);
+            dragVertex(gl_canvas, event, selectedObject, vertexIndex);
         }
 
         gl_canvas.addEventListener('mousemove', drag);
@@ -239,7 +241,7 @@ gl_canvas.addEventListener("click", (event) => {
 const selectObject = (x, y) => {
     let selectedObject = null;
 
-    for (var i = objects.length - 1; i >= 0; i--){
+    for (let i = objects.length - 1; i >= 0; i--){
         if (objects[i].isClicked(x, y)){
             selectedObject = objects[i];
             break;
@@ -280,7 +282,6 @@ const selectObject = (x, y) => {
     }
 
     function addVertex(event){
-        console.log("test")
         let coords = getCoords(gl_canvas, event);
         let x = coords["x"];
         let y = coords["y"];
@@ -315,13 +316,44 @@ const selectObject = (x, y) => {
             gl_canvas.removeEventListener("click", addVertex);
             gl_canvas.removeEventListener("click", remove);
             gl_canvas.removeEventListener("contextmenu", remove);
+            renderAllObjects();
         }
     }
 
-    gl_canvas.addEventListener("contextmenu", deleteVertex);
-    gl_canvas.addEventListener("click", addVertex);
-    gl_canvas.addEventListener("contextmenu", remove);
-    gl_canvas.addEventListener("click", remove);
+
+    gl_canvas.addEventListener("mousedown", function select(event) {
+        let coords = getCoords(gl_canvas, event);
+        let x = coords["x"];
+        let y = coords["y"];
+        let copy = JSON.parse(JSON.stringify(selectedObject.vertices));
+
+        function drag(e) {
+            let newCoords = getCoords(gl_canvas, e);
+            let newX = newCoords["x"];
+            let newY = newCoords["y"];
+
+            for (let i = 0; i < copy.length; i++){
+                selectedObject.vertices[i].position[0] = copy[i].position[0] + (newX - x);
+                selectedObject.vertices[i].position[1] = copy[i].position[1] + (newY - y);
+            }
+
+            renderAllObjects()
+        }
+
+        gl_canvas.addEventListener('mousemove', drag);
+        gl_canvas.addEventListener("mouseup", function end() {
+            gl_canvas.removeEventListener("mousemove", drag);
+            gl_canvas.removeEventListener("mouseup", end);
+            gl_canvas.removeEventListener("mousedown", select);
+        });
+    })
+
+    if (selectedObject.type == "POLY"){
+        gl_canvas.addEventListener("contextmenu", deleteVertex);
+        gl_canvas.addEventListener("click", addVertex);
+        gl_canvas.addEventListener("contextmenu", remove);
+        gl_canvas.addEventListener("click", remove);
+    }
 
 }
 
@@ -334,6 +366,7 @@ gl_canvas.addEventListener("dblclick", function select(event){
 export const clearCanvas = () => {
     objects = [];
     gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
+    enableAllButtons();
 }
 
 export const saveFile = () => {
