@@ -28,80 +28,60 @@ const divideList = (arr, minAbs, maxAbs, flag) => {
     }
 }
 
-const divideLeft = (arr, minAbs, maxAbs) => {
+const divideRec = (arr, minAbs, maxAbs, index) => {
     if (arr.length == 0) {
         return []
     }
 
     const pMax = findPMax(arr, minAbs, maxAbs)
     const pMaxIdx = arr.indexOf(pMax)
-
     arr.splice(pMaxIdx, 1)
 
-    const leftSide = divideLeft(divideList(arr, minAbs, pMax, 1), minAbs, pMax)
+    const leftSide = divideRec(divideList(arr, minAbs, pMax, index), minAbs, pMax, index)
     leftSide.forEach((point) => {
         const idx = arr.indexOf(point)
         arr.splice(idx, 1)
     })
 
-    const rightSide = divideLeft(divideList(arr, pMax, maxAbs, 1), pMax, maxAbs)
+    const rightSide = divideRec(divideList(arr, pMax, maxAbs, index), pMax, maxAbs, index)
     rightSide.forEach((point) => {
         const idx = arr.indexOf(point)
         arr.splice(idx, 1)
     })
-
-    return leftSide.concat([pMax]).concat(rightSide)
+    const res = leftSide.concat([pMax]).concat(rightSide)
+    return res
 }
 
-const divideRight = (arr, minAbs, maxAbs) => {
-    if (arr.length == 0) {
-        return []
-    }
-
-    const pMax = findPMax(arr, minAbs, maxAbs)
-    const pMaxIdx = arr.indexOf(pMax)
-
-    arr.splice(pMaxIdx, 1)
-
-    const leftSide = divideLeft(divideList(arr, minAbs, pMax, -1), minAbs, pMax)
-    leftSide.forEach((point) => {
-        const idx = arr.indexOf(point)
-        arr.splice(idx, 1)
-    })
-
-    const rightSide = divideLeft(divideList(arr, pMax, maxAbs, -1), pMax, maxAbs)
-    rightSide.forEach((point) => {
-        const idx = arr.indexOf(point)
-        arr.splice(idx, 1)
-    })
-
-    return leftSide.concat([pMax]).concat(rightSide)
-}
-
-const mergeList = (leftRes, rightRes, minAbs, maxAbs) => {
-    let mergedList = []
-
-    leftRes = quickSort(leftRes)
-    rightRes = quickSort(rightRes)
-
-    mergedList.push(minAbs)
-    leftRes.forEach((item) => mergedList.push(item))
-    mergedList.push(maxAbs)
-    rightRes.forEach((item) => mergedList.push(item))
-
-    return mergedList
-}
 
 export const ConvexHull = (points) => {
+    let temp = JSON.parse(JSON.stringify(points))
     const arr = quickSort(points)
-
+    console.log(points)
+    console.log("\n")
     const minAbs = arr[0]
     const maxAbs = arr[arr.length - 1]
 
     const res = divideList(arr.slice(1, arr.length - 1), minAbs, maxAbs, 0)
 
-    const leftRes = divideLeft(res.left, minAbs, maxAbs)
-    const rightRes = divideRight(res.right, minAbs, maxAbs)
 
-    return mergeList(leftRes, rightRes, minAbs, maxAbs)
+    const leftRes = quickSort(divideRec(res.left, minAbs, maxAbs, 1))
+    const rightRes = quickSort(divideRec(res.right, minAbs, maxAbs, -1)).reverse()
+
+
+    let tempRes = [minAbs].concat(leftRes, [maxAbs], rightRes)
+    console.log(tempRes)
+    tempRes.forEach((item) => {
+        for (let i = 0; i < temp.length; i++){
+            if (temp[i].position[0] == item.position[0] && temp[i].position[1] == item.position[1]) {
+                temp.splice(i, 1)
+            }
+        }
+    })
+
+    console.log(temp)
+    // tempRes = temp.concat(tempRes)
+
+    console.log(tempRes)
+
+    return tempRes
 } 

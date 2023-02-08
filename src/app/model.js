@@ -22,8 +22,8 @@ export class Model {
             
             this.vertices.push(vertex);
             this.vertices = ConvexHull(this.vertices)
-
-            this.vertexCount++;
+            console.log(this.vertices)
+            this.vertexCount = this.vertices.length
 
             if (this.vertexCount == this.count){
                 enableAllButtons();

@@ -20,6 +20,7 @@ export const disableAllButtons = () => {
   document.getElementById("rectangle-button").disabled = true
   document.getElementById("square-button").disabled = true
   document.getElementById("polygon-button").disabled = true
+  document.getElementById("polygon-vertices").disabled = true
 }
 
 export const enableAllButtons = () => {
@@ -27,7 +28,9 @@ export const enableAllButtons = () => {
   document.getElementById("rectangle-button").disabled = false
   document.getElementById("square-button").disabled = false
   document.getElementById("polygon-button").disabled = false
+  document.getElementById("polygon-vertices").disabled = false
 }
+
 document.getElementById("save-button").onclick = () => {saveFile()}
 document.getElementById("load-file").onchange = () => {loadFile()}
 
