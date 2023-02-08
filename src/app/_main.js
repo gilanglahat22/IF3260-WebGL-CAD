@@ -80,7 +80,6 @@ export const renderAllObjects = () => {
 export const render = (type) => {
     // pass type nya antara LINE, SQUARE, RECT, ato POLY
 
-    //const count = type == "POLY" ? document.getElementById("polygon-vertices").value : 2
     let count;
     let obj;
     if(type == "LINE"){
@@ -312,6 +311,13 @@ const selectObject = (x, y) => {
         renderAllObjects();
     }
 
+    let rotateSlider = document.getElementById("rotate");
+    rotateSlider.addEventListener("input", function rotateObject(){
+        var angle = document.getElementById("rotate").value;
+        selectedObject.rotate(angle);
+        renderAllObjects();
+    })
+
     function remove(event) {
         let coords = getCoords(gl_canvas, event);
         let x = coords["x"];
@@ -324,6 +330,7 @@ const selectObject = (x, y) => {
             gl_canvas.removeEventListener("click", addVertex);
             gl_canvas.removeEventListener("click", remove);
             gl_canvas.removeEventListener("contextmenu", remove);
+            rotateSlider.removeEventListener("input", rotateObject);
             renderAllObjects();
         }
     }
@@ -360,11 +367,7 @@ const selectObject = (x, y) => {
         });
     })
 
-    function rotateObject(){
-        var angle = document.getElementById("rotate").value;
-        selectedObject.rotate(angle);
-        renderAllObjects();
-    }
+
 
     if (selectedObject.type == "POLY"){
         gl_canvas.addEventListener("contextmenu", deleteVertex);
@@ -372,7 +375,7 @@ const selectObject = (x, y) => {
         gl_canvas.addEventListener("contextmenu", remove);
         gl_canvas.addEventListener("click", remove);
     }
-    rotateObject();
+    // rotateObject();
 }
 
 gl_canvas.addEventListener("dblclick", function select(event){    
