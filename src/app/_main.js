@@ -126,7 +126,7 @@ const dragVertex = (canvas, event, selectedObject, idx) => {
         let b = (idx+2) % 4;
         let c = (idx+3) % 4;
 
-        let theta = selectedObject.angle
+        let theta = selectedObject.angle * Math.PI / 180
 
         let deltaX = selectedObject.vertices[b].position[0] - x;
         let deltaY = y - selectedObject.vertices[b].position[1];
