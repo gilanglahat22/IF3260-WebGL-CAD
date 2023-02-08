@@ -11,6 +11,7 @@ export class Model {
         this.type = type;
         this.color = color;
         this.completed = completed;
+        this.angle = 0;
     }
 
     draw(x, y){
@@ -81,6 +82,7 @@ export class Model {
     }
 
     rotate(angle){
+        let DeltaAngle = angle - this.angle;
         let xSum = 0;
         let ySum = 0;
 
@@ -90,11 +92,11 @@ export class Model {
         }
         var xCenter = xSum / this.vertexCount;
         var yCenter = ySum / this.vertexCount;
-        const rad = (Math.PI / 180) * angle;
+        const rad = (Math.PI / 180) * DeltaAngle;
         const cos = Math.cos(rad);
         const sin = Math.sin(rad);
 
-        this.angle = this.angle + rad > 3.141 ? (this.angle + rad - 3.141) : this.angle+rad;
+        this.angle = angle;
 
         for(let i = 0; i < this.vertexCount; i++){
           var dx = this.vertices[i].position[0] - xCenter;

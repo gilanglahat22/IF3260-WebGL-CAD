@@ -67,6 +67,7 @@ export class Square extends Model {
     }else{
       geser = xCurr-this.vertices[idx].position[0];
     }
+
     if(this.vertices[idx].position[0]<this.vertices[idxNotGeser].position[0]
       && this.vertices[idx].position[1]>this.vertices[idxNotGeser].position[1]){
         this.vertices[idx].position[0] += geser;

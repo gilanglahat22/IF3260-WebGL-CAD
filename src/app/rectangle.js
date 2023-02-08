@@ -5,7 +5,6 @@ import { renderObject, renderAllObjects } from "./_main.js";
 export class Rectangle extends Model {
   constructor(){
     super([],0,'RECT',[0.0, 1.0, 0.0, 1.0],false,2)
-    this.angle=0
   }
   draw(x, y){
     if (this.vertexCount < this.count) {
