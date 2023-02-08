@@ -54,6 +54,9 @@ const divideRec = (arr, minAbs, maxAbs, index) => {
 
 
 export const ConvexHull = (points) => {
+    if (points.length <= 1){
+        return points
+    }
     let temp = JSON.parse(JSON.stringify(points))
     const arr = quickSort(points)
     console.log(points)
@@ -79,7 +82,8 @@ export const ConvexHull = (points) => {
     })
 
     console.log(temp)
-    // tempRes = temp.concat(tempRes)
+    // tempRes = tem_) m61  DG KL
+    tempRes = tempRes.concat(ConvexHull(temp))
 
     console.log(tempRes)
 
