@@ -93,6 +93,9 @@ export class Model {
         const rad = (Math.PI / 180) * angle;
         const cos = Math.cos(rad);
         const sin = Math.sin(rad);
+
+        this.angle = this.angle + rad > 3.141 ? (this.angle + rad - 3.141) : this.angle+rad;
+
         for(let i = 0; i < this.vertexCount; i++){
           var dx = this.vertices[i].position[0] - xCenter;
           var dy = this.vertices[i].position[1] - yCenter;

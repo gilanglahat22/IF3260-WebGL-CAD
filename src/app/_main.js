@@ -126,14 +126,22 @@ const dragVertex = (canvas, event, selectedObject, idx) => {
         let b = (idx+2) % 4;
         let c = (idx+3) % 4;
 
+        let theta = selectedObject.angle
+
+        let deltaX = selectedObject.vertices[b].position[0] - x;
+        let deltaY = y - selectedObject.vertices[b].position[1];
+
+        let length = deltaX * Math.cos(theta) + deltaY * Math.sin(theta);
+        let width = deltaY * Math.cos(theta) - deltaX * Math.sin(theta);
+
         selectedObject.vertices[idx].position[0] = x;
         selectedObject.vertices[idx].position[1] = y;
 
-        selectedObject.vertices[a].position[0] = x;
-        selectedObject.vertices[a].position[1] = selectedObject.vertices[b].position[1];
+        selectedObject.vertices[a].position[0] = selectedObject.vertices[b].position[0] + width * Math.sin(theta);
+        selectedObject.vertices[a].position[1] = selectedObject.vertices[b].position[1] + width * Math.cos(theta);
 
-        selectedObject.vertices[c].position[0] = selectedObject.vertices[b].position[0];
-        selectedObject.vertices[c].position[1] = y;
+        selectedObject.vertices[c].position[0] = selectedObject.vertices[b].position[0] - length*Math.cos(theta);
+        selectedObject.vertices[c].position[1] = selectedObject.vertices[b].position[1] + length*Math.sin(theta);
     }else if (selectedObject.type != "SQUARE"){
         selectedObject.vertices[idx].position[0] = x;
         selectedObject.vertices[idx].position[1] = y;
