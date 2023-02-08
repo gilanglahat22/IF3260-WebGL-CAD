@@ -16,8 +16,8 @@
                 <canvas id = "gl-canvas" width = "800" height = "800" style = "background-color: #525252; border-radius: 20px"></canvas>
             </div>
             <div>
-                <p>Rotate</p>
-                <div>0<input type="range" min="0" max="360" value="0" class="slider" id="rotate">360</div>
+                <div>0<input type="range" min="0" max="360" value="0" class="slider" id="rotate" onchange="rangevalue.value=value">360</div>
+                <p>Degree: <output id="rangevalue">0</output></p>
             </div>
             <div> 
                 <button id = "clear-canvas">Clear Canvas</button>

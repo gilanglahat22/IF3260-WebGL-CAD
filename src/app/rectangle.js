@@ -46,8 +46,8 @@ export class Rectangle extends Model {
     for(let i = 0; i<4; i++){
       var dx = this.vertices[i].position[0] - xCenter;
       var dy = this.vertices[i].position[1] - yCenter;
-      this.vertices[i].position[0] = dx*cos - dy*sin + xCenter;
-      this.vertices[i].position[1] = dx*sin + dy*cos + yCenter;
+      this.vertices[i].position[0] = (dx*cos) + (dy*sin) + xCenter;
+      this.vertices[i].position[1] = (dy*cos) - (dx*sin) + yCenter;
     }
   }
 }
