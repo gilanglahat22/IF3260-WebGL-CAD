@@ -188,7 +188,6 @@ gl_canvas.addEventListener("mousedown", (event) => {
         function drag(event) {
             dragVertex(gl_canvas, event, selectedObject, vertexIndex);
         }
-
         gl_canvas.addEventListener('mousemove', drag);
         gl_canvas.addEventListener("mouseup", function end() {
             gl_canvas.removeEventListener("mousemove", drag);
@@ -353,10 +352,6 @@ const selectObject = (x, y) => {
                 drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
             })
         }
-
-            
-
-
         gl_canvas.addEventListener('mousemove', drag);
         gl_canvas.addEventListener("mouseup", function end() {
             gl_canvas.removeEventListener("mousemove", drag);
@@ -365,13 +360,19 @@ const selectObject = (x, y) => {
         });
     })
 
+    function rotateObject(){
+        var angle = document.getElementById("rotate").value;
+        selectedObject.rotate(angle);
+        renderAllObjects();
+    }
+
     if (selectedObject.type == "POLY"){
         gl_canvas.addEventListener("contextmenu", deleteVertex);
         gl_canvas.addEventListener("click", addVertex);
         gl_canvas.addEventListener("contextmenu", remove);
         gl_canvas.addEventListener("click", remove);
     }
-
+    rotateObject();
 }
 
 gl_canvas.addEventListener("dblclick", function select(event){    
