@@ -214,25 +214,16 @@ gl_canvas.addEventListener("click", (event) => {
     
         let colorPicker = document.getElementById("color-picker");
     
-        colorPicker.addEventListener("change", function update() {
+        colorPicker.addEventListener("change", function updateColor() {
     
             let color = getColor();
             let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
 
-            const checked = document.getElementById("all-vertices").checked
+            selectedObject.vertices[vertexIndex].color = rgbColor;
 
-            if (checked) {
-                selectedObject.vertices.forEach((vertex) => {
-                    vertex.color = rgbColor;
-                })
-            } else {
-                selectedObject.vertices[vertexIndex].color = rgbColor;
-            }
-
-    
             renderAllObjects();
 
-            colorPicker.removeEventListener("change", update);
+            colorPicker.removeEventListener("change", updateColor);
         })
     }
 })
@@ -281,6 +272,22 @@ const selectObject = (x, y) => {
         renderAllObjects();
     }
 
+    let colorPicker = document.getElementById("color-picker");
+    
+    colorPicker.addEventListener("change", function updateAll() {
+        let color = getColor();
+        let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
+
+        selectedObject.vertices.forEach((vertex) => {
+            vertex.color = rgbColor;
+        })
+
+
+        renderAllObjects();
+
+        colorPicker.removeEventListener("change", updateAll);
+    })
+
     function addVertex(event){
         let coords = getCoords(gl_canvas, event);
         let x = coords["x"];
@@ -299,8 +306,8 @@ const selectObject = (x, y) => {
 
         selectedObject.vertices.push(newVertex);
         selectedObject.vertices = ConvexHull(selectedObject.vertices)
-        selectedObject.vertexCount++;
-        selectedObject.count++;
+        selectedObject.vertexCount = selectedObject.vertices.length;
+        selectedObject.count = selectedObject.vertices.length;;
         gl_canvas.removeEventListener("click", addVertex);
         
         renderAllObjects();
@@ -340,7 +347,15 @@ const selectObject = (x, y) => {
             }
 
             renderAllObjects()
+
+            selectedObject.vertices.forEach((vertex) => {
+                let point = getPoint(vertex.position[0], vertex.position[1], true);
+                drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
+            })
         }
+
+            
+
 
         gl_canvas.addEventListener('mousemove', drag);
         gl_canvas.addEventListener("mouseup", function end() {
