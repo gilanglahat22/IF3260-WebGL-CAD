@@ -37,17 +37,4 @@ export class Rectangle extends Model {
         renderAllObjects();
     }
   }
-  rotate(angle){
-    var xCenter = (this.vertices[0].position[0]+this.vertices[1].position[0]+this.vertices[2].position[0]+this.vertices[3].position[0])/4;
-    var yCenter = (this.vertices[0].position[1]+this.vertices[1].position[1]+this.vertices[2].position[1]+this.vertices[3].position[1])/4;
-    const rad = (Math.PI / 180) * angle;
-    const cos = Math.cos(rad);
-    const sin = Math.sin(rad);
-    for(let i = 0; i<4; i++){
-      var dx = this.vertices[i].position[0] - xCenter;
-      var dy = this.vertices[i].position[1] - yCenter;
-      this.vertices[i].position[0] = (dx*cos) + (dy*sin) + xCenter;
-      this.vertices[i].position[1] = (dy*cos) - (dx*sin) + yCenter;
-    }
-  }
 }

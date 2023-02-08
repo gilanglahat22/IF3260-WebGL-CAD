@@ -15,14 +15,14 @@ export const getCoords = (canvas, event) => {
 }
 
 export const getPoint = (x, y, onclick = false) => {
-    let color = onclick ? 1.0 : 0.5
-    
-    let vertices = {
+    const color = onclick ? 1.0 : 0.5
+    const dist = 0.02
+    const vertices = {
         position: [
-            x - 0.01, y + 0.01, 
-            x + 0.01, y + 0.01, 
-            x + 0.01, y - 0.01, 
-            x - 0.01, y - 0.01, 
+            x - dist, y + dist, 
+            x + dist, y + dist, 
+            x + dist, y - dist, 
+            x - dist, y - dist, 
         ],
         color: Array(16).fill(color),
     }

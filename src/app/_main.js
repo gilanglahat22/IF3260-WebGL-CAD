@@ -5,6 +5,7 @@ import { Model } from "./model.js";
 import { getCoords, getPoint } from "./utils/coords.js";
 import { drawObject } from "./utils/draw_utils.js";
 import { initShaders } from "./utils/shaders.js";
+import { ConvexHull } from "./utils/convex/process.js";
 
 let vertexShaderSource = `
     precision mediump float;
@@ -79,7 +80,6 @@ export const renderAllObjects = () => {
 export const render = (type) => {
     // pass type nya antara LINE, SQUARE, RECT, ato POLY
 
-    //const count = type == "POLY" ? document.getElementById("polygon-vertices").value : 2
     let count;
     let obj;
     if(type == "LINE"){
@@ -165,7 +165,7 @@ const getObject = (gl_canvas, event) => {
     }
 
     if (selectedObject == null){
-        console.log("no object selected");
+        // console.log("no object selected");
         renderAllObjects();
         return null;
     }
@@ -212,25 +212,16 @@ gl_canvas.addEventListener("click", (event) => {
     
         let colorPicker = document.getElementById("color-picker");
     
-        colorPicker.addEventListener("change", function update() {
+        colorPicker.addEventListener("change", function updateColor() {
     
             let color = getColor();
             let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
 
-            const checked = document.getElementById("all-vertices").checked
+            selectedObject.vertices[vertexIndex].color = rgbColor;
 
-            if (checked) {
-                selectedObject.vertices.forEach((vertex) => {
-                    vertex.color = rgbColor;
-                })
-            } else {
-                selectedObject.vertices[vertexIndex].color = rgbColor;
-            }
-
-    
             renderAllObjects();
 
-            colorPicker.removeEventListener("change", update);
+            colorPicker.removeEventListener("change", updateColor);
         })
     }
 })
@@ -279,6 +270,22 @@ const selectObject = (x, y) => {
         renderAllObjects();
     }
 
+    let colorPicker = document.getElementById("color-picker");
+    
+    colorPicker.addEventListener("change", function updateAll() {
+        let color = getColor();
+        let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0]
+
+        selectedObject.vertices.forEach((vertex) => {
+            vertex.color = rgbColor;
+        })
+
+
+        renderAllObjects();
+
+        colorPicker.removeEventListener("change", updateAll);
+    })
+
     function addVertex(event){
         let coords = getCoords(gl_canvas, event);
         let x = coords["x"];
@@ -296,12 +303,22 @@ const selectObject = (x, y) => {
         }
 
         selectedObject.vertices.push(newVertex);
-        selectedObject.vertexCount++;
-        selectedObject.count++;
+        selectedObject.vertices = ConvexHull(selectedObject.vertices)
+        selectedObject.vertexCount = selectedObject.vertices.length;
+        selectedObject.count = selectedObject.vertices.length;;
         gl_canvas.removeEventListener("click", addVertex);
         
         renderAllObjects();
     }
+
+    function rotateObject(){
+        var angle = document.getElementById("rotate").value;
+        selectedObject.rotate(angle);
+        renderAllObjects();
+    }
+
+    let rotateSlider = document.getElementById("rotate");
+    rotateSlider.addEventListener("input", rotateObject);
 
     function remove(event) {
         let coords = getCoords(gl_canvas, event);
@@ -315,6 +332,7 @@ const selectObject = (x, y) => {
             gl_canvas.removeEventListener("click", addVertex);
             gl_canvas.removeEventListener("click", remove);
             gl_canvas.removeEventListener("contextmenu", remove);
+            rotateSlider.removeEventListener("input", rotateObject);
             renderAllObjects();
         }
     }
@@ -337,6 +355,11 @@ const selectObject = (x, y) => {
             }
 
             renderAllObjects()
+
+            selectedObject.vertices.forEach((vertex) => {
+                let point = getPoint(vertex.position[0], vertex.position[1], true);
+                drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
+            })
         }
         gl_canvas.addEventListener('mousemove', drag);
         gl_canvas.addEventListener("mouseup", function end() {
@@ -346,19 +369,17 @@ const selectObject = (x, y) => {
         });
     })
 
-    function rotateObject(){
-        var angle = document.getElementById("rotate").value;
-        selectedObject.rotate(angle);
-        renderAllObjects();
-    }
+
 
     if (selectedObject.type == "POLY"){
         gl_canvas.addEventListener("contextmenu", deleteVertex);
         gl_canvas.addEventListener("click", addVertex);
-        gl_canvas.addEventListener("contextmenu", remove);
-        gl_canvas.addEventListener("click", remove);
+
     }
-    rotateObject();
+
+    gl_canvas.addEventListener("contextmenu", remove);
+    gl_canvas.addEventListener("click", remove);
+    // rotateObject();
 }
 
 gl_canvas.addEventListener("dblclick", function select(event){    
