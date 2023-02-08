@@ -311,12 +311,14 @@ const selectObject = (x, y) => {
         renderAllObjects();
     }
 
-    let rotateSlider = document.getElementById("rotate");
-    rotateSlider.addEventListener("input", function rotateObject(){
+    function rotateObject(){
         var angle = document.getElementById("rotate").value;
         selectedObject.rotate(angle);
         renderAllObjects();
-    })
+    }
+
+    let rotateSlider = document.getElementById("rotate");
+    rotateSlider.addEventListener("input", rotateObject);
 
     function remove(event) {
         let coords = getCoords(gl_canvas, event);
@@ -372,9 +374,11 @@ const selectObject = (x, y) => {
     if (selectedObject.type == "POLY"){
         gl_canvas.addEventListener("contextmenu", deleteVertex);
         gl_canvas.addEventListener("click", addVertex);
-        gl_canvas.addEventListener("contextmenu", remove);
-        gl_canvas.addEventListener("click", remove);
+
     }
+
+    gl_canvas.addEventListener("contextmenu", remove);
+    gl_canvas.addEventListener("click", remove);
     // rotateObject();
 }
 
