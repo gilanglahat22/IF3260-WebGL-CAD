@@ -144,6 +144,12 @@ const dragVertex = (canvas, event, selectedObject, idx) => {
     renderAllObjects();
 }
 
+const rotateObject = (selectedObject) => {
+    var angle = document.getElementById("rotate").value;
+    selectedObject.rotate(angle);
+    renderAllObjects();
+}
+
 const getObject = (gl_canvas, event) => {
     let selectedObject = null;
     let vertexIndex = -1;
@@ -187,7 +193,6 @@ gl_canvas.addEventListener("mousedown", (event) => {
         function drag(event) {
             dragVertex(gl_canvas, event, selectedObject, vertexIndex);
         }
-
         gl_canvas.addEventListener('mousemove', drag);
         gl_canvas.addEventListener("mouseup", function end() {
             gl_canvas.removeEventListener("mousemove", drag);
@@ -339,7 +344,6 @@ const selectObject = (x, y) => {
 
             renderAllObjects()
         }
-
         gl_canvas.addEventListener('mousemove', drag);
         gl_canvas.addEventListener("mouseup", function end() {
             gl_canvas.removeEventListener("mousemove", drag);
