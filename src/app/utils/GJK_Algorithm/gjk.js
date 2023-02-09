@@ -39,39 +39,39 @@ function tripleProduct([ax, ay], [bx, by], [cx, cy]) {
 }
 
 // The Gilbert-Johnson-Keerthi algorithm
-function gjk(polygon1, polygon2) {
-    // First point of polygon1-polygon2
-    let a = MinkowskiDiff(polygon1, polygon2, [1, 1]);
-  
-    // First direction
-    let v = [-a[0], -a[1]];
-  
-    // Second point
-    let b = MinkowskiDiff(polygon1, polygon2, v);
-    if (dotProduct(b, v) <= 0) return false; // Second point fails
-  
-    // Second direction
-    let ab = subTract(b, a);
-    v = tripleProduct(ab, [-a[0], -a[1]], ab);
+export const gjk = (polygon1, polygon2)=>{
+  // First point of polygon1-polygon2
+  let a = MinkowskiDiff(polygon1, polygon2, [1, 1]);
 
-    for (;;) {
-      // Third point
-      let c = MinkowskiDiff(polygon1, polygon2, v);
-      if (dotProduct(c, v) <= 0) return false; // Third point fails
-  
-      let c0 = [-c[0], -c[1]];
-      let cb = subTract(b, c);
-      let ca = subTract(a, c);
-  
-      let cbPerp = tripleProduct(ca, cb, cb);
-      let caPerp = tripleProduct(cb, ca, ca);
-  
-      if (dotProduct(caPerp, c0) > 0) {
-        b = c;
-        v = caPerp;
-      } else if (dotProduct(cbPerp, c0) > 0) {
-        a = c;
-        v = cbPerp;
-      } else return true;
-    }
+  // First direction
+  let v = [-a[0], -a[1]];
+
+  // Second point
+  let b = MinkowskiDiff(polygon1, polygon2, v);
+  if (dotProduct(b, v) <= 0) return false; // Second point fails
+
+  // Second direction
+  let ab = subTract(b, a);
+  v = tripleProduct(ab, [-a[0], -a[1]], ab);
+
+  for (;;) {
+    // Third point
+    let c = MinkowskiDiff(polygon1, polygon2, v);
+    if (dotProduct(c, v) <= 0) return false; // Third point fails
+
+    let c0 = [-c[0], -c[1]];
+    let cb = subTract(b, c);
+    let ca = subTract(a, c);
+
+    let cbPerp = tripleProduct(ca, cb, cb);
+    let caPerp = tripleProduct(cb, ca, ca);
+
+    if (dotProduct(caPerp, c0) > 0) {
+      b = c;
+      v = caPerp;
+    } else if (dotProduct(cbPerp, c0) > 0) {
+      a = c;
+      v = cbPerp;
+    } else return true;
   }
+}
