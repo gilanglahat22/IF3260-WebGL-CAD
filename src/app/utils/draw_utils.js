@@ -60,9 +60,12 @@ export const drawObject = (gl, programInfo, vertices, mode, vertexCount) => {
         colors = vertices.color;
     }
 
+    gl.canvas.width = 0.8 * window.innerWidth
+    gl.canvas.height = 0.8 * window.innerWidth
+    
     setPositionAttribute(gl, programInfo, positions);
     setColorAttribute(gl, programInfo, colors);
-
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.useProgram(programInfo.program);
     gl.drawArrays(mode, 0, vertexCount);
 

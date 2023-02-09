@@ -6,17 +6,15 @@ export const getCoords = (canvas, event) => {
 
     const width = rectangle.width;
     const height = rectangle.height;
-
-    
     return {
-        x : 2 * (xCoord / width) - 1,
-        y : 1 - 2 * (yCoord / height)
+        x : (2 * (xCoord / width) - 1),
+        y : (1 - 2 * (yCoord / height))
     }
 }
 
 export const getPoint = (x, y, onclick = false) => {
     const color = onclick ? 1.0 : 0.5
-    const dist = 0.02
+    const dist = 0.01
     const vertices = {
         position: [
             x - dist, y + dist, 
