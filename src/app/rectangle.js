@@ -45,19 +45,27 @@ export class Rectangle extends Model {
 
     let theta = this.angle * Math.PI / 180
 
-    let deltaX = this.vertices[b].position[0] - x;
+    const sin = Math.sin(theta);
+    const cos = Math.cos(theta);
+    
+    let deltaX = x - this.vertices[b].position[0];
     let deltaY = y - this.vertices[b].position[1];
 
-    let length = deltaX * Math.cos(theta) + deltaY * Math.sin(theta);
-    let width = deltaY * Math.cos(theta) - deltaX * Math.sin(theta);
+    let length = deltaY * sin - deltaX * cos;
+    let width  = deltaY * cos + deltaX * sin;
 
-    this.vertices[idx].position[0] = x;
-    this.vertices[idx].position[1] = y;
+    let lengthProyeksiX = length * Math.cos(theta);
+    let lengthProyeksiY = length * Math.sin(theta);
+    let widthProyeksiX = width * Math.cos(theta);
+    let widthProyeksiY = width * Math.sin(theta);
 
-    this.vertices[a].position[0] = this.vertices[b].position[0] + width * Math.sin(theta);
-    this.vertices[a].position[1] = this.vertices[b].position[1] + width * Math.cos(theta);
+    this.vertices[idx].position[0] = this.vertices[b].position[0] - lengthProyeksiX + widthProyeksiY;
+    this.vertices[idx].position[1] = this.vertices[b].position[1] + lengthProyeksiY + widthProyeksiX;
 
-    this.vertices[c].position[0] = this.vertices[b].position[0] - length*Math.cos(theta);
-    this.vertices[c].position[1] = this.vertices[b].position[1] + length*Math.sin(theta);
+    this.vertices[a].position[0] = this.vertices[b].position[0] + widthProyeksiY;
+    this.vertices[a].position[1] = this.vertices[b].position[1] + widthProyeksiX;
+
+    this.vertices[c].position[0] = this.vertices[b].position[0] - lengthProyeksiX;
+    this.vertices[c].position[1] = this.vertices[b].position[1] + lengthProyeksiY;
   }
 }
