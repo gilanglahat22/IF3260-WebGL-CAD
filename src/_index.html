@@ -6,7 +6,12 @@
         <title>WebGL CAD</title>
         
         <script src = "app/_main.js" type = "module" defer></script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
         <link href = "styles.css" rel = "stylesheet"></link>
+
     </head>
 
     <body>
@@ -14,25 +19,38 @@
             <div class = "flex-item-left">
                 <h1>(Yet Another) WebGL CAD App</h1>
                 <div class = "flex-column"> 
-                    <button id = "clear-canvas">Clear Canvas</button>
-                    <button id = "line-button">Line</button>
-                    <button id = "square-button">Square</button>
-                    <button id = "rectangle-button">Rectangle</button>
-                    <button id = "polygon-button">Polygon</button>
-                    <input id = "polygon-vertices" type = "number" required placeholder = "Input vertices number..." min = 3 value = 6>
-                    <input type = "color" id = "color-picker" value = #00FF00>
-                </div>
+                    <div class = "button-group">
+                        <button id = "line-button" class = "button-elmt">Line</button>
+                        <button id = "square-button" class = "button-elmt">Square</button>
+                        <button id = "rectangle-button"class = "button-elmt">Rectangle</button>
+                        <div class = "button-elmt">
+                            <button id = "polygon-button">Polygon</button>
+                            <input id = "polygon-vertices" class = "polygon-vertices" type = "number" required placeholder = "Input vertices number..." min = 3 value = 6>
+                        </div>
+   
+    
+                    </div>
 
+                    <div class = "button-elmt">
+                        <p>Color:</p>
+                        <input type = "color" id = "color-picker" class = "button-elmt" value = #00FF00>
+                    </div>
 
-                <div>
-                    <div>0<input type="range" min="0" max="360" value="0" class="slider" id="rotate" onchange="rangevalue.value=value">360</div>
-                    <p>Degree: <output id="rangevalue">0</output></p>
-                </div>
+                    <div id = "range-slider">
+                        <div>0<input type="range" min="0" max="360" value="0" class="slider" id="rotate" onchange="rangevalue.value=value">360</div>
+                        <p>Degree: <output id="rangevalue">0</output></p>
+                    </div>
 
-                <div>
-                    <input type = "file" id = "load-file">
-                    <input type = "text" id = "filename" placeholder = "Input output file name..." value = "" required>
-                    <button id = "save-button">Save</button>
+                    <div class = "bottom-div">
+                        <button id = "clear-canvas">Clear Canvas</button>
+                        <label class = "file-button">
+                            <input type = "file" id = "load-file">
+                            Upload File
+                        </label>
+                       
+                        <button id = "save-button" class = "file-button" >Save File</button>
+                        <input type = "text" id = "filename" value = "" placeholder = "Input output file name" required>
+                    </div>
                 </div>
             </div>
 

@@ -59,6 +59,7 @@ export const drawObject = (gl, programInfo, vertices, mode, vertexCount) => {
         positions = vertices.position;
         colors = vertices.color;
     }
+
     gl.canvas.width = 0.8 * window.innerWidth
     gl.canvas.height = 0.8 * window.innerWidth
     

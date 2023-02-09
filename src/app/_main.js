@@ -44,13 +44,6 @@ if (!!!gl) {
     alert("Unable to start program; is WebGL supported in your browser?");
 }
 
-const methodMap = {
-    "LINE": gl.LINES,
-    "POLY": gl.TRIANGLE_FAN,
-    "RECT": gl.TRIANGLE_FAN,
-    "SQUARE": gl.TRIANGLE_FAN
-}
-
 const shaderProgram = initShaders(gl, vertexShaderSource, fragmentShaderSource);
 
 const programInfo = {
@@ -327,7 +320,7 @@ const selectObject = (x, y) => {
         selectedObject.rotate(angle);
         renderAllObjects();
     }
-
+    document.getElementById("range-slider").style.visibility = "visible"
     let rotateSlider = document.getElementById("rotate");
     rotateSlider.addEventListener("input", rotateObject);
 
@@ -344,6 +337,7 @@ const selectObject = (x, y) => {
             gl_canvas.removeEventListener("click", remove);
             gl_canvas.removeEventListener("contextmenu", remove);
             rotateSlider.removeEventListener("input", rotateObject);
+            document.getElementById("range-slider").style.visibility = "hidden"
             renderAllObjects();
         }
     }
