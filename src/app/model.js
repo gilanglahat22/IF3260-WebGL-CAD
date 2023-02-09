@@ -105,5 +105,10 @@ export class Model {
           this.vertices[i].position[1] = (dy*cos) - (dx*sin) + yCenter;
         }
       }
+
+    resize(idx,x,y){
+        this.vertices[idx].position[0] = x;
+        this.vertices[idx].position[1] = y;
+    }
 }
 

@@ -52,39 +52,73 @@ export class Square extends Model {
         renderAllObjects();
     }
   }
-  resize(idx,xCurr,yCurr){
-    let adjY = 3-idx;
-    let adjX;
-    if(idx==2 || idx==3){
-      adjX = 5-idx;
+  resize(idx,x,y){
+    // let adjY = 3-idx;
+    // let adjX;
+    // if(idx==2 || idx==3){
+    //   adjX = 5-idx;
+    // }else{
+    //   adjX = 1-idx;
+    // } 
+    // let idxNotGeser = (idx+2)%4;
+    // let geser;
+    // if(this.vertices[idx].position[0]>=this.vertices[idxNotGeser].position[0]){
+    //   geser = y-this.vertices[idx].position[1];
+    // }else{
+    //   geser = x-this.vertices[idx].position[0];
+    // }
+
+    // if(this.vertices[idx].position[0]<this.vertices[idxNotGeser].position[0]
+    //   && this.vertices[idx].position[1]>this.vertices[idxNotGeser].position[1]){
+    //     this.vertices[idx].position[0] += geser;
+    //     this.vertices[idx].position[1] -= geser;
+    //     this.vertices[adjY].position[0] += geser;
+    //     this.vertices[adjX].position[1] -= geser;
+    // }else if(this.vertices[idx].position[0]>this.vertices[idxNotGeser].position[0]
+    //   && this.vertices[idx].position[1]<this.vertices[idxNotGeser].position[1]){
+    //     this.vertices[idx].position[0] -= geser;
+    //     this.vertices[idx].position[1] += geser;
+    //     this.vertices[adjY].position[0] -= geser;
+    //     this.vertices[adjX].position[1] += geser;
+    //   }else{
+    //     this.vertices[idx].position[0] += geser;
+    //     this.vertices[idx].position[1] += geser;
+    //     this.vertices[adjX].position[1] += geser;
+    //     this.vertices[adjY].position[0] += geser;
+    //   }
+    let a = (idx+1) % 4;
+    let b = (idx+2) % 4;
+    let c = (idx+3) % 4;
+
+    let theta = this.angle * Math.PI / 180
+
+    let deltaX = this.vertices[b].position[0] - x;
+    let deltaY = y - this.vertices[b].position[1];
+
+    let length = deltaX * Math.cos(theta) + deltaY * Math.sin(theta);
+    let width = deltaY * Math.cos(theta) - deltaX * Math.sin(theta);
+
+    if (Math.abs(length)>Math.abs(width)){
+      if(width>0){
+        width = Math.abs(length)
+      }else{
+        width = -Math.abs(length)
+      }
     }else{
-      adjX = 1-idx;
-    } 
-    let idxNotGeser = (idx+2)%4;
-    let geser;
-    if(this.vertices[idx].position[0]>=this.vertices[idxNotGeser].position[0]){
-      geser = yCurr-this.vertices[idx].position[1];
-    }else{
-      geser = xCurr-this.vertices[idx].position[0];
+      if(length>0){
+        length = Math.abs(width)
+      }else{
+        length = -Math.abs(width)
+      }
     }
 
-    if(this.vertices[idx].position[0]<this.vertices[idxNotGeser].position[0]
-      && this.vertices[idx].position[1]>this.vertices[idxNotGeser].position[1]){
-        this.vertices[idx].position[0] += geser;
-        this.vertices[idx].position[1] -= geser;
-        this.vertices[adjY].position[0] += geser;
-        this.vertices[adjX].position[1] -= geser;
-    }else if(this.vertices[idx].position[0]>this.vertices[idxNotGeser].position[0]
-      && this.vertices[idx].position[1]<this.vertices[idxNotGeser].position[1]){
-        this.vertices[idx].position[0] -= geser;
-        this.vertices[idx].position[1] += geser;
-        this.vertices[adjY].position[0] -= geser;
-        this.vertices[adjX].position[1] += geser;
-      }else{
-        this.vertices[idx].position[0] += geser;
-        this.vertices[idx].position[1] += geser;
-        this.vertices[adjX].position[1] += geser;
-        this.vertices[adjY].position[0] += geser;
-      }
+    this.vertices[idx].position[0] = this.vertices[b].position[0] - length * Math.cos(theta) + width * Math.sin(theta);
+    this.vertices[idx].position[1] = this.vertices[b].position[1] + length * Math.sin(theta) + width * Math.cos(theta);
+
+    this.vertices[a].position[0] = this.vertices[b].position[0] + width * Math.sin(theta);
+    this.vertices[a].position[1] = this.vertices[b].position[1] + width * Math.cos(theta);
+
+    this.vertices[c].position[0] = this.vertices[b].position[0] - length*Math.cos(theta);
+    this.vertices[c].position[1] = this.vertices[b].position[1] + length*Math.sin(theta);
   }
 }
