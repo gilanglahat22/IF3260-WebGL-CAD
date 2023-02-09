@@ -6,6 +6,7 @@ import { getCoords, getPoint } from "./utils/coords.js";
 import { drawObject } from "./utils/draw_utils.js";
 import { initShaders } from "./utils/shaders.js";
 import { ConvexHull } from "./utils/convex/process.js";
+import { gjk } from "./utils/GJK_Algorithm/gjk.js";
 
 let vertexShaderSource = `
     precision mediump float;
@@ -204,13 +205,13 @@ gl_canvas.addEventListener("click", (event) => {
     }
 })
 
-
 const selectObject = (x, y) => {
     let selectedObject = null;
-
+    let selectedObjects = [];
     for (let i = objects.length - 1; i >= 0; i--){
         if (objects[i].isClicked(x, y)){
             selectedObject = objects[i];
+            getObjectNempel(selectedObject);
             break;
         }
     }
@@ -225,6 +226,17 @@ const selectObject = (x, y) => {
         let point = getPoint(vertex.position[0], vertex.position[1], true);
         drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
     })
+
+    function getObjectNempel(ObjectSelected){
+        for(let i = 0; i<objects.length; i++){
+            if(objects[i]!=ObjectSelected){
+                let tmpObject = objects[i];
+                if(gjk(ObjectSelected,tmpObject)){
+                    selectedObjects.push(tmpObject);
+                }
+            }
+        }
+    }
 
     function deleteVertex(event){
         event.preventDefault();
@@ -291,6 +303,9 @@ const selectObject = (x, y) => {
 
     function rotateObject(){
         var angle = document.getElementById("rotate").value;
+        for(let i = 0; i<selectedObjects.length; i++){
+            selectedObjects[i].rotate(angle);
+        }
         selectedObject.rotate(angle);
         renderAllObjects();
     }
@@ -358,7 +373,6 @@ const selectObject = (x, y) => {
 
     gl_canvas.addEventListener("contextmenu", remove);
     gl_canvas.addEventListener("click", remove);
-    // rotateObject();
 }
 
 gl_canvas.addEventListener("dblclick", function select(event){    
