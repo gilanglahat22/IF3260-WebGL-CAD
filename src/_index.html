@@ -6,34 +6,41 @@
         <title>WebGL CAD</title>
         
         <script src = "app/_main.js" type = "module" defer></script>
+        <link href = "styles.css" rel = "stylesheet"></link>
     </head>
 
     <body>
-        <h1>WebGL CAD</h1>
+        <div class = "flex-container">
+            <div class = "flex-item-left">
+                <h1>(Yet Another) WebGL CAD App</h1>
+                <div class = "flex-column"> 
+                    <button id = "clear-canvas">Clear Canvas</button>
+                    <button id = "line-button">Line</button>
+                    <button id = "square-button">Square</button>
+                    <button id = "rectangle-button">Rectangle</button>
+                    <button id = "polygon-button">Polygon</button>
+                    <input id = "polygon-vertices" type = "number" required placeholder = "Input vertices number..." min = 3 value = 6>
+                    <input type = "color" id = "color-picker" value = #00FF00>
+                </div>
 
-        <div>
-            <div>
-                <canvas id = "gl-canvas" width = "800" height = "800" style = "background-color: #525252; border-radius: 20px"></canvas>
-            </div>
-            <div>
-                <div>0<input type="range" min="0" max="360" value="0" class="slider" id="rotate" onchange="rangevalue.value=value">360</div>
-                <p>Degree: <output id="rangevalue">0</output></p>
-            </div>
-            <div> 
-                <button id = "clear-canvas">Clear Canvas</button>
-                <button id = "line-button">Line</button>
-                <button id = "square-button">Square</button>
-                <button id = "rectangle-button">Rectangle</button>
-                <button id = "polygon-button">Polygon</button>
-                <input id = "polygon-vertices" type = "number" required placeholder = "Input vertices number..." min = 3 value = 6>
-                <input type = "color" id = "color-picker" value = #00FF00>
+
+                <div>
+                    <div>0<input type="range" min="0" max="360" value="0" class="slider" id="rotate" onchange="rangevalue.value=value">360</div>
+                    <p>Degree: <output id="rangevalue">0</output></p>
+                </div>
+
+                <div>
+                    <input type = "file" id = "load-file">
+                    <input type = "text" id = "filename" placeholder = "Input output file name..." value = "" required>
+                    <button id = "save-button">Save</button>
+                </div>
             </div>
 
-            <div>
-                <input type = "file" id = "load-file">
-                <input type = "text" id = "filename" placeholder = "Input output file name..." value = "" required>
-                <button id = "save-button">Save</button>
+
+            <div class = "flex-item-right">
+                <canvas id = "gl-canvas" width = 1300 height = 1300></canvas>
             </div>
+
         </div>
 
     </body>

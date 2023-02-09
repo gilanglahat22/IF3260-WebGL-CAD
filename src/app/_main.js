@@ -37,6 +37,9 @@ let objects = [];
 const gl_canvas = document.getElementById("gl-canvas");
 const gl = gl_canvas.getContext("webgl");
 
+gl.canvas.width = 0.8 * window.innerWidth
+gl.canvas.height = 0.8 * window.innerWidth
+
 if (!!!gl) {
     alert("Unable to start program; is WebGL supported in your browser?");
 }
