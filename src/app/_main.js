@@ -245,6 +245,7 @@ const selectObject = (x, y) => {
     for (let i = objects.length - 1; i >= 0; i--){
         if (objects[i].isClicked(x, y)){
             selectedObject = objects[i];
+            selectedObjects.push(selectedObject);
             getObjectNempel(selectedObject);
             break;
         }
@@ -370,24 +371,29 @@ const selectObject = (x, y) => {
         let coords = getCoords(gl_canvas, event);
         let x = coords["x"];
         let y = coords["y"];
-        let copy = JSON.parse(JSON.stringify(selectedObject.vertices));
-
+        let copy = [];
+        for(let j = 0; j<selectedObjects.length; j++){
+            copy.push(JSON.parse(JSON.stringify(selectedObjects[j].vertices)));
+        }
         function drag(e) {
             let newCoords = getCoords(gl_canvas, e);
             let newX = newCoords["x"];
             let newY = newCoords["y"];
-
-            for (let i = 0; i < copy.length; i++){
-                selectedObject.vertices[i].position[0] = copy[i].position[0] + (newX - x);
-                selectedObject.vertices[i].position[1] = copy[i].position[1] + (newY - y);
+            
+            for(let j = 0; j<selectedObjects.length; j++){
+                for (let i = 0; i < copy[j].length; i++){
+                    selectedObjects[j].vertices[i].position[0] = copy[j][i].position[0] + (newX - x);
+                    selectedObjects[j].vertices[i].position[1] = copy[j][i].position[1] + (newY - y);
+                }
             }
-
             renderAllObjects()
 
-            selectedObject.vertices.forEach((vertex) => {
-                let point = getPoint(vertex.position[0], vertex.position[1], true);
-                drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
-            })
+            for(let j = 0; j<selectedObjects.length; j++){
+                selectedObjects[j].vertices.forEach((vertex) => {
+                    let point = getPoint(vertex.position[0], vertex.position[1], true);
+                    drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
+                })
+            }
         }
         
         gl_canvas.addEventListener('mousemove', drag);
