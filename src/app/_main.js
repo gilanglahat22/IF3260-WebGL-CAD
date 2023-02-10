@@ -75,7 +75,7 @@ export const renderAllObjects = () => {
 
 
 export const render = (type) => {
-    // pass type nya antara LINE, SQUARE, RECT, ato POLY
+    // pass type nya antara LINE, SQUARE, R"ECT, ato POLY
 
     let count;
     let obj;
@@ -99,14 +99,45 @@ export const render = (type) => {
     obj.type = type;
     obj.count = count;
 
+
+    function drag(event) {
+        let coords = getCoords(gl_canvas, event)
+
+        const newVertex = {
+            position: [coords["x"], coords["y"]],
+            color: rgbColor
+        }
+        const method = obj.vertexCount == 1 ? gl.LINES : gl.TRIANGLE_FAN;
+
+        let newVertices = JSON.parse(JSON.stringify(obj.vertices));
+        newVertices.push(newVertex);
+        newVertices = ConvexHull(newVertices)
+
+        renderAllObjects()
+
+        drawObject(gl, programInfo, newVertices, method, newVertices.length);
+
+        newVertices.forEach((vertex) => {
+            let point = getPoint(vertex.position[0], vertex.position[1], true);
+            drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
+        })
+    }
+
+
+
     disableAllButtons();
     // tambahin event listener
     gl_canvas.addEventListener("click", function lineDraw(e){
+        if (obj.type == "LINE" || obj.type == "POLY"){
+            gl_canvas.addEventListener("mousemove", drag)
+        }
+
         let coords = getCoords(gl_canvas, e)
         obj.draw(coords["x"], coords["y"]);
 
         if (obj.vertexCount == count){
             gl_canvas.removeEventListener("click", lineDraw)
+            gl_canvas.removeEventListener("mousemove", drag)
         }
     })
 
@@ -166,11 +197,14 @@ gl_canvas.addEventListener("mousedown", (event) => {
         function drag(event) {
             dragVertex(gl_canvas, event, selectedObject, vertexIndex);
         }
-        gl_canvas.addEventListener('mousemove', drag);
-        gl_canvas.addEventListener("mouseup", function end() {
-            gl_canvas.removeEventListener("mousemove", drag);
-            gl_canvas.removeEventListener("mouseup", end);
-        });
+
+        if (type != "POLY"){
+            gl_canvas.addEventListener('mousemove', drag);
+            gl_canvas.addEventListener("mouseup", function end() {
+                gl_canvas.removeEventListener("mousemove", drag);
+                gl_canvas.removeEventListener("mouseup", end);
+            });
+        }
     }
 })
 
@@ -355,6 +389,7 @@ const selectObject = (x, y) => {
                 drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
             })
         }
+        
         gl_canvas.addEventListener('mousemove', drag);
         gl_canvas.addEventListener("mouseup", function end() {
             gl_canvas.removeEventListener("mousemove", drag);
@@ -368,7 +403,6 @@ const selectObject = (x, y) => {
     if (selectedObject.type == "POLY"){
         gl_canvas.addEventListener("contextmenu", deleteVertex);
         gl_canvas.addEventListener("click", addVertex);
-
     }
 
     gl_canvas.addEventListener("contextmenu", remove);
