@@ -196,11 +196,14 @@ gl_canvas.addEventListener("mousedown", (event) => {
         function drag(event) {
             dragVertex(gl_canvas, event, selectedObject, vertexIndex);
         }
-        gl_canvas.addEventListener('mousemove', drag);
-        gl_canvas.addEventListener("mouseup", function end() {
-            gl_canvas.removeEventListener("mousemove", drag);
-            gl_canvas.removeEventListener("mouseup", end);
-        });
+
+        if (type != "POLY"){
+            gl_canvas.addEventListener('mousemove', drag);
+            gl_canvas.addEventListener("mouseup", function end() {
+                gl_canvas.removeEventListener("mousemove", drag);
+                gl_canvas.removeEventListener("mouseup", end);
+            });
+        }
     }
 })
 
