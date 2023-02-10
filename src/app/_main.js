@@ -198,7 +198,7 @@ gl_canvas.addEventListener("mousedown", (event) => {
             dragVertex(gl_canvas, event, selectedObject, vertexIndex);
         }
 
-        if (type != "POLY"){
+        if (selectedObject.type != "POLY"){
             gl_canvas.addEventListener('mousemove', drag);
             gl_canvas.addEventListener("mouseup", function end() {
                 gl_canvas.removeEventListener("mousemove", drag);
@@ -386,6 +386,7 @@ const selectObject = (x, y) => {
                     selectedObjects[j].vertices[i].position[1] = copy[j][i].position[1] + (newY - y);
                 }
             }
+
             renderAllObjects()
 
             for(let j = 0; j<selectedObjects.length; j++){
