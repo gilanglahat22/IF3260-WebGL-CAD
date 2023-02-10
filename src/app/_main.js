@@ -211,7 +211,7 @@ const selectObject = (x, y) => {
     for (let i = objects.length - 1; i >= 0; i--){
         if (objects[i].isClicked(x, y)){
             selectedObject = objects[i];
-            // getObjectNempel(selectedObject);
+            getObjectNempel(selectedObject);
             break;
         }
     }

@@ -1,41 +1,36 @@
 function dotProduct(point1, point2){
-    return [point1[0]*point2[0],point1[1]*point2[1]];
+  return point1[0]*point2[0] + point1[1]*point2[1];
 }
 
 function subTract(point1, point2){
-    return [point1[0]-point2[0],point1[1]-point2[1]];
+  return [point1[0]-point2[0],point1[1]-point2[1]];
 }
 
 // Returns the point in 'Polygon' that maximizes the dot product with 'v'
 function MaxDot(polygon, vertex) {
-    let maxdot = Number.NEGATIVE_INFINITY;
-    let ret;
-    for (let i = 0; i<polygon.vertexCount; i++) {
-      var dot = dotProduct(polygon.vertices[i].position,vertex);
-      if (dot > maxdot){
-        maxdot = dot;
-        ret = polygon.vertices[i].position;
-      }
+  let maxdot = Number.NEGATIVE_INFINITY;
+  let ret;
+  for (let i = 0; i<polygon.vertexCount; i++) {
+    var dot = dotProduct(polygon.vertices[i].position,vertex);
+    if (dot > maxdot){
+      maxdot = dot;
+      ret = polygon.vertices[i].position;
     }
-    return ret;
+  }
+  return ret;
 }
 
 // Returns the MaxDot point of the Minkowski difference polygon1 - polygon2 w.r.t. v
 function MinkowskiDiff(polygon1, polygon2, vertex) {
-    try {
-        let point1 = MaxDot(polygon1, vertex);
-        let point2 = MaxDot(polygon2, [-v[0], -vertex[1]]);
-        return subTract(point1,point2);
-    } catch (err) {
-        console.log("BUG Minkowski Difference ", polygon1, polygon2, vertex);
-        throw "BUG:" + err;
-    }
+  let point1 = MaxDot(polygon1, vertex);
+  let point2 = MaxDot(polygon2, [-vertex[0], -vertex[1]]);
+  return subTract(point1,point2);
 }
 
 // Returns a cross b cross c (assuming 0 as the third coordinate) 
 function tripleProduct([ax, ay], [bx, by], [cx, cy]) {
-    let z = ax * by - ay * bx;
-    return [-cy * z, cx * z];
+  let z = ax * by - ay * bx;
+  return [-cy * z, cx * z];
 }
 
 // The Gilbert-Johnson-Keerthi algorithm
