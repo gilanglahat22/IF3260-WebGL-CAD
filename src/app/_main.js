@@ -389,6 +389,7 @@ const selectObject = (x, y) => {
                 drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
             })
         }
+        
         gl_canvas.addEventListener('mousemove', drag);
         gl_canvas.addEventListener("mouseup", function end() {
             gl_canvas.removeEventListener("mousemove", drag);
