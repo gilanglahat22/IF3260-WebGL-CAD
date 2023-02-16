@@ -239,17 +239,22 @@ gl_canvas.addEventListener("click", (event) => {
     }
 })
 
-const selectObject = (x, y) => {
+const selectObject = (x, y, unionSelect = false) => {
     let selectedObject = null;
     let selectedObjects = [];
+
+
     for (let i = objects.length - 1; i >= 0; i--){
         if (objects[i].isClicked(x, y)){
             selectedObject = objects[i];
             selectedObjects.push(selectedObject);
-            getObjectNempel(selectedObject);
+            if (unionSelect){
+                getObjectNempel(selectedObject);
+            }
             break;
         }
     }
+
 
     if (selectedObject == null){
         return;
@@ -415,9 +420,29 @@ const selectObject = (x, y) => {
     gl_canvas.addEventListener("click", remove);
 }
 
+document.addEventListener('keydown', (event) => {
+    const keyName = event.key;
+
+    function selectUnion(event){    
+        let coords = getCoords(gl_canvas, event);
+        selectObject(coords["x"], coords["y"], true);
+    }
+
+    if (keyName == "Shift"){
+        gl_canvas.addEventListener("dblclick", selectUnion)
+    }
+
+    document.addEventListener('keyup', (event) => {
+        const keyName = event.key;
+        if (keyName == "Shift"){
+            gl_canvas.removeEventListener("dblclick", selectUnion)
+        }
+    })
+})
+
 gl_canvas.addEventListener("dblclick", function select(event){    
     let coords = getCoords(gl_canvas, event);
-    selectObject(coords["x"], coords["y"]);
+    selectObject(coords["x"], coords["y"], false);
 })
 
 
@@ -465,7 +490,7 @@ export const loadFile = () => {
             let obj = null
             if (item.type == "LINE" || item.type == "POLY") {
                 obj = new Model(
-                    item.vertices,
+                    ConvexHull(item.vertices),
                     item.vertexCount,
                     item.type,
                     item.color,
