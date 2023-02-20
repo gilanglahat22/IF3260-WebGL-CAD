@@ -261,6 +261,7 @@ gl_canvas.addEventListener("click", (event) => {
       let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0];
 
       selectedObject.vertices[vertexIndex].color = rgbColor;
+      selectedObject.color = rgbColor;
 
       renderAllObjects();
 
@@ -289,6 +290,14 @@ const selectObject = (x, y, unionSelect = false) => {
   }
 
   renderAllObjects();
+
+  let saveModelButton = document.getElementById("save-model");
+  saveModelButton.disabled = false;
+
+  saveModelButton.addEventListener("click", function save(){
+    saveFile(selectedObject);
+    saveModelButton.removeEventListener("click", save);
+  })
 
   selectedObject.vertices.forEach((vertex) => {
     let point = getPoint(vertex.position[0], vertex.position[1], true);
@@ -338,7 +347,7 @@ const selectObject = (x, y, unionSelect = false) => {
     selectedObject.vertices.forEach((vertex) => {
       vertex.color = rgbColor;
     });
-
+    selectedObject.color = rgbColor;
     renderAllObjects();
 
     colorPicker.removeEventListener("change", updateAll);
@@ -350,8 +359,9 @@ const selectObject = (x, y, unionSelect = false) => {
     let y = coords["y"];
     let object = getObject(gl_canvas, event);
 
-    if (object != null || selectedObject.isClicked(x, y)) {
+    if (object != null) {
       gl_canvas.removeEventListener("click", addVertex);
+
       return;
     }
 
@@ -367,7 +377,7 @@ const selectObject = (x, y, unionSelect = false) => {
     selectedObject.count = selectedObject.vertices.length;
 
     gl_canvas.removeEventListener("click", addVertex);
-
+    remove(event);
     renderAllObjects();
   }
 
@@ -385,16 +395,13 @@ const selectObject = (x, y, unionSelect = false) => {
   rotateSlider.addEventListener("input", rotateObject);
 
   function remove(event) {
-    let coords = getCoords(gl_canvas, event);
-    let x = coords["x"];
-    let y = coords["y"];
-
+    // alert("CPPPL")
     const obj = getObject(gl_canvas, event);
-
-    if (!!!obj && !selectedObject.isClicked(x, y)) {
+    
+    if (obj == null || obj.selected == selectedObject) {
+      saveModelButton.disabled = true;
       gl_canvas.removeEventListener("contextmenu", deleteVertex);
       gl_canvas.removeEventListener("click", addVertex);
-      gl_canvas.removeEventListener("click", remove);
       gl_canvas.removeEventListener("contextmenu", remove);
       rotateSlider.removeEventListener("input", rotateObject);
       document.getElementById("range-slider").style.visibility = "hidden";
@@ -448,7 +455,6 @@ const selectObject = (x, y, unionSelect = false) => {
   }
 
   gl_canvas.addEventListener("contextmenu", remove);
-  gl_canvas.addEventListener("click", remove);
 };
 
 document.addEventListener("keydown", (event) => {
@@ -483,15 +489,15 @@ const clearCanvas = () => {
   enableAllButtons();
 };
 
-const saveFile = () => {
-  const fileName = document.getElementById("filename").value;
+const saveFile = (object = objects) => {
+  const fileName = document.getElementById(Array.isArray(object) ? "filename" : "model-filename").value;
 
   if (fileName == "") {
     alert("Please input the output file name!");
     return;
   }
 
-  const content = JSON.stringify(objects);
+  const content = JSON.stringify(object);
 
   const file = new Blob([content], {
     type: "json/javascript",
@@ -513,7 +519,8 @@ const loadFile = () => {
   reader.readAsText(selectedFile, "UTF-8");
 
   reader.onload = (evt) => {
-    const temp = JSON.parse(evt.target.result);
+    let temp = JSON.parse(evt.target.result);
+    temp = Array.isArray(temp) ? temp : [temp]
 
     let tempObjects = [];
 
@@ -537,6 +544,7 @@ const loadFile = () => {
     });
 
     objects = tempObjects;
+    console.log(objects);
     renderAllObjects();
 
     alert("Successfully loaded file!");

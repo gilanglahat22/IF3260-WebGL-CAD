@@ -42,13 +42,17 @@
 
                     <div class = "bottom-div">
                         <button id = "clear-canvas">Clear Canvas</button>
+
                         <label class = "file-button">
                             <input type = "file" id = "load-file">
                             Upload File
                         </label>
                        
-                        <button id = "save-button" class = "file-button" >Save File</button>
-                        <input type = "text" id = "filename" value = "" placeholder = "Input output file name" required>
+                        <button id = "save-button" class = "file-button" >Save Canvas</button>
+                        <input type = "text" id = "filename" class = "input-text" value = "" placeholder = "Input canvas output file name" required>
+
+                        <button id = "save-model" class = "file-button" disabled >Save Model</button>
+                        <input type = "text" id = "model-filename" class = "input-text" value = "" placeholder = "Input model output file name" required>
                     </div>
                 </div>
             </div>
