@@ -17,8 +17,8 @@ class Square extends Model {
             this.completed = true;
             enableAllButtons();
             console.log("masuk");
-            let absisGeser = this.vertices[0]['position'][0]+0.5;
-            let ordinatGeser = this.vertices[0]['position'][1]+0.5;
+            let absisGeser = this.vertices[0]['position'][0]+0.25;
+            let ordinatGeser = this.vertices[0]['position'][1]+0.25;
             if(absisGeser>=0.97){
               absisGeser -= 1;
             }

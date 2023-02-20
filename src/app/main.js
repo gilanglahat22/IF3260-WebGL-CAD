@@ -29,8 +29,8 @@ let objects = [];
 const gl_canvas = document.getElementById("gl-canvas");
 const gl = gl_canvas.getContext("webgl");
 
-gl.canvas.width = 0.8 * window.innerWidth
-gl.canvas.height = 0.8 * window.innerWidth
+gl.canvas.width = 0.9 * window.innerWidth
+gl.canvas.height = 0.9 * window.innerWidth
 
 if (!!!gl) {
     alert("Unable to start program; is WebGL supported in your browser?");
@@ -321,6 +321,7 @@ const selectObject = (x, y, unionSelect = false) => {
         }
     
         selectedObject.vertices.splice(index, 1);
+        selectedObject.vertices = ConvexHull(selectedObject.vertices)
         selectedObject.vertexCount--;
         selectedObject.count--;
 
@@ -471,6 +472,7 @@ document.addEventListener('keydown', (event) => {
 })
 
 gl_canvas.addEventListener("dblclick", function select(event){    
+    event.preventDefault()
     let coords = getCoords(gl_canvas, event);
     selectObject(coords["x"], coords["y"], false);
 })
