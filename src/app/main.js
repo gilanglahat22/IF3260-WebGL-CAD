@@ -23,6 +23,7 @@ const fragmentShaderSource = `
 `;
 
 let objects = [];
+let selectedObjectTemp = [];
 
 // get canvas dari html
 const gl_canvas = document.getElementById("gl-canvas");
@@ -272,12 +273,12 @@ gl_canvas.addEventListener("click", (event) => {
 
 const selectObject = (x, y, unionSelect = false) => {
   let selectedObject = null;
-  let selectedObjects = [];
+  selectedObjectTemp = [];
 
   for (let i = objects.length - 1; i >= 0; i--) {
     if (objects[i].isClicked(x, y)) {
       selectedObject = objects[i];
-      selectedObjects.push(selectedObject);
+      selectedObjectTemp.push(selectedObject);
       if (unionSelect) {
         getObjectNempel(selectedObject);
       }
@@ -309,7 +310,7 @@ const selectObject = (x, y, unionSelect = false) => {
       if (objects[i] != ObjectSelected) {
         let tmpObject = objects[i];
         if (gjk(ObjectSelected, tmpObject)) {
-          selectedObjects.push(tmpObject);
+          selectedObjectTemp.push(tmpObject);
         }
       }
     }
@@ -383,14 +384,16 @@ const selectObject = (x, y, unionSelect = false) => {
 
   function rotateObject() {
     var angle = document.getElementById("rotate").value;
-    for (let i = 0; i < selectedObjects.length; i++) {
-      selectedObjects[i].rotate(angle);
+    for (let i = 0; i < selectedObjectTemp.length; i++) {
+      selectedObjectTemp[i].rotate(angle);
     }
     selectedObject.rotate(angle);
     renderAllObjects();
   }
 
   document.getElementById("range-slider").style.visibility = "visible";
+  document.getElementById("input-resize").style.visibility = "visible";
+  document.getElementById("submitResize-button").style.visibility = "visible";
   let rotateSlider = document.getElementById("rotate");
   rotateSlider.addEventListener("input", rotateObject);
 
@@ -414,27 +417,27 @@ const selectObject = (x, y, unionSelect = false) => {
     let x = coords["x"];
     let y = coords["y"];
     let copy = [];
-    for (let j = 0; j < selectedObjects.length; j++) {
-      copy.push(JSON.parse(JSON.stringify(selectedObjects[j].vertices)));
+    for (let j = 0; j < selectedObjectTemp.length; j++) {
+      copy.push(JSON.parse(JSON.stringify(selectedObjectTemp[j].vertices)));
     }
     function drag(e) {
       let newCoords = getCoords(gl_canvas, e);
       let newX = newCoords["x"];
       let newY = newCoords["y"];
 
-      for (let j = 0; j < selectedObjects.length; j++) {
+      for (let j = 0; j < selectedObjectTemp.length; j++) {
         for (let i = 0; i < copy[j].length; i++) {
-          selectedObjects[j].vertices[i].position[0] =
+          selectedObjectTemp[j].vertices[i].position[0] =
             copy[j][i].position[0] + (newX - x);
-          selectedObjects[j].vertices[i].position[1] =
+            selectedObjectTemp[j].vertices[i].position[1] =
             copy[j][i].position[1] + (newY - y);
         }
       }
 
       renderAllObjects();
 
-      for (let j = 0; j < selectedObjects.length; j++) {
-        selectedObjects[j].vertices.forEach((vertex) => {
+      for (let j = 0; j < selectedObjectTemp.length; j++) {
+        selectedObjectTemp[j].vertices.forEach((vertex) => {
           let point = getPoint(vertex.position[0], vertex.position[1], true);
           drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
         });
@@ -488,6 +491,15 @@ const clearCanvas = () => {
   gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
   enableAllButtons();
 };
+
+const resizeObject = () =>{
+  var satuanGeserX = document.getElementById("resizeX").value;
+  var satuanGeserY = document.getElementById("resizeY").value;
+  for(let i = 0; i<selectedObjectTemp.length; i++){
+    selectedObjectTemp[i].resizeByMetrix(satuanGeserX, satuanGeserY);
+  }
+  renderAllObjects();
+}
 
 const saveFile = (object = objects) => {
   const fileName = document.getElementById(Array.isArray(object) ? "filename" : "model-filename").value;

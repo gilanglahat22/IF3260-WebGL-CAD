@@ -103,4 +103,27 @@ class Square extends Model {
     this.vertices[c].position[1] =
       this.vertices[b].position[1] + lengthProyeksiY;
   }
+
+  resizeByMetrix(sizeX,sizeY){
+    var incsizeSide = Math.max(sizeX,sizeY)/2; 
+    let minX = this.vertices[0].position[0];
+    let minY = this.vertices[0].position[1];
+    let maxX = this.vertices[0].position[0];
+    let maxY = this.vertices[0].position[1];
+
+    for (let i = 1; i < this.vertexCount; i++) {
+      minX = Math.min(minX, this.vertices[i].position[0]);
+      maxX = Math.max(maxX, this.vertices[i].position[0]);
+      minY = Math.min(minY, this.vertices[i].position[1]);
+      maxY = Math.max(maxY, this.vertices[i].position[1]);
+    }
+    var size = maxX-minX;
+    for(let i = 0; i<this.vertexCount; i++){
+      if(this.vertices[i].position[0] == maxX) this.vertices[i].position[0] += incsizeSide*size/100;
+      else this.vertices[i].position[0] -= incsizeSide*size/100;
+      
+      if(this.vertices[i].position[1] == maxY) this.vertices[i].position[1] += incsizeSide*size/100;
+      else this.vertices[i].position[1] -= incsizeSide*size/100;
+    }
+  }
 }

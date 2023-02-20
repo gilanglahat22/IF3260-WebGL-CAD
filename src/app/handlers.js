@@ -30,6 +30,7 @@ const enableAllButtons = () => {
   document.getElementById("polygon-vertices").disabled = false
 }
 
+document.getElementById("submitResize-button").onclick = () => {resizeObject()}
 document.getElementById("save-button").onclick = () => {saveFile()}
 document.getElementById("load-file").onchange = () => {loadFile()}
 

@@ -93,7 +93,13 @@ input[type="number"] {
   color: rgb(100, 100, 100);
   border: 2px solid rgb(100, 100, 100);
 }
+
 #range-slider {
+  visibility: hidden;
+  padding-top: 20px;
+}
+
+#input-resize{
   visibility: hidden;
   padding-top: 20px;
 }
