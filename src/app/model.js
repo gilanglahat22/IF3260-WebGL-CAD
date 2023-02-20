@@ -82,7 +82,6 @@ class Model {
         minY = Math.min(minY, this.vertices[i].position[1]);
         maxY = Math.max(maxY, this.vertices[i].position[1]);
       }
-
       return minX <= x && x <= maxX && minY <= y && y <= maxY;
     }
   }
@@ -120,5 +119,12 @@ class Model {
         break;
       }
     }
+  }
+
+  resizeByMetrix(sizeX,sizeY){
+    var incsizeSide = Math.max(sizeX,sizeY)/2; 
+    var x = this.vertices[0].position[0] + 0.2;
+    var y = this.vertices[0].position[1] + 0.2;
+    this.resize(0,x,y);
   }
 }
