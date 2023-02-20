@@ -5,6 +5,7 @@ class Rectangle extends Model {
   draw(x, y){
     if (this.vertexCount < this.count) {
         let vertex = {
+            id: this.vertexCount == 0 ? 0 : 2,
             position: [x, y],
             color: this.color
         }
@@ -18,14 +19,17 @@ class Rectangle extends Model {
             enableAllButtons();
 
             let v1 = {
+              id: 1,
               position: [this.vertices[0]['position'][0], this.vertices[1]['position'][1]],
               color: this.color
             }
 
             let v2 = {
+              id: 3,
               position: [this.vertices[1]['position'][0], this.vertices[0]['position'][1]],
               color: this.color
             }
+            
             this.vertices.splice(1,0,v1);
             this.vertices.push(v2);
             this.vertexCount += 2;

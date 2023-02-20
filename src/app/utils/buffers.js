@@ -1,19 +1,18 @@
 const initPositionBuffer = (gl, positions) => {
-    const positionBuffer = gl.createBuffer();
+  const positionBuffer = gl.createBuffer();
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-    
-    return positionBuffer;
-}
+  return positionBuffer;
+};
 
 const initColorBuffer = (gl, colors) => {
-    const colorBuffer = gl.createBuffer();
+  const colorBuffer = gl.createBuffer();
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-  
-    return colorBuffer;
-}
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+
+  return colorBuffer;
+};

@@ -59,8 +59,6 @@ const ConvexHull = (points) => {
     }
     let temp = JSON.parse(JSON.stringify(points))
     const arr = quickSort(points)
-    console.log(points)
-    console.log("\n")
     const minAbs = arr[0]
     const maxAbs = arr[arr.length - 1]
 
@@ -72,7 +70,6 @@ const ConvexHull = (points) => {
 
 
     let tempRes = [minAbs].concat(leftRes, [maxAbs], rightRes)
-    console.log(tempRes)
     tempRes.forEach((item) => {
         for (let i = 0; i < temp.length; i++){
             if (temp[i].position[0] == item.position[0] && temp[i].position[1] == item.position[1]) {
@@ -81,11 +78,7 @@ const ConvexHull = (points) => {
         }
     })
 
-    console.log(temp)
-    // tempRes = tem_) m61  DG KL
     tempRes = tempRes.concat(ConvexHull(temp))
-
-    console.log(tempRes)
 
     return tempRes
 } 

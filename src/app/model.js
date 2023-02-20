@@ -12,13 +12,13 @@ class Model {
     draw(x, y){
         if (this.vertexCount < this.count) {
             let vertex = {
+                id: 0,
                 position: [x, y],
                 color: this.color
             }
             
             this.vertices.push(vertex);
             this.vertices = ConvexHull(this.vertices)
-            console.log(this.vertices)
             this.vertexCount = this.vertices.length
 
             if (this.vertexCount == this.count){
@@ -29,10 +29,14 @@ class Model {
             renderAllObjects();
         } 
         renderObject(this);
+
+        for (var i = 0; i < this.vertexCount; i++){
+            this.vertices[i].id = i;
+        }
     }
 
     checkVertex(x, y){
-        let index = 0;
+        // let index = 0;
 
         for (const vertex of this.vertices) {
             let point = getPoint(vertex.position[0], vertex.position[1]);
@@ -50,9 +54,9 @@ class Model {
             let top = Math.max(topRightY, bottomLeftY);
 
             if (x >= left && x <= right && y >= bottom && y <= top){
-                return index;
+                return vertex.id;
             }
-            index++;
+            // index++;
         }
 
         return -1
@@ -102,8 +106,13 @@ class Model {
       }
 
     resize(idx,x,y){
-        this.vertices[idx].position[0] = x;
-        this.vertices[idx].position[1] = y;
+        for (let i = 0; i < this.vertexCount; i++){
+            if (this.vertices[i].id == idx){
+                this.vertices[i].position[0] = x;
+                this.vertices[i].position[1] = y;
+                break;
+            }
+        }
     }
 }
 

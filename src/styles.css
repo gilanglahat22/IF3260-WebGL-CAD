@@ -1,111 +1,110 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@600;500;600&display=swap");
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-html, body {
-    margin: 0; 
-    height: 100%; 
-    overflow: hidden;
-    font-family: "Quicksand";
-    color: white;
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Quicksand";
+  color: white;
 }
 
 .flex-column {
-    display: flex;
-    flex-direction: column;
-    flex: 1
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .flex-container {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .flex-item-left {
-    background-color: #292929;
-    flex: 20%;
-    padding: 20px;
+  background-color: #292929;
+  flex: 20%;
+  padding: 20px;
 }
 
 #gl-canvas {
-    background-color: #525252;
-    display: block;
+  background-color: #525252;
+  display: block;
 }
 
 .button-group {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .button-group .button-elmt {
-    display: block;
-    margin: 6px;
+  display: block;
+  margin: 6px;
 }
 
-.button-group button{
-    font-family: 'Quicksand';
-    padding: 8px;
-    border-radius: 8px;
-    font-size: 14px;
-    width: 8vw;
+.button-group button {
+  font-family: "Quicksand";
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 8vw;
 }
 
-.bottom-div{
-    display: flex;
-    flex-direction: column;
+.bottom-div {
+  display: flex;
+  flex-direction: column;
 }
 
-input[type='number']{
-    width: 50px;
-    font-size: 14px;
-} 
+input[type="number"] {
+  width: 50px;
+  font-size: 14px;
+}
 
 #clear-canvas {
-    text-align: center;
-    border-radius: 10px;
-    border: 2px solid rgb(175, 0, 0);
-    color: rgb(175, 0, 0);
-    background-color: rgba(100, 100, 100, 0.0);
-    padding: 8px 2.5vw;
-    font-size: 16px;
-    font-family: 'Quicksand';
-    margin: 6px;
-    display: block;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid rgb(175, 0, 0);
+  color: rgb(175, 0, 0);
+  background-color: rgba(100, 100, 100, 0);
+  padding: 8px 2.5vw;
+  font-size: 16px;
+  font-family: "Quicksand";
+  margin: 6px;
+  display: block;
 }
 
 .file-button {
-    text-align: center;
-    border-radius: 10px;
-    border: 2px solid rgb(0, 113, 189);
-    color:rgb(0, 113, 189);
-    background-color: rgba(100, 100, 100, 0.0);
-    padding: 8px 2.5vw;
-    font-size: 16px;
-    font-family: 'Quicksand';
-    margin: 6px;
-    display: block;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid rgb(0, 113, 189);
+  color: rgb(0, 113, 189);
+  background-color: rgba(100, 100, 100, 0);
+  padding: 8px 2.5vw;
+  font-size: 16px;
+  font-family: "Quicksand";
+  margin: 6px;
+  display: block;
 }
 
 #range-slider {
-    visibility: hidden;
-    padding-top: 20px;
+  visibility: hidden;
+  padding-top: 20px;
 }
 
-#rotate{
-    margin-bottom: 0px;
+#rotate {
+  margin-bottom: 0px;
 }
-
 
 input[type="file"] {
-    display: none;
+  display: none;
 }
 
 #filename {
-    font-size: 16px;
-    font-family: 'Quicksand';
-    border-radius: 4px;
-    padding: 4px;
+  font-size: 16px;
+  font-family: "Quicksand";
+  border-radius: 4px;
+  padding: 4px;
 }
-
