@@ -9,9 +9,14 @@
 3. **[RECOMMENDED]** _Python v3.X.X_ (untuk menjalankan server)
 
 ## Cara Menjalankan
-_Fork_ repository ini ke komputer Anda terlebih dahulu. Ada 2 cara untuk menjalankan aplikasi:
-1. **Menggunakan Visual Studio Code**
-2. **Menggunakan Python HTTP Server**
+_Fork_ repository ini ke komputer Anda terlebih dahulu. Ada 3 cara untuk menjalankan aplikasi:
+1. **Membuka file index.html**
+2. **Menggunakan Visual Studio Code**
+3. **Menggunakan Python HTTP Server**
+
+## Membuka `index.html`
+1. Pastikan _repository_ ini sudah di-fork
+2. Buka direktori `src`, lalu buka file `index.html` pada _browser_ Anda
 
 ### Menggunakan Visual Studio Code
 1. Pastikan _extension_ **_Live Server_** sudah terpasang

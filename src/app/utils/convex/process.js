@@ -1,4 +1,4 @@
-import { findPMax, isDeterminantPositive, quickSort } from "./utils.js"
+
 
 const divideList = (arr, minAbs, maxAbs, flag) => {
     let leftSide = []
@@ -53,7 +53,7 @@ const divideRec = (arr, minAbs, maxAbs, index) => {
 }
 
 
-export const ConvexHull = (points) => {
+const ConvexHull = (points) => {
     if (points.length <= 1){
         return points
     }

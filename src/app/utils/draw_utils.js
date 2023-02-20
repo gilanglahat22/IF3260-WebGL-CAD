@@ -1,4 +1,3 @@
-import { initPositionBuffer, initColorBuffer} from "./buffers.js ";
 
 let normalize = false;      // gaperlu dinormalisasi
 let stride = 0;             // berapa banyak byte dari 1 set of values, kalo 0 berarti ngikutin numComponents dan Type
@@ -42,7 +41,7 @@ const setColorAttribute = (gl, programInfo, colors) => {
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
 }
 
-export const drawObject = (gl, programInfo, vertices, mode, vertexCount) => {
+const drawObject = (gl, programInfo, vertices, mode, vertexCount) => {
     let positions = [];
     let colors = [];
 

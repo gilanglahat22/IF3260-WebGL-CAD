@@ -1,8 +1,4 @@
-import { enableAllButtons } from "./handlers.js";
-import { Model } from "./model.js";
-import { renderObject, renderAllObjects } from "./_main.js";
-
-export class Square extends Model {
+class Square extends Model {
   constructor(){
     super([],0,'SQUARE',[0.0, 1.0, 0.0, 1.0],false,1)
   }

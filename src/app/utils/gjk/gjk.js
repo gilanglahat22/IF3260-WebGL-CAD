@@ -34,7 +34,7 @@ function tripleProduct([ax, ay], [bx, by], [cx, cy]) {
 }
 
 // The Gilbert-Johnson-Keerthi algorithm
-export const gjk = (polygon1, polygon2)=>{
+const gjk = (polygon1, polygon2)=>{
   // First point of polygon1-polygon2
   let a = MinkowskiDiff(polygon1, polygon2, [1, 1]);
 

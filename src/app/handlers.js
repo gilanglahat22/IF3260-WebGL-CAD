@@ -1,4 +1,3 @@
-import { loadFile, render, saveFile, clearCanvas} from "./_main.js" 
 
 // tambahin onclick di sini
 document.getElementById("clear-canvas").onclick = () => {clearCanvas();}
@@ -15,7 +14,7 @@ document.getElementById("polygon-button").onclick = () => {
   render("POLY")
 }
 
-export const disableAllButtons = () => {
+const disableAllButtons = () => {
   document.getElementById("line-button").disabled = true
   document.getElementById("rectangle-button").disabled = true
   document.getElementById("square-button").disabled = true
@@ -23,7 +22,7 @@ export const disableAllButtons = () => {
   document.getElementById("polygon-vertices").disabled = true
 }
 
-export const enableAllButtons = () => {
+const enableAllButtons = () => {
   document.getElementById("line-button").disabled = false
   document.getElementById("rectangle-button").disabled = false
   document.getElementById("square-button").disabled = false
@@ -34,7 +33,7 @@ export const enableAllButtons = () => {
 document.getElementById("save-button").onclick = () => {saveFile()}
 document.getElementById("load-file").onchange = () => {loadFile()}
 
-export const getColor = () => {
+const getColor = () => {
     let hex = document.getElementById("color-picker").value
     
     let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

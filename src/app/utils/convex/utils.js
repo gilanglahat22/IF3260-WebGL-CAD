@@ -6,7 +6,7 @@ const checkBiggerPivot = (point, pivot) => {
     return point.position[0] > pivot.position[0] || (point.position[0] == pivot.position[0] && point.position[1] > pivot.position[1])
 }
 
-export const isDeterminantPositive = (p1, p2, p3) => {
+const isDeterminantPositive = (p1, p2, p3) => {
     const determinant = (p1.position[0] * p2.position[1] + p2.position[0] * p3.position[1] + p3.position[0] * p1.position[1]) -
                         (p1.position[1] * p2.position[0] + p2.position[1] * p3.position[0] + p3.position[1] * p1.position[0])
     return determinant > 0
@@ -29,7 +29,7 @@ const findAngle = (minAbs, maxAbs, pMax) => {
 }
 
 
-export const quickSort = (arr) => {
+const quickSort = (arr) => {
     if (arr.length == 0) {
         return arr;
     }
@@ -43,7 +43,7 @@ export const quickSort = (arr) => {
 }
 
 
-export const findPMax = (arr, minAbs, maxAbs) => {
+const findPMax = (arr, minAbs, maxAbs) => {
     let currentDistance = 0
     let maxDistance = 0
     let maxIndex = 0

@@ -1,4 +1,4 @@
-export const initPositionBuffer = (gl, positions) => {
+const initPositionBuffer = (gl, positions) => {
     const positionBuffer = gl.createBuffer();
 
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -9,7 +9,7 @@ export const initPositionBuffer = (gl, positions) => {
     return positionBuffer;
 }
 
-export const initColorBuffer = (gl, colors) => {
+const initColorBuffer = (gl, colors) => {
     const colorBuffer = gl.createBuffer();
 
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);

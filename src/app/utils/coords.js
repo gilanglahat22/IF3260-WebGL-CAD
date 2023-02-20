@@ -1,4 +1,4 @@
-export const getCoords = (canvas, event) => {
+const getCoords = (canvas, event) => {
     const rectangle = canvas.getBoundingClientRect();
 
     const xCoord = event.clientX - rectangle.left;
@@ -12,7 +12,7 @@ export const getCoords = (canvas, event) => {
     }
 }
 
-export const getPoint = (x, y, onclick = false) => {
+const getPoint = (x, y, onclick = false) => {
     const color = onclick ? 1.0 : 0.5
     const dist = 0.01
     const vertices = {

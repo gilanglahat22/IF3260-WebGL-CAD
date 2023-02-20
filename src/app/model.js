@@ -1,9 +1,4 @@
-import { renderObject, renderAllObjects } from "./_main.js";
-import { getPoint } from "./utils/coords.js";
-import { enableAllButtons } from "./handlers.js";
-import { ConvexHull } from "./utils/convex/process.js";
-
-export class Model {
+class Model {
     constructor(vertices = [], vertexCount = 0, type = "LINE", color = [0.0, 1.0, 0.0, 1.0], completed = false, count = 2) {
         this.vertices = vertices;
         this.vertexCount = vertexCount;

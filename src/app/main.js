@@ -1,12 +1,3 @@
-import { disableAllButtons, enableAllButtons, getColor } from "./handlers.js";
-import { Rectangle } from "./rectangle.js";
-import { Square } from "./square.js";
-import { Model } from "./model.js";
-import { getCoords, getPoint } from "./utils/coords.js";
-import { drawObject } from "./utils/draw_utils.js";
-import { initShaders } from "./utils/shaders.js";
-import { ConvexHull } from "./utils/convex/process.js";
-import { gjk } from "./utils/GJK_Algorithm/gjk.js";
 
 let vertexShaderSource = `
     precision mediump float;
@@ -55,10 +46,10 @@ const programInfo = {
     }
 }
 
-export const renderObject = (obj) => {
+const renderObject = (obj) => {
     //load 1 object
     const method = obj.vertexCount == 2 ? gl.LINES : gl.TRIANGLE_FAN;
-    // console.log(obj.vertices);
+
     drawObject(gl, programInfo, obj.vertices, method, obj.vertexCount);
 
     obj.vertices.forEach((vertex) => {
@@ -67,14 +58,14 @@ export const renderObject = (obj) => {
     })
 }
 
-export const renderAllObjects = () => {
+const renderAllObjects = () => {
     gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
     // render semua object
     objects.forEach((object) => {renderObject(object)});
 }
 
 
-export const render = (type) => {
+const render = (type) => {
     // pass type nya antara LINE, SQUARE, R"ECT, ato POLY
 
     let count;
@@ -123,6 +114,42 @@ export const render = (type) => {
         })
     }
 
+    function dragRectangle(event) {
+        let coords = getCoords(gl_canvas, event)
+    
+        const newVertex = {
+            position: [coords["x"], coords["y"]],
+            color: rgbColor
+        }
+
+        const newHorizontalVertex = {
+            position: [coords["x"], obj.vertices[0].position[1]],
+            color: rgbColor
+        }
+        
+        const newVerticalVertex = {
+            position: [obj.vertices[0].position[0], coords["y"]],
+            color: rgbColor
+        }
+
+
+
+        let newVertices = JSON.parse(JSON.stringify(obj.vertices));
+        newVertices.push(newVertex);
+        newVertices.push(newHorizontalVertex);
+        newVertices.push(newVerticalVertex);
+        newVertices = ConvexHull(newVertices)
+
+        renderAllObjects()
+
+        drawObject(gl, programInfo, newVertices, gl.TRIANGLE_FAN, newVertices.length);
+
+        newVertices.forEach((vertex) => {
+            let point = getPoint(vertex.position[0], vertex.position[1], true);
+            drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
+        })
+    }
+
 
 
     disableAllButtons();
@@ -130,14 +157,17 @@ export const render = (type) => {
     gl_canvas.addEventListener("click", function lineDraw(e){
         if (obj.type == "LINE" || obj.type == "POLY"){
             gl_canvas.addEventListener("mousemove", drag)
+        } else if (obj.type == "RECT") {
+            gl_canvas.addEventListener("mousemove", dragRectangle)
         }
 
         let coords = getCoords(gl_canvas, e)
         obj.draw(coords["x"], coords["y"]);
 
-        if (obj.vertexCount == count){
+        if (obj.completed){
             gl_canvas.removeEventListener("click", lineDraw)
             gl_canvas.removeEventListener("mousemove", drag)
+            gl_canvas.removeEventListener("mousemove", dragRectangle)
         }
     })
 
@@ -175,7 +205,6 @@ const getObject = (gl_canvas, event) => {
     }
 
     if (selectedObject == null){
-        // console.log("no object selected");
         renderAllObjects();
         return null;
     }
@@ -447,13 +476,13 @@ gl_canvas.addEventListener("dblclick", function select(event){
 })
 
 
-export const clearCanvas = () => {
+const clearCanvas = () => {
     objects = [];
     gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
     enableAllButtons();
 }
 
-export const saveFile = () => {
+const saveFile = () => {
     const fileName = document.getElementById("filename").value;
 
     if (fileName == ""){
@@ -475,7 +504,7 @@ export const saveFile = () => {
     URL.revokeObjectURL(link.href);
 }
 
-export const loadFile = () => {
+const loadFile = () => {
     const selectedFile = document.getElementById("load-file").files[0];
 
     const reader = new FileReader();
@@ -510,4 +539,3 @@ export const loadFile = () => {
         alert("Successfully loaded file!")
     }
 }
-

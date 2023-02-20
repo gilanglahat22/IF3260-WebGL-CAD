@@ -21,7 +21,7 @@ const loadShader = (gl, type, source) => {
 }
 
 // fungsi untuk inisiasi shader; return shaderProgram
-export const initShaders = (gl, vsSource, fsSource) => {
+const initShaders = (gl, vsSource, fsSource) => {
     const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
     const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
 
