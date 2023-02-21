@@ -93,13 +93,14 @@ class Rectangle extends Model {
       minY = Math.min(minY, this.vertices[i].position[1]);
       maxY = Math.max(maxY, this.vertices[i].position[1]);
     }
-    var size = maxX-minX;
+    var sizeHorizontal = maxX-minX;
+    var sizeVertical = maxY-minY;
     for(let i = 0; i<this.vertexCount; i++){
-      if(this.vertices[i].position[0] == maxX) this.vertices[i].position[0] += sizeX*size/200;
-      else this.vertices[i].position[0] -= sizeX*size/200;
+      if(this.vertices[i].position[0] == maxX) this.vertices[i].position[0] += sizeX*sizeHorizontal/200;
+      else this.vertices[i].position[0] -= sizeX*sizeHorizontal/200;
       
-      if(this.vertices[i].position[1] == maxY) this.vertices[i].position[1] += sizeY*size/200;
-      else this.vertices[i].position[1] -= sizeY*size/200;
+      if(this.vertices[i].position[1] == maxY) this.vertices[i].position[1] += sizeY*sizeVertical/200;
+      else this.vertices[i].position[1] -= sizeY*sizeVertical/200;
     }
   }
 }

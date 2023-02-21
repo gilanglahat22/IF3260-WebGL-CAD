@@ -395,9 +395,13 @@ const selectObject = (x, y, unionSelect = false) => {
   if (selectedObject.type != "POLY" && selectedObject.type != "LINE") {
     document.getElementById("input-resize").style.visibility = "visible";
     document.getElementById("submitResize-button").style.visibility = "visible";
-    if (selectedObject.type == "SQUARE"){
+    if(selectedObject.type == "SQUARE"){
       document.getElementById("input-2").style.visibility = "hidden";
     }
+    if(selectedObject.type == "RECT"){
+      document.getElementById("input-2").style.visibility = "visible";
+    }
+    
   }
   let rotateSlider = document.getElementById("rotate");
   rotateSlider.addEventListener("input", rotateObject);
@@ -415,6 +419,7 @@ const selectObject = (x, y, unionSelect = false) => {
       rotateSlider.removeEventListener("input", rotateObject);
       document.getElementById("range-slider").style.visibility = "hidden";
       document.getElementById("input-resize").style.visibility = "hidden";
+      document.getElementById("input-2").style.visibility = "hidden";
       document.getElementById("submitResize-button").style.visibility = "hidden";
 
       renderAllObjects();
