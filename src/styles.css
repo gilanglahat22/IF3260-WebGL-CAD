@@ -101,7 +101,7 @@ input[type="number"] {
 
 #input-resize{
   visibility: hidden;
-  padding-top: 20px;
+  display: inline-block;
 }
 
 #rotate {
@@ -117,4 +117,8 @@ input[type="text"]{
   font-family: "Quicksand";
   border-radius: 4px;
   padding: 8px;
+}
+
+#resizeX, #resizeY{
+  width:100px;
 }

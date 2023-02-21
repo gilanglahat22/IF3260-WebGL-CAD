@@ -392,8 +392,13 @@ const selectObject = (x, y, unionSelect = false) => {
   }
 
   document.getElementById("range-slider").style.visibility = "visible";
-  document.getElementById("input-resize").style.visibility = "visible";
-  document.getElementById("submitResize-button").style.visibility = "visible";
+  if (selectedObject.type != "POLY" && selectedObject.type != "LINE") {
+    document.getElementById("input-resize").style.visibility = "visible";
+    document.getElementById("submitResize-button").style.visibility = "visible";
+    if (selectedObject.type == "SQUARE"){
+      document.getElementById("input-2").style.visibility = "hidden";
+    }
+  }
   let rotateSlider = document.getElementById("rotate");
   rotateSlider.addEventListener("input", rotateObject);
 
@@ -406,8 +411,12 @@ const selectObject = (x, y, unionSelect = false) => {
       gl_canvas.removeEventListener("contextmenu", deleteVertex);
       gl_canvas.removeEventListener("click", addVertex);
       gl_canvas.removeEventListener("contextmenu", remove);
+      gl_canvas.removeEventListener("click", remove);
       rotateSlider.removeEventListener("input", rotateObject);
       document.getElementById("range-slider").style.visibility = "hidden";
+      document.getElementById("input-resize").style.visibility = "hidden";
+      document.getElementById("submitResize-button").style.visibility = "hidden";
+
       renderAllObjects();
     }
   }
@@ -457,6 +466,7 @@ const selectObject = (x, y, unionSelect = false) => {
     gl_canvas.addEventListener("click", addVertex);
   }
 
+  gl_canvas.addEventListener("click", remove);
   gl_canvas.addEventListener("contextmenu", remove);
 };
 
