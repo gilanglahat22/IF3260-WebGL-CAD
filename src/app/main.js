@@ -414,9 +414,8 @@ const selectObject = (x, y, unionSelect = false) => {
     document.getElementById("submitResize-button").style.visibility = "visible";
     if (selectedObject.type == "RECT") {
       document.getElementById("input-2").style.visibility = "visible";
-    }
-    if (selectedObject.type == "RECT") {
-      document.getElementById("input-2").style.visibility = "visible";
+    } else {
+      document.getElementById("input-2").style.visibility = "hidden";
     }
   }
   let rotateSlider = document.getElementById("rotate");
