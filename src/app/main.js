@@ -246,28 +246,43 @@ gl_canvas.addEventListener("click", (event) => {
   if (object) {
     let selectedObject = object["selected"];
     let vertexIndex = object["vertexIndex"];
-    let vertex = selectedObject.vertices.find(
-      (vertex) => vertex.id == vertexIndex
-    );
+    let vertex = selectedObject.vertices.find((vert) => vert.id == vertexIndex);
+    let colorPicker = document.getElementById("color-picker");
 
     let point = getPoint(vertex.position[0], vertex.position[1], true);
 
     renderAllObjects();
     drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
 
-    let colorPicker = document.getElementById("color-picker");
-
-    colorPicker.addEventListener("change", function updateColor() {
+    function updateColor() {
       let color = getColor();
       let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0];
 
-      selectedObject.vertices[vertexIndex].color = rgbColor;
+      vertex.color = rgbColor;
+
       selectedObject.color = rgbColor;
 
       renderAllObjects();
 
       colorPicker.removeEventListener("change", updateColor);
-    });
+    }
+
+    colorPicker.addEventListener("change", updateColor);
+
+    function remove(event) {
+      const obj = getObject(gl_canvas, event);
+      console.log(obj);
+      if (
+        obj == null ||
+        (obj.selected == selectedObject && obj.vertexIndex != vertexIndex)
+      ) {
+        colorPicker.removeEventListener("change", updateColor);
+        gl_canvas.removeEventListener("click", remove);
+        renderAllObjects();
+      }
+    }
+
+    gl_canvas.addEventListener("click", remove);
   }
 });
 
@@ -295,10 +310,10 @@ const selectObject = (x, y, unionSelect = false) => {
   let saveModelButton = document.getElementById("save-model");
   saveModelButton.disabled = false;
 
-  saveModelButton.addEventListener("click", function save(){
+  saveModelButton.addEventListener("click", function save() {
     saveFile(selectedObject);
     saveModelButton.removeEventListener("click", save);
-  })
+  });
 
   selectedObject.vertices.forEach((vertex) => {
     let point = getPoint(vertex.position[0], vertex.position[1], true);
@@ -341,7 +356,7 @@ const selectObject = (x, y, unionSelect = false) => {
 
   let colorPicker = document.getElementById("color-picker");
 
-  colorPicker.addEventListener("change", function updateAll() {
+  function updateAll() {
     let color = getColor();
     let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0];
 
@@ -352,7 +367,9 @@ const selectObject = (x, y, unionSelect = false) => {
     renderAllObjects();
 
     colorPicker.removeEventListener("change", updateAll);
-  });
+  }
+
+  colorPicker.addEventListener("change", updateAll);
 
   function addVertex(event) {
     let coords = getCoords(gl_canvas, event);
@@ -395,13 +412,12 @@ const selectObject = (x, y, unionSelect = false) => {
   if (selectedObject.type != "POLY" && selectedObject.type != "LINE") {
     document.getElementById("input-resize").style.visibility = "visible";
     document.getElementById("submitResize-button").style.visibility = "visible";
-    if(selectedObject.type == "SQUARE"){
-      document.getElementById("input-2").style.visibility = "hidden";
-    }
-    if(selectedObject.type == "RECT"){
+    if (selectedObject.type == "RECT") {
       document.getElementById("input-2").style.visibility = "visible";
     }
-    
+    if (selectedObject.type == "RECT") {
+      document.getElementById("input-2").style.visibility = "visible";
+    }
   }
   let rotateSlider = document.getElementById("rotate");
   rotateSlider.addEventListener("input", rotateObject);
@@ -409,18 +425,20 @@ const selectObject = (x, y, unionSelect = false) => {
   function remove(event) {
     // alert("CPPPL")
     const obj = getObject(gl_canvas, event);
-    
+
     if (obj == null || obj.selected == selectedObject) {
       saveModelButton.disabled = true;
       gl_canvas.removeEventListener("contextmenu", deleteVertex);
       gl_canvas.removeEventListener("click", addVertex);
       gl_canvas.removeEventListener("contextmenu", remove);
       gl_canvas.removeEventListener("click", remove);
+      colorPicker.removeEventListener("change", updateAll);
       rotateSlider.removeEventListener("input", rotateObject);
       document.getElementById("range-slider").style.visibility = "hidden";
       document.getElementById("input-resize").style.visibility = "hidden";
       document.getElementById("input-2").style.visibility = "hidden";
-      document.getElementById("submitResize-button").style.visibility = "hidden";
+      document.getElementById("submitResize-button").style.visibility =
+        "hidden";
 
       renderAllObjects();
     }
@@ -443,7 +461,7 @@ const selectObject = (x, y, unionSelect = false) => {
         for (let i = 0; i < copy[j].length; i++) {
           selectedObjectTemp[j].vertices[i].position[0] =
             copy[j][i].position[0] + (newX - x);
-            selectedObjectTemp[j].vertices[i].position[1] =
+          selectedObjectTemp[j].vertices[i].position[1] =
             copy[j][i].position[1] + (newY - y);
         }
       }
@@ -507,17 +525,19 @@ const clearCanvas = () => {
   enableAllButtons();
 };
 
-const resizeObject = () =>{
+const resizeObject = () => {
   var satuanGeserX = document.getElementById("resizeX").value;
   var satuanGeserY = document.getElementById("resizeY").value;
-  for(let i = 0; i<selectedObjectTemp.length; i++){
+  for (let i = 0; i < selectedObjectTemp.length; i++) {
     selectedObjectTemp[i].resizeByMetrix(satuanGeserX, satuanGeserY);
   }
   renderAllObjects();
-}
+};
 
 const saveFile = (object = objects) => {
-  const fileName = document.getElementById(Array.isArray(object) ? "filename" : "model-filename").value;
+  const fileName = document.getElementById(
+    Array.isArray(object) ? "filename" : "model-filename"
+  ).value;
 
   if (fileName == "") {
     alert("Please input the output file name!");
@@ -547,7 +567,7 @@ const loadFile = () => {
 
   reader.onload = (evt) => {
     let temp = JSON.parse(evt.target.result);
-    temp = Array.isArray(temp) ? temp : [temp]
+    temp = Array.isArray(temp) ? temp : [temp];
 
     let tempObjects = [];
 
