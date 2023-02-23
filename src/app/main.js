@@ -344,10 +344,21 @@ const selectObject = (x, y, unionSelect = false) => {
       return;
     }
 
-    selectedObject.vertices.splice(index, 1);
+    for (let i = 0; i < selectedObject.vertices.length; i++){
+      if (selectedObject.vertices[i].id == index) {
+        selectedObject.vertices.splice(i, 1);
+        break;
+      }
+    }
+
     selectedObject.vertices = ConvexHull(selectedObject.vertices);
     selectedObject.vertexCount--;
     selectedObject.count--;
+
+    if (selectedObject.vertexCount == 1) {
+      objects.splice(objects.indexOf(selectedObject), 1);
+      selectedObject = null;
+    }
 
     gl_canvas.removeEventListener("contextmenu", deleteVertex);
 
@@ -452,6 +463,7 @@ const selectObject = (x, y, unionSelect = false) => {
       copy.push(JSON.parse(JSON.stringify(selectedObjectTemp[j].vertices)));
     }
     function drag(e) {
+      gl_canvas.removeEventListener("click", addVertex);
       let newCoords = getCoords(gl_canvas, e);
       let newX = newCoords["x"];
       let newY = newCoords["y"];
@@ -538,6 +550,8 @@ const saveFile = (object = objects) => {
     Array.isArray(object) ? "filename" : "model-filename"
   ).value;
 
+  console.log("test");
+
   if (fileName == "") {
     alert("Please input the output file name!");
     return;
@@ -571,21 +585,16 @@ const loadFile = () => {
     let tempObjects = [];
 
     temp.forEach((item) => {
-      let obj = null;
-      if (item.type == "LINE" || item.type == "POLY") {
-        obj = new Model(
-          ConvexHull(item.vertices),
-          item.vertexCount,
-          item.type,
-          item.color,
-          item.completed,
-          item.count
-        );
-      } else {
-        alert(
-          `Error in loading file: object type ${item.type} not recognized!`
-        );
-      }
+
+      const obj = new Model(
+        ConvexHull(item.vertices),
+        item.vertexCount,
+        item.type,
+        item.color,
+        item.completed,
+        item.count
+      );
+      
       tempObjects.push(obj);
     });
 
