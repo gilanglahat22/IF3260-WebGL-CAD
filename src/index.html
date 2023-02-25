@@ -15,49 +15,55 @@
 
     <body>
         <div class = "flex-container">
-            <div class = "flex-item-left">
+            <div style="width: 25vw; padding: 30px;">
                 <h1 style="font-size:20px;">GOKs WebGL CAD App</h1>
-                <div class = "flex-column"> 
+                <div> 
                     <div class = "button-group">
                         <button id = "line-button" class = "button-elmt">Line</button>
                         <button id = "square-button" class = "button-elmt">Square</button>
                         <button id = "rectangle-button"class = "button-elmt">Rectangle</button>
-                        <div class = "button-elmt">
-                            <button id = "polygon-button">Polygon</button>
-                            <input id = "polygon-vertices" class = "polygon-vertices" type = "number" required placeholder = "Input vertices number..." min = 3 value = 6>
+                        <div class = "inline-flex">
+                            <button id = "polygon-button" class = "button-elmt">Polygon</button>
+                            <p>Num. of vertices: </p>
+                            <input id = "polygon-vertices" class = "polygon-vertices button-elmt" type = "number" required placeholder = "Input vertices number..." min = 3 value = 6>
                         </div>
    
     
                     </div>
 
-                    <div style="display: inline-block !important">
-                        <p>Color:</p>
+                    <div class = "inline-flex">
+                        <p>Color: </p>
                         <input type = "color" id = "color-picker" class = "button-elmt" value = #00FF00>
                     </div>
 
-                    <div id = "range-slider">
+                    <div id = "range-slider" class = "inline-flex">
+                        <div style="margin: -15px 15px -15px 0px;"">
+                            <p>Degree: <output id="rangevalue">0</output></p> 
+                        </div>
                         <div>0<input type="range" min="0" max="360" value="0" class="slider" id="rotate" oninput="rangevalue.value=value">360</div>
-                        <p>Degree: <output id="rangevalue">0</output></p>
                     </div>
                     
-                    <div id="input-resize">
-                        <div id="input-1">length : <input type = "text" id = "resizeX" class = "input-text" value = "0" placeholder = "Input size to resize" required> %</div>
-                        <div id="input-2">width  : <input type = "text" id = "resizeY" class = "input-text" value = "0" placeholder = "Input size to resize" required> %</div>
+                    <div id="input-resize" style="margin: 12px 0px">
+                        <div class = "inline-flex">
+                            <div id="input-1" style="margin-right: 12px;">Length : <input type = "text" id = "resizeX" class = "input-text" value = "0" placeholder = "Input size to resize" required> %</div>
+                            <div id="input-2">Width  : <input type = "text" id = "resizeY" class = "input-text" value = "0" placeholder = "Input size to resize" required> %</div>
+                        </div>
+                      
                         <button id = "submitResize-button" class = "file-button" >Resize</button>
                     </div>
 
-                    <div class = "bottom-div">
+                    <button id = "clear-canvas">Clear Canvas</button>
 
-                        <button id = "clear-canvas">Clear Canvas</button>
-
-                        <label class = "file-button">
-                            <input type = "file" id = "load-file">
-                            Upload File
-                        </label>
-                       
-                        <button id = "save-button" class = "file-button" >Save Canvas</button>
-                        <input type = "text" id = "filename" class = "input-text" value = "" placeholder = "Input canvas output file name" required>
-
+                    <label class = "file-button">
+                        <input type = "file" id = "load-file">
+                        Upload File
+                    </label>
+                   
+                    <div class = "inline-flex">
+                        <button id = "save-button" class = "file-button" style ="display: inline-block;">Save Canvas</button>
+                        <input type = "text" id = "filename" class = "input-text" value = "" placeholder = "Input canvas output file name" required >
+                    </div>
+                    <div class = "inline-flex">
                         <button id = "save-model" class = "file-button" disabled >Save Model</button>
                         <input type = "text" id = "model-filename" class = "input-text" value = "" placeholder = "Input model output file name" required>
                     </div>

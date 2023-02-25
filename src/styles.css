@@ -11,6 +11,7 @@ body {
   overflow: hidden;
   font-family: "Quicksand";
   color: white;
+  background-color: #292929;
 }
 
 .flex-column {
@@ -86,12 +87,16 @@ input[type="number"] {
   font-size: 16px;
   font-family: "Quicksand";
   margin: 6px;
-  display: block;
+  display: inline-block;
 }
 
 .file-button:disabled{
   color: rgb(100, 100, 100);
   border: 2px solid rgb(100, 100, 100);
+}
+
+.file-button:hover, #clear-canvas:hover {
+  background-color: white;
 }
 
 #range-slider {
@@ -121,4 +126,13 @@ input[type="text"]{
 
 #resizeX, #resizeY{
   width:100px;
+}
+
+.inline-flex {
+  display: flex; 
+  flex-direction: row;
+}
+
+#color-picker{
+  margin: 12px;
 }
