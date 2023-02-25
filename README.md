@@ -41,162 +41,116 @@ Akan muncul _link_ menuju aplikasi, silahkan membuka _link_ tersebut pada _brows
 #### Menggambar Garis
 
 1.  Klik tombol "Line" pada sidebar
-
 2.  Pilih titik bebas pada canvas, lalu klik kiri mouse
-
 3.  Pilih titik bebas lainnya, lalu klik kiri mouse
-
 4.  Garis  baru akan terbentuk
 
-Mengubah Panjang Garis
+#### Mengubah Panjang Garis
 
 1.  Klik salah satu vertex pada garis hingga indikator berubah warna
-
 2.  Gerakkan mouse Anda ke posisi baru
-
 3.  Lepaskan tombol mouse apabila kursor / vertex sudah berada di posisi yang diinginkan
 
 ### Persegi dan Persegi Panjang
 
-Menggambar Persegi / Persegi Panjang
-
+#### Menggambar Persegi / Persegi Panjang
 1.  Klik tombol "Square" / "Rectangle" pada sidebar
-
 2.  Pilih titik bebas pada canvas, lalu klik kiri mouse
-
 3.  Persegi baru akan terbentuk
 
-Mengubah Panjang Sisi
+#### Mengubah Panjang Sisi
 
 Mengubah panjang sisi dapat dilakukan dengan menggerakkan vertex atau mengisikan field
 
 Melalui menggerakan vertex,
 
 1.  Klik salah satu vertex pada garis hingga indikator berubah warna
-
 2.  Gerakkan mouse Anda dan ukuran persegi akan berubah
-
--   Untuk persegi panjang, ukuran panjang dan lebar akan berubah sesuai kursor, sementara untuk persegi, ukuran sisi akan tetap sama
+> Untuk persegi panjang, ukuran panjang dan lebar akan berubah sesuai kursor, sementara untuk persegi, ukuran sisi akan tetap sama
 
 Melalui field,
 
 1.  Double-click persegi / persegi panjang yang ingin diubah
-
 2.  Akan muncul field untuk resize pada sidebar, lalu isikan persentase pertambahan panjang / lebar yang diinginkan (misal. '10' menandakan menambahkan panjang sepanjang 10%)
-
 3.  Untuk persegi, akan ada 1 field yang muncul untuk menandakan pergantian sisi, sementara untuk persegi panjang, akan ada 2 field untuk menandakan pergantian panjang (length) dan lebar (width)
 
 ### Polygon
 
-Menggambar Polygon
-
+#### Menggambar Polygon
 1.  Terdapat field di bawah tombol untuk menandakan jumlah vertex; pastikan field sudah terisi (secara default berisi 6)
-
 2.  Klik tombol "Polygon" pada sidebar
-
 3.  Pilih titik bebas pada canvas lalu klik
-
 4.  Ulangi proses 3 hingga semua vertex sudah tergambar
 
-Menambah Titik Sudut
+#### Menambah Titik Sudut
 
-1.  Double--click polygon hingga semua indikator vertex berwarna putih
-
+1.  Double-click polygon hingga semua indikator vertex berwarna putih
 2.  Klik titik bebas di luar polygon
-
 3.  Vertex baru akan tergambar
 
-Menghapus Titik Sudut
-
-1.  Double--click polygon hingga semua indikator vertex berwarna putih
-
+#### Menghapus Titik Sudut
+1.  Double-click polygon hingga semua indikator vertex berwarna putih
 2.  Klik kanan vertex yang ingin dihapus
-
 3.  Vertex tersebut akan dihapus
 
 ### Semua Model
 
-Unselect Model
+#### Unselect Model
 
 Untuk batal memilih model, klik kanan pada canvas bagian manapun, atau double click model lainnya
+> Untuk polygon, hanya terbatas untuk klik kanan, karena mengklik kiri pada objek polygon berfungsi untuk menambahkan vertex baru
 
--   Untuk polygon, hanya terbatas untuk klik kanan, karena mengklik kiri pada objek polygon berfungsi untuk menambahkan vertex baru
-
-Translasi
-
-1.  Double--click polygon hingga semua indikator vertex berwarna putih
-
+#### Translasi
+1.  Double-click polygon hingga semua indikator vertex berwarna putih
 2.  Tahan mouse, lalu gerakkan model yang diinginkan
-
 3.  Model akan bergerak ke koordinat baru
 
-Rotasi
-
-1.  Double--click polygon hingga semua indikator vertex berwarna putih
-
+#### Rotasi
+1.  Double-click polygon hingga semua indikator vertex berwarna putih
 2.  Akan muncul slider pada sidebar, gerakkan slider untuk memutar model
-
 3.  Model akan berputar sesuai sudut yang diinginkan
 
-Menggerakan Vertex
+#### Menggerakan Vertex
 
 1.  Klik vertex hingga indikator berwarna putih
-
 2.  Tahan mouse pada vertex, lalu gerakkan mouse
-
 3.  Vertex akan bergerak ke posisi yang diinginkan
+    -   Untuk model garis, panjang garis akan berubah secara langsung
+    -   Untuk model persegi, sisi persegi akan berubah secara langsung, namun panjang keempat sisi akan dipertahankan
+    -   Untuk model persegi panjang, panjang dan lebar akan berubah secara langsung tergantung gerakan mouse
+    -   Untuk model polygon, akan muncul preview dari convex hull yang terbentuk secara langsung
 
--   Untuk model garis, panjang garis akan berubah secara langsung
-
--   Untuk model persegi, sisi persegi akan berubah secara langsung, namun panjang keempat sisi akan dipertahankan
-
--   Untuk model persegi panjang, panjang dan lebar akan berubah secara langsung tergantung gerakan mouse
-
--   Untuk model polygon, akan muncul preview dari convex hull yang terbentuk secara langsung
-
-Mengubah Warna Salah Satu Titik Sudut
-
+#### Mengubah Warna Salah Satu Titik Sudut
 1.  Klik vertex hingga indikator berwarna putih
-
 2.  Klik color picker di sidebar, lalu pilih warna baru
-
 3.  Warna vertex tersebut akan berubah
 
-Mengubah Warna Semua Titik Sudut
+#### Mengubah Warna Semua Titik Sudut
 
 1.  Double--click polygon hingga semua indikator vertex berwarna putih
-
 2.  Klik color picker di sidebar, lalu pilih warna baru
-
 3.  Warna model akan berubah
+> Untuk mengubah warna model sebelum digambar, pilih warna color picker sebelum memilih model yang ingin digambar
 
--   Untuk mengubah warna model sebelum digambar, pilih warna color picker sebelum memilih model yang ingin digambar
-
-Save Keseluruhan Canvas
-
+#### Save Keseluruhan Canvas
 1.  Isikan field nama file sebelum menyimpan
-
 2.  Klik tombol Save File
 
-Save  Salah Satu Model
+#### Save  Salah Satu Model
 
 1.  Double click model yang ingin di-save
-
 2.  Isikan field nama file sebelum menyimpan
-
 3.  Klik tombol Save Model
 
-Load Save File
+#### Load Save File
 
 1.  Klik tombol Upload File
-
 2.  Pilih file yang telah di-save sebelumnya (dapat berupa file model atau file canvas)
-
 3.  Canvas akan di-load
 
--   Contoh savefile model dapat dilihat pada file test-polygon.json dan test-square.json
+    -   Contoh savefile model dapat dilihat pada file test-polygon.json dan test-square.json
 
--   Contoh savefile  canvas dapat dilihat pada file test-canvas.json dan test-amongus.json
-Contoh savefile canvas dapat dilihat pada file test-canvas.json dan test-amongus.json
+    -   Contoh savefile  canvas dapat dilihat pada file test-canvas.json dan test-amongus.json
+    Contoh savefile canvas dapat dilihat pada file test-canvas.json dan test-amongus.json
 
 
