@@ -52,9 +52,9 @@ class Square extends Model {
           color: this.color,
         };
 
-        this.vertices.push(v1);
-        this.vertices.push(v2);
         this.vertices.push(v3);
+        this.vertices.push(v2);
+        this.vertices.push(v1);
 
         this.vertexCount += 3;
       }

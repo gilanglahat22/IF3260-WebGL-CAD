@@ -98,25 +98,23 @@ class Rectangle extends Model {
   }
 
   resizeByMetrix(sizeX,sizeY){
-    let minX = this.vertices[0].position[0];
-    let minY = this.vertices[0].position[1];
-    let maxX = this.vertices[0].position[0];
-    let maxY = this.vertices[0].position[1];
+    let a = this.angle
+    this.rotate(0)
+    let v1_x = (this.vertices[1].position[0]-this.vertices[0].position[0])
+    let v1_y = (this.vertices[1].position[1]-this.vertices[0].position[1])
 
-    for (let i = 1; i < this.vertexCount; i++) {
-      minX = Math.min(minX, this.vertices[i].position[0]);
-      maxX = Math.max(maxX, this.vertices[i].position[0]);
-      minY = Math.min(minY, this.vertices[i].position[1]);
-      maxY = Math.max(maxY, this.vertices[i].position[1]);
-    }
-    var sizeHorizontal = maxX-minX;
-    var sizeVertical = maxY-minY;
-    for(let i = 0; i<this.vertexCount; i++){
-      if(this.vertices[i].position[0] == maxX) this.vertices[i].position[0] += sizeX*sizeHorizontal/200;
-      else this.vertices[i].position[0] -= sizeX*sizeHorizontal/200;
-      
-      if(this.vertices[i].position[1] == maxY) this.vertices[i].position[1] += sizeY*sizeVertical/200;
-      else this.vertices[i].position[1] -= sizeY*sizeVertical/200;
-    }
+    let v2_x = (this.vertices[2].position[0]-this.vertices[1].position[0])
+    let v2_y = (this.vertices[2].position[1]-this.vertices[1].position[1])
+    this.vertices[1].position[0] = this.vertices[0].position[0] + (1+sizeX/100)*v1_x
+    this.vertices[1].position[1] = this.vertices[0].position[1] + (1+sizeX/100)*v1_y
+
+    this.vertices[2].position[0] = this.vertices[1].position[0] + (1+sizeY/100)*v2_x
+    this.vertices[2].position[1] = this.vertices[1].position[1] + (1+sizeY/100)*v2_y
+
+    this.vertices[3].position[0] = this.vertices[2].position[0] - (1+sizeX/100)*v1_x
+    this.vertices[3].position[1] = this.vertices[2].position[1] - (1+sizeX/100)*v1_y
+    this.rotate(a)
   }
+
+
 }
