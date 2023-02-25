@@ -4,7 +4,7 @@ const vertexShaderSource = `
     attribute vec2 aVertexPosition;
     attribute vec4 aVertexColor;
 
-    varying lowp vec4 vColor;
+    varying vec4 vColor;
 
     void main(){
         gl_Position = vec4(aVertexPosition, 0.0, 1.0);
@@ -15,7 +15,7 @@ const vertexShaderSource = `
 const fragmentShaderSource = `
     precision mediump float;
 
-    varying lowp vec4 vColor;
+    varying vec4 vColor;
 
     void main(){
         gl_FragColor = vColor;
@@ -45,6 +45,7 @@ const programInfo = {
     vertexColor: gl.getAttribLocation(shaderProgram, "aVertexColor"),
   },
 };
+
 
 const renderObject = (obj) => {
   //load 1 object
@@ -186,9 +187,10 @@ const dragVertex = (canvas, event, selectedObject, idx) => {
   renderAllObjects();
 };
 
-const getObject = (gl_canvas, event) => {
+const getObject = (gl_canvas, event,) => {
   let selectedObject = null;
   let vertexIndex = -1;
+  let vertexId = -1;
 
   let coords = getCoords(gl_canvas, event);
   let x = coords["x"];
@@ -202,7 +204,8 @@ const getObject = (gl_canvas, event) => {
     }
 
     selectedObject = obj;
-    vertexIndex = index;
+    vertexIndex = index.vertexIndex;
+    vertexId = index.vertexId;
     break;
   }
 
@@ -214,6 +217,7 @@ const getObject = (gl_canvas, event) => {
   return {
     selected: selectedObject,
     vertexIndex: vertexIndex,
+    vertexId: vertexId
   };
 };
 
@@ -224,17 +228,23 @@ gl_canvas.addEventListener("mousedown", (event) => {
   if (object) {
     let selectedObject = object["selected"];
     let vertexIndex = object["vertexIndex"];
+    let vertexId = object["vertexId"];
 
     function drag(event) {
-      dragVertex(gl_canvas, event, selectedObject, vertexIndex);
+      console.log(vertexIndex, vertexId)
       if (selectedObject.type == "POLY") {
+        dragVertex(gl_canvas, event, selectedObject, vertexId);
         selectedObject.vertices = ConvexHull(selectedObject.vertices);
+      } else {
+        dragVertex(gl_canvas, event, selectedObject, vertexIndex);
       }
     }
 
     gl_canvas.addEventListener("mousemove", drag);
     gl_canvas.addEventListener("mouseup", function end() {
       gl_canvas.removeEventListener("mousemove", drag);
+      console.log(selectedObject.vertices);
+      renderObject(selectedObject);
       gl_canvas.removeEventListener("mouseup", end);
     });
   }
@@ -246,10 +256,9 @@ gl_canvas.addEventListener("click", (event) => {
   if (object) {
     let selectedObject = object["selected"];
     let vertexIndex = object["vertexIndex"];
-    let vertex = selectedObject.vertices.find((vert) => vert.id == vertexIndex);
     let colorPicker = document.getElementById("color-picker");
 
-    let point = getPoint(vertex.position[0], vertex.position[1], true);
+    let point = getPoint(selectedObject.vertices[vertexIndex].position[0], selectedObject.vertices[vertexIndex].position[1], true);
 
     renderAllObjects();
     drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
@@ -258,7 +267,7 @@ gl_canvas.addEventListener("click", (event) => {
       let color = getColor();
       let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0];
 
-      vertex.color = rgbColor;
+      selectedObject.vertices[vertexIndex].color = rgbColor;
 
       selectedObject.color = rgbColor;
 
@@ -269,20 +278,20 @@ gl_canvas.addEventListener("click", (event) => {
 
     colorPicker.addEventListener("change", updateColor);
 
-    function remove(event) {
+    function removeVertexListener(event) {
       const obj = getObject(gl_canvas, event);
-      console.log(obj);
+
       if (
         obj == null ||
         (obj.selected == selectedObject && obj.vertexIndex != vertexIndex)
       ) {
         colorPicker.removeEventListener("change", updateColor);
-        gl_canvas.removeEventListener("click", remove);
+        gl_canvas.removeEventListener("click", removeVertexListener);
         renderAllObjects();
       }
     }
 
-    gl_canvas.addEventListener("click", remove);
+    gl_canvas.addEventListener("click", removeVertexListener);
   }
 });
 
@@ -434,24 +443,21 @@ const selectObject = (x, y, unionSelect = false) => {
 
   function remove(event) {
     // alert("CPPPL")
-    const obj = getObject(gl_canvas, event);
+    saveModelButton.disabled = true;
+    gl_canvas.removeEventListener("contextmenu", deleteVertex);
+    gl_canvas.removeEventListener("click", addVertex);
+    gl_canvas.removeEventListener("contextmenu", remove);
+    gl_canvas.removeEventListener("click", remove);
+    colorPicker.removeEventListener("change", updateAll);
+    rotateSlider.removeEventListener("input", rotateObject);
+    document.getElementById("range-slider").style.visibility = "hidden";
+    document.getElementById("input-resize").style.visibility = "hidden";
+    document.getElementById("input-2").style.visibility = "hidden";
+    document.getElementById("submitResize-button").style.visibility =
+      "hidden";
 
-    if (obj == null || obj.selected == selectedObject) {
-      saveModelButton.disabled = true;
-      gl_canvas.removeEventListener("contextmenu", deleteVertex);
-      gl_canvas.removeEventListener("click", addVertex);
-      gl_canvas.removeEventListener("contextmenu", remove);
-      gl_canvas.removeEventListener("click", remove);
-      colorPicker.removeEventListener("change", updateAll);
-      rotateSlider.removeEventListener("input", rotateObject);
-      document.getElementById("range-slider").style.visibility = "hidden";
-      document.getElementById("input-resize").style.visibility = "hidden";
-      document.getElementById("input-2").style.visibility = "hidden";
-      document.getElementById("submitResize-button").style.visibility =
-        "hidden";
-
-      renderAllObjects();
-    }
+    renderAllObjects();
+    
   }
 
   gl_canvas.addEventListener("mousedown", function select(event) {
@@ -585,15 +591,37 @@ const loadFile = () => {
     let tempObjects = [];
 
     temp.forEach((item) => {
+      let obj = null;
+      console.log(item.type)
+      if (item.type == "LINE" || item.type == "POLY"){
+        obj = new Model(
+          ConvexHull(item.vertices),
+          item.vertexCount,
+          item.type,
+          item.color,
+          item.completed,
+          item.count
+        );
+      } else if (item.type == "SQUARE"){
+        obj = new Square(
+          ConvexHull(item.vertices),
+          item.vertexCount,
+          item.type,
+          item.color,
+          item.completed,
+          item.count
+        );
+      } else {
+        obj = new Rectangle(
+          ConvexHull(item.vertices),
+          item.vertexCount,
+          item.type,
+          item.color,
+          item.completed,
+          item.count
+        );
+      }
 
-      const obj = new Model(
-        ConvexHull(item.vertices),
-        item.vertexCount,
-        item.type,
-        item.color,
-        item.completed,
-        item.count
-      );
       
       tempObjects.push(obj);
     });

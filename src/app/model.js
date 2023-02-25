@@ -5,7 +5,7 @@ class Model {
     type = "LINE",
     color = [0.0, 1.0, 0.0, 1.0],
     completed = false,
-    count = 2
+    count = 4,
   ) {
     this.vertices = vertices;
     this.vertexCount = vertexCount;
@@ -43,7 +43,7 @@ class Model {
   }
 
   checkVertex(x, y) {
-    // let index = 0;
+    let index = 0;
 
     for (const vertex of this.vertices) {
       let point = getPoint(vertex.position[0], vertex.position[1]);
@@ -61,9 +61,12 @@ class Model {
       let top = Math.max(topRightY, bottomLeftY);
 
       if (x >= left && x <= right && y >= bottom && y <= top) {
-        return vertex.id;
+        return {
+          vertexId: vertex.id,
+          vertexIndex: index
+        }
       }
-      // index++;
+      index++;
     }
 
     return -1;

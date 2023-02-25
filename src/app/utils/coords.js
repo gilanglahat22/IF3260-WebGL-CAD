@@ -14,7 +14,7 @@ const getCoords = (canvas, event) => {
 
 const getPoint = (x, y, onclick = false) => {
   const color = onclick ? 1.0 : 0.5;
-  const dist = 0.01;
+  const dist = 0.02;
   const vertices = {
     position: [
       x - dist,

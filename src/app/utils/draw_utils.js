@@ -58,9 +58,6 @@ const drawObject = (gl, programInfo, vertices, mode, vertexCount) => {
     colors = vertices.color;
   }
 
-  // gl.canvas.width = 0.9 * window.innerWidth;
-  // gl.canvas.height = 0.9 * window.innerWidth;
-
   setPositionAttribute(gl, programInfo, positions);
   setColorAttribute(gl, programInfo, colors);
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);

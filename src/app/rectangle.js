@@ -1,6 +1,15 @@
 class Rectangle extends Model {
-  constructor() {
-    super([], 0, "RECT", [0.0, 1.0, 0.0, 1.0], false, 2);
+  constructor(
+    vertices = [],
+    vertexCount = 0,
+    type = "RECTANGLE",
+    color = [0.0, 1.0, 0.0, 1.0],
+    completed = false,
+    count = 4,
+    angle = 0
+  ) {
+    super(vertices, vertexCount, type, color, completed, count)
+    this.angle = angle
   }
   draw(x, y) {
     if (this.vertexCount < this.count) {

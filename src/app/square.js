@@ -1,6 +1,15 @@
 class Square extends Model {
-  constructor() {
-    super([], 0, "SQUARE", [0.0, 1.0, 0.0, 1.0], false, 1);
+  constructor(
+    vertices = [],
+    vertexCount = 0,
+    type = "SQUARE",
+    color = [0.0, 1.0, 0.0, 1.0],
+    completed = false,
+    count = 4,
+    angle = 0
+  ) {
+    super(vertices, vertexCount, type, color, completed, count)
+    this.angle = angle
   }
   draw(x, y) {
     if (this.vertexCount < this.count) {
@@ -46,6 +55,7 @@ class Square extends Model {
         this.vertices.push(v1);
         this.vertices.push(v2);
         this.vertices.push(v3);
+
 
         this.vertexCount += 3;
       }
@@ -113,8 +123,10 @@ class Square extends Model {
     for (let i = 1; i < this.vertexCount; i++) {
       minX = Math.min(minX, this.vertices[i].position[0]);
       maxX = Math.max(maxX, this.vertices[i].position[0]);
+      maxY = Math.max(maxY, this.vertices[i].position[1])
     }
-    var size = maxX-minX;
+
+    var size = maxX - minX;
     for(let i = 0; i<this.vertexCount; i++){
       if(this.vertices[i].position[0] == maxX) this.vertices[i].position[0] += incsizeSide*size/100;
       else this.vertices[i].position[0] -= incsizeSide*size/100;
