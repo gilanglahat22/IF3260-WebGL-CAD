@@ -27,7 +27,7 @@ class Square extends Model {
         this.completed = true;
         enableAllButtons();
         let absisGeser = this.vertices[0]["position"][0] + 0.5;
-        let ordinatGeser = this.vertices[0]["position"][1] + 0.5;
+        let ordinatGeser = this.vertices[0]["position"][1] - 0.5;
         if (absisGeser >= 0.97) {
           absisGeser -= 1;
         }
@@ -56,7 +56,6 @@ class Square extends Model {
         this.vertices.push(v2);
         this.vertices.push(v3);
 
-
         this.vertexCount += 3;
       }
       renderAllObjects();
@@ -66,6 +65,13 @@ class Square extends Model {
     let a = (idx + 1) % 4;
     let b = (idx + 2) % 4;
     let c = (idx + 3) % 4;
+    
+    let temp = 0;
+    if (idx % 2 == 0){
+      temp = c;
+      c = a;
+      a = temp;
+    }
 
     let theta = (this.angle * Math.PI) / 180;
 

@@ -45,7 +45,7 @@ class Model {
   checkVertex(x, y) {
     let index = 0;
 
-    for (const vertex of this.vertices) {
+    for (let vertex of this.vertices) {
       let point = getPoint(vertex.position[0], vertex.position[1]);
 
       let topRightX = point.position[2];

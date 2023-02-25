@@ -58,6 +58,13 @@ class Rectangle extends Model {
     let b = (idx + 2) % 4;
     let c = (idx + 3) % 4;
 
+    let temp = 0;
+    if (idx % 2 == 0){
+      temp = c;
+      c = a;
+      a = temp;
+    }
+
     let theta = (this.angle * Math.PI) / 180;
 
     const sin = Math.sin(theta);

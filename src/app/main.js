@@ -231,7 +231,8 @@ gl_canvas.addEventListener("mousedown", (event) => {
     let vertexId = object["vertexId"];
 
     function drag(event) {
-      console.log(vertexIndex, vertexId)
+      // console.log(selectedObject.vertices);
+      // console.log(vertexIndex, vertexId)
       if (selectedObject.type == "POLY") {
         dragVertex(gl_canvas, event, selectedObject, vertexId);
         selectedObject.vertices = ConvexHull(selectedObject.vertices);
