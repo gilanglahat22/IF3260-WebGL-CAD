@@ -14,6 +14,7 @@ class Model {
     this.color = color;
     this.completed = completed;
     this.angle = 0;
+    this.maxVertexId = 0;
   }
 
   draw(x, y) {
@@ -27,7 +28,8 @@ class Model {
       this.vertices.push(vertex);
       this.vertices = ConvexHull(this.vertices);
       this.vertexCount = this.vertices.length;
-
+      this.maxVertexId = this.vertices.length;
+      
       if (this.vertexCount == this.count) {
         enableAllButtons();
         this.completed = true;
@@ -61,6 +63,9 @@ class Model {
       let top = Math.max(topRightY, bottomLeftY);
 
       if (x >= left && x <= right && y >= bottom && y <= top) {
+        console.log(this.vertices);
+        console.log("vertexId: " + vertex.id + " vertexIndex: " + index);
+        console.log(vertex);
         return {
           vertexId: vertex.id,
           vertexIndex: index

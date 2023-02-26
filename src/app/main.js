@@ -231,8 +231,6 @@ gl_canvas.addEventListener("mousedown", (event) => {
     let vertexId = object["vertexId"];
 
     function drag(event) {
-      // console.log(selectedObject.vertices);
-      // console.log(vertexIndex, vertexId)
       if (selectedObject.type == "POLY") {
         dragVertex(gl_canvas, event, selectedObject, vertexId);
         selectedObject.vertices = ConvexHull(selectedObject.vertices);
@@ -244,8 +242,6 @@ gl_canvas.addEventListener("mousedown", (event) => {
     gl_canvas.addEventListener("mousemove", drag);
     gl_canvas.addEventListener("mouseup", function end() {
       gl_canvas.removeEventListener("mousemove", drag);
-      console.log(selectedObject.vertices);
-      renderObject(selectedObject);
       gl_canvas.removeEventListener("mouseup", end);
     });
   }
@@ -347,16 +343,15 @@ const selectObject = (x, y, unionSelect = false) => {
     let x = coords["x"];
     let y = coords["y"];
 
-    let index = selectedObject.checkVertex(x, y).vertexId;
-    console.log(index);
-
-    if (index == undefined) {
+    let index = selectedObject.checkVertex(x, y);
+    
+    if (index == -1) {
       gl_canvas.removeEventListener("contextmenu", deleteVertex);
       return;
     }
 
     for (let i = 0; i < selectedObject.vertices.length; i++){
-      if (selectedObject.vertices[i].id == index) {
+      if (selectedObject.vertices[i].id == index.vertexId) {
         selectedObject.vertices.splice(i, 1);
         break;
       }
@@ -370,9 +365,8 @@ const selectObject = (x, y, unionSelect = false) => {
       objects.splice(objects.indexOf(selectedObject), 1);
       selectedObject = null;
     }
-
     gl_canvas.removeEventListener("contextmenu", deleteVertex);
-
+    remove(event);
     renderAllObjects();
   }
 
@@ -398,8 +392,7 @@ const selectObject = (x, y, unionSelect = false) => {
     let x = coords["x"];
     let y = coords["y"];
     let object = getObject(gl_canvas, event);
-    console.log(object);
-    console.log(selectedObject);
+
     if (object != null || object == selectedObject) {
       gl_canvas.removeEventListener("click", addVertex);
 
@@ -407,10 +400,12 @@ const selectObject = (x, y, unionSelect = false) => {
     }
 
     const newVertex = {
-      id: selectedObject.vertexCount,
+      id: selectedObject.maxVertexId,
       position: [x, y],
       color: selectedObject.color,
     };
+
+    selectedObject.maxVertexId++;
 
     selectedObject.vertices.push(newVertex);
     selectedObject.vertices = ConvexHull(selectedObject.vertices);
@@ -565,7 +560,6 @@ const saveFile = (object = objects) => {
     Array.isArray(object) ? "filename" : "model-filename"
   ).value;
 
-  console.log("test");
 
   if (fileName == "") {
     alert("Please input the output file name!");
@@ -601,7 +595,6 @@ const loadFile = () => {
 
     temp.forEach((item) => {
       let obj = null;
-      console.log(item.type)
       if (item.type == "LINE" || item.type == "POLY"){
         obj = new Model(
           ConvexHull(item.vertices),
@@ -640,5 +633,6 @@ const loadFile = () => {
     renderAllObjects();
 
     alert("Successfully loaded file!");
+    document.getElementById("load-file").value = '';
   };
 };
