@@ -378,10 +378,14 @@ const selectObject = (x, y, unionSelect = false) => {
     let color = getColor();
     let rgbColor = [color.r / 255, color.g / 255, color.b / 255, 1.0];
 
-    selectedObject.vertices.forEach((vertex) => {
-      vertex.color = rgbColor;
-    });
-    selectedObject.color = rgbColor;
+    selectedObjectTemp.forEach((selectedObject) => {
+      selectedObject.vertices.forEach((vertex) => {
+        vertex.color = rgbColor;
+      });
+      selectedObject.color = rgbColor;
+    })
+
+
     renderAllObjects();
 
     colorPicker.removeEventListener("change", updateAll);
