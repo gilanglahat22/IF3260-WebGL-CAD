@@ -148,8 +148,13 @@ class Square extends Model {
       var proyeksiY = this.vertices[i].position[1] - yCenter;
       var hipotenusaProyeksi = Math.sqrt((proyeksiX*proyeksiX) + (proyeksiY*proyeksiY));
       var deltaHipotenusa = Math.sqrt(2*deltaLength*deltaLength);
-      this.vertices[i].position[0] += deltaHipotenusa*proyeksiX/hipotenusaProyeksi;
-      this.vertices[i].position[1] += deltaHipotenusa*proyeksiY/hipotenusaProyeksi;
+      if(sizeX>=0){
+        this.vertices[i].position[0] += deltaHipotenusa*proyeksiX/hipotenusaProyeksi;
+        this.vertices[i].position[1] += deltaHipotenusa*proyeksiY/hipotenusaProyeksi;
+      }else{
+        this.vertices[i].position[0] -= deltaHipotenusa*proyeksiX/hipotenusaProyeksi;
+        this.vertices[i].position[1] -= deltaHipotenusa*proyeksiY/hipotenusaProyeksi;
+      }
     }
   }
 }

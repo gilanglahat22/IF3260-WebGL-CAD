@@ -347,9 +347,10 @@ const selectObject = (x, y, unionSelect = false) => {
     let x = coords["x"];
     let y = coords["y"];
 
-    let index = selectedObject.checkVertex(x, y);
+    let index = selectedObject.checkVertex(x, y).vertexId;
+    console.log(index);
 
-    if (index == -1) {
+    if (index == undefined) {
       gl_canvas.removeEventListener("contextmenu", deleteVertex);
       return;
     }
@@ -397,8 +398,9 @@ const selectObject = (x, y, unionSelect = false) => {
     let x = coords["x"];
     let y = coords["y"];
     let object = getObject(gl_canvas, event);
-
-    if (object != null) {
+    console.log(object);
+    console.log(selectedObject);
+    if (object != null || object == selectedObject) {
       gl_canvas.removeEventListener("click", addVertex);
 
       return;
@@ -430,7 +432,7 @@ const selectObject = (x, y, unionSelect = false) => {
   }
 
   document.getElementById("range-slider").style.visibility = "visible";
-  if (selectedObject.type != "POLY" && selectedObject.type != "LINE") {
+  if (selectedObject.type != "POLY") {
     document.getElementById("input-resize").style.visibility = "visible";
     document.getElementById("submitResize-button").style.visibility = "visible";
     if (selectedObject.type == "RECT") {
@@ -546,8 +548,14 @@ const clearCanvas = () => {
 const resizeObject = () => {
   var satuanGeserX = document.getElementById("resizeX").value;
   var satuanGeserY = document.getElementById("resizeY").value;
+  if (satuanGeserY == 0) {
+    satuanGeserY = satuanGeserX
+  }
   for (let i = 0; i < selectedObjectTemp.length; i++) {
-    selectedObjectTemp[i].resizeByMetrix(satuanGeserX, satuanGeserY);
+    if (selectedObjectTemp[i].type != "POLY"){
+      selectedObjectTemp[i].resizeByMetrix(satuanGeserX, satuanGeserY);
+    }
+
   }
   renderAllObjects();
 };

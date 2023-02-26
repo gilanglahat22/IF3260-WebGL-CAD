@@ -99,6 +99,8 @@ class Rectangle extends Model {
 
   resizeByMetrix(sizeX,sizeY){
     let a = this.angle
+    let x_awal = this.vertices[0].position[0]
+    let y_awal = this.vertices[0].position[1]
     this.rotate(0)
     let v1_x = (this.vertices[1].position[0]-this.vertices[0].position[0])
     let v1_y = (this.vertices[1].position[1]-this.vertices[0].position[1])
@@ -114,7 +116,21 @@ class Rectangle extends Model {
     this.vertices[3].position[0] = this.vertices[2].position[0] - (1+sizeX/100)*v1_x
     this.vertices[3].position[1] = this.vertices[2].position[1] - (1+sizeX/100)*v1_y
     this.rotate(a)
+
+    let geserx = this.vertices[0].position[0] - x_awal
+    let gesery = this.vertices[0].position[1] - y_awal
+
+    this.vertices[0].position[0] -= geserx
+    this.vertices[0].position[1] -= gesery
+
+    this.vertices[1].position[0] -= geserx
+    this.vertices[1].position[1] -= gesery
+
+    this.vertices[2].position[0] -= geserx
+    this.vertices[2].position[1] -= gesery
+
+    this.vertices[3].position[0] -= geserx
+    this.vertices[3].position[1] -= gesery
+    
   }
-
-
 }
