@@ -317,14 +317,16 @@ const selectObject = (x, y, unionSelect = false) => {
   saveModelButton.disabled = false;
 
   saveModelButton.addEventListener("click", function save() {
-    saveFile(selectedObject);
+    saveFile(selectedObjectTemp, true);
     saveModelButton.removeEventListener("click", save);
   });
 
-  selectedObject.vertices.forEach((vertex) => {
-    let point = getPoint(vertex.position[0], vertex.position[1], true);
-    drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
-  });
+  selectedObjectTemp.forEach((selectedObject) => {
+    selectedObject.vertices.forEach((vertex) => {
+      let point = getPoint(vertex.position[0], vertex.position[1], true);
+      drawObject(gl, programInfo, point, gl.TRIANGLE_FAN, 4);
+    });
+  })
 
   function getObjectNempel(ObjectSelected) {
     for (let i = 0; i < objects.length; i++) {
@@ -555,9 +557,9 @@ const resizeObject = () => {
   renderAllObjects();
 };
 
-const saveFile = (object = objects) => {
+const saveFile = (object = objects, union = false) => {
   const fileName = document.getElementById(
-    Array.isArray(object) ? "filename" : "model-filename"
+    Array.isArray(object) && !union ? "filename" : "model-filename"
   ).value;
 
 
