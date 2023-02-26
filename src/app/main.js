@@ -347,9 +347,10 @@ const selectObject = (x, y, unionSelect = false) => {
     let x = coords["x"];
     let y = coords["y"];
 
-    let index = selectedObject.checkVertex(x, y);
+    let index = selectedObject.checkVertex(x, y).vertexId;
+    console.log(index);
 
-    if (index == -1) {
+    if (index == undefined) {
       gl_canvas.removeEventListener("contextmenu", deleteVertex);
       return;
     }
@@ -397,8 +398,9 @@ const selectObject = (x, y, unionSelect = false) => {
     let x = coords["x"];
     let y = coords["y"];
     let object = getObject(gl_canvas, event);
-
-    if (object != null) {
+    console.log(object);
+    console.log(selectedObject);
+    if (object != null || object == selectedObject) {
       gl_canvas.removeEventListener("click", addVertex);
 
       return;

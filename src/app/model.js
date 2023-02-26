@@ -125,10 +125,13 @@ class Model {
   }
   // ONLY FOR LINE
   resizeByMetrix(sizeX,sizeY){
+    let a = this.angle;
+    this.rotate(0);
     const xDistance = Math.abs(this.vertices[0].position[0] - this.vertices[1].position[0]);
     const yDistance = Math.abs(this.vertices[0].position[1] - this.vertices[1].position[1]);
 
     this.vertices[1].position[0] += xDistance * (sizeX / 100);
     this.vertices[1].position[1] -= yDistance * (sizeX / 100);
+    this.rotate(a);
   }
 }

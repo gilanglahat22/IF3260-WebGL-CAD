@@ -133,6 +133,4 @@ class Rectangle extends Model {
     this.vertices[3].position[1] -= gesery
     
   }
-
-
 }
