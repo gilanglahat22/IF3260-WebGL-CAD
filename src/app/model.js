@@ -14,7 +14,7 @@ class Model {
     this.color = color;
     this.completed = completed;
     this.angle = 0;
-    this.maxVertexId = 0;
+    this.maxVertexId = vertexCount;
   }
 
   draw(x, y) {
@@ -29,7 +29,7 @@ class Model {
       this.vertices = ConvexHull(this.vertices);
       this.vertexCount = this.vertices.length;
       this.maxVertexId = this.vertices.length;
-      
+
       if (this.vertexCount == this.count) {
         enableAllButtons();
         this.completed = true;

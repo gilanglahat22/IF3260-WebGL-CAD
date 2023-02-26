@@ -602,7 +602,8 @@ const loadFile = () => {
           item.type,
           item.color,
           item.completed,
-          item.count
+          item.count,
+          item.maxVertexId
         );
       } else if (item.type == "SQUARE"){
         obj = new Square(
