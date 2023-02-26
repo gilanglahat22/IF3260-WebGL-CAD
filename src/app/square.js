@@ -52,9 +52,12 @@ class Square extends Model {
           color: this.color,
         };
 
-        this.vertices.push(v3);
-        this.vertices.push(v2);
         this.vertices.push(v1);
+        this.vertices.push(v2);
+        this.vertices.push(v3);
+        // this.vertices.push(v3);
+        // this.vertices.push(v2);
+        // this.vertices.push(v1);
 
         this.vertexCount += 3;
       }
@@ -120,25 +123,33 @@ class Square extends Model {
       this.vertices[b].position[1] + lengthProyeksiY;
   }
 
+
+  // Hitung koordinat titik pusat terlebih dahulu
+  // Kemudian hidung sin,cos dari titik pusat ke titik sudut
+  // Setelah itu hitung perubahan panjang diagonal
+  // Maka, perubahan panjang dapat dihitung dengan perubahan diagonal*cos(tetha)
+  // Perubahan panjang y dapat dihitung dengan perubahan diagonal * sin(tetha)
   resizeByMetrix(sizeX,sizeY){
-    var incsizeSide = Math.max(sizeX,sizeY)/2; 
-    let minX = this.vertices[0].position[0];
-    let maxX = this.vertices[0].position[0];
-    let maxY = this.vertices[0].position[1];
-
-    for (let i = 1; i < this.vertexCount; i++) {
-      minX = Math.min(minX, this.vertices[i].position[0]);
-      maxX = Math.max(maxX, this.vertices[i].position[0]);
-      maxY = Math.max(maxY, this.vertices[i].position[1])
+    let xSum = 0;
+    let ySum = 0;
+    var quadratX = (this.vertices[0].position[0]-this.vertices[1].position[0])*(this.vertices[0].position[0]-this.vertices[1].position[0]);
+    var quadratY = (this.vertices[0].position[1]-this.vertices[1].position[1])*(this.vertices[0].position[1]-this.vertices[1].position[1]);
+    var currLength = Math.sqrt(quadratX+quadratY);
+    var deltaLength = currLength*sizeX/200;
+    for (let i = 0; i < this.vertexCount; i++) {
+      xSum += this.vertices[i].position[0];
+      ySum += this.vertices[i].position[1];
     }
+    var xCenter = xSum / this.vertexCount;
+    var yCenter = ySum / this.vertexCount;
 
-    var size = maxX - minX;
     for(let i = 0; i<this.vertexCount; i++){
-      if(this.vertices[i].position[0] == maxX) this.vertices[i].position[0] += incsizeSide*size/100;
-      else this.vertices[i].position[0] -= incsizeSide*size/100;
-      
-      if(this.vertices[i].position[1] == maxY) this.vertices[i].position[1] += incsizeSide*size/100;
-      else this.vertices[i].position[1] -= incsizeSide*size/100;
+      var proyeksiX = this.vertices[i].position[0] - xCenter;
+      var proyeksiY = this.vertices[i].position[1] - yCenter;
+      var hipotenusaProyeksi = Math.sqrt((proyeksiX*proyeksiX) + (proyeksiY*proyeksiY));
+      var deltaHipotenusa = Math.sqrt(2*deltaLength*deltaLength);
+      this.vertices[i].position[0] += deltaHipotenusa*proyeksiX/hipotenusaProyeksi;
+      this.vertices[i].position[1] += deltaHipotenusa*proyeksiY/hipotenusaProyeksi;
     }
   }
 }
