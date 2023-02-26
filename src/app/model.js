@@ -63,9 +63,6 @@ class Model {
       let top = Math.max(topRightY, bottomLeftY);
 
       if (x >= left && x <= right && y >= bottom && y <= top) {
-        console.log(this.vertices);
-        console.log("vertexId: " + vertex.id + " vertexIndex: " + index);
-        console.log(vertex);
         return {
           vertexId: vertex.id,
           vertexIndex: index

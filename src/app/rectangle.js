@@ -97,7 +97,7 @@ class Rectangle extends Model {
       this.vertices[b].position[1] + lengthProyeksiY;
   }
 
-  resizeByMetrix(sizeX,sizeY){
+  resizeByMetrix(sizeY,sizeX){
     let a = this.angle
     let x_awal = this.vertices[0].position[0]
     let y_awal = this.vertices[0].position[1]
@@ -130,7 +130,6 @@ class Rectangle extends Model {
     this.vertices[2].position[1] -= gesery
 
     this.vertices[3].position[0] -= geserx
-    this.vertices[3].position[1] -= gesery
-    
+    this.vertices[3].position[1] -= gesery 
   }
 }

@@ -70,7 +70,7 @@ class Square extends Model {
     let c = (idx + 3) % 4;
     
     let temp = 0;
-    if (idx % 2 == 0){
+    if (idx % 2 != 0){
       temp = c;
       c = a;
       a = temp;
