@@ -47,9 +47,18 @@ Akan muncul _link_ menuju aplikasi, silahkan membuka _link_ tersebut pada _brows
 
 #### Mengubah Panjang Garis
 
-1.  Klik salah satu vertex pada garis hingga indikator berubah warna
-2.  Gerakkan mouse Anda ke posisi baru
-3.  Lepaskan tombol mouse apabila kursor / vertex sudah berada di posisi yang diinginkan
+Mengubah panjang garis dapat dilakukan dengan menggerakkan vertex atau mengisikan field
+
+Melalui menggerakan vertex,
+1. Klik salah satu vertex pada garis hingga indikator berubah warna 
+2. Gerakkan mouse Anda ke posisi baru
+3. Lepaskan tombol mouse apabila kursor / vertex sudah berada di posisi yang diinginkan
+
+Melalui field,
+1. Double-click garis yang ingin diubah panjangnya
+2. Akan muncul field untuk resize pada sidebar, lalu isikan persentase pertambahan panjang / lebar yang diinginkan (misal. ‘10’ menandakan menambahkan panjang sepanjang 10%)
+
+
 
 ### Persegi dan Persegi Panjang
 
@@ -100,6 +109,13 @@ Melalui field,
 Untuk batal memilih model, klik kanan pada canvas bagian manapun, atau double click model lainnya
 > Untuk polygon, hanya terbatas untuk klik kanan, karena mengklik kiri pada objek polygon berfungsi untuk menambahkan vertex baru
 
+#### Memilih Dua / Beberapa Model Overlap
+1. Tahan tombol Shift
+2. Klik model yang diinginkan
+3. Model yang overlap dengan model tersebut dapat digerakkan, dirotasi bersama, atau di-resize bersama 
+> Untuk polygon, apabila overlap dan dilakukan resize, tidak akan ter-resize
+
+
 #### Translasi
 1.  Double-click polygon hingga semua indikator vertex berwarna putih
 2.  Tahan mouse, lalu gerakkan model yang diinginkan
@@ -147,9 +163,7 @@ Untuk batal memilih model, klik kanan pada canvas bagian manapun, atau double cl
 1.  Klik tombol Upload File
 2.  Pilih file yang telah di-save sebelumnya (dapat berupa file model atau file canvas)
 3.  Canvas akan di-load
-
     -   Contoh savefile model dapat dilihat pada file test-polygon.json dan test-square.json
-
     -   Contoh savefile  canvas dapat dilihat pada file test-canvas.json dan test-amongus.json
     Contoh savefile canvas dapat dilihat pada file test-canvas.json dan test-amongus.json
 

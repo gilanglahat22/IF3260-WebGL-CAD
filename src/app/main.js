@@ -548,8 +548,14 @@ const clearCanvas = () => {
 const resizeObject = () => {
   var satuanGeserX = document.getElementById("resizeX").value;
   var satuanGeserY = document.getElementById("resizeY").value;
+  if (satuanGeserY == 0) {
+    satuanGeserY = satuanGeserX
+  }
   for (let i = 0; i < selectedObjectTemp.length; i++) {
-    selectedObjectTemp[i].resizeByMetrix(satuanGeserX, satuanGeserY);
+    if (selectedObjectTemp[i].type != "POLY"){
+      selectedObjectTemp[i].resizeByMetrix(satuanGeserX, satuanGeserY);
+    }
+
   }
   renderAllObjects();
 };
