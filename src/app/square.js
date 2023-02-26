@@ -121,24 +121,21 @@ class Square extends Model {
   }
 
   resizeByMetrix(sizeX,sizeY){
-    var incsizeSide = Math.max(sizeX,sizeY)/2; 
-    let minX = this.vertices[0].position[0];
-    let maxX = this.vertices[0].position[0];
-    let maxY = this.vertices[0].position[1];
+    let a = this.angle
+    this.rotate(0)
+    let v1_x = (this.vertices[1].position[0]-this.vertices[0].position[0])
+    let v1_y = (this.vertices[1].position[1]-this.vertices[0].position[1])
 
-    for (let i = 1; i < this.vertexCount; i++) {
-      minX = Math.min(minX, this.vertices[i].position[0]);
-      maxX = Math.max(maxX, this.vertices[i].position[0]);
-      maxY = Math.max(maxY, this.vertices[i].position[1])
-    }
+    let v2_x = (this.vertices[2].position[0]-this.vertices[1].position[0])
+    let v2_y = (this.vertices[2].position[1]-this.vertices[1].position[1])
+    this.vertices[1].position[0] = this.vertices[0].position[0] + (1+sizeX/100)*v1_x
+    this.vertices[1].position[1] = this.vertices[0].position[1] + (1+sizeX/100)*v1_y
 
-    var size = maxX - minX;
-    for(let i = 0; i<this.vertexCount; i++){
-      if(this.vertices[i].position[0] == maxX) this.vertices[i].position[0] += incsizeSide*size/100;
-      else this.vertices[i].position[0] -= incsizeSide*size/100;
-      
-      if(this.vertices[i].position[1] == maxY) this.vertices[i].position[1] += incsizeSide*size/100;
-      else this.vertices[i].position[1] -= incsizeSide*size/100;
-    }
+    this.vertices[2].position[0] = this.vertices[1].position[0] + (1+sizeX/100)*v2_x
+    this.vertices[2].position[1] = this.vertices[1].position[1] + (1+sizeX/100)*v2_y
+
+    this.vertices[3].position[0] = this.vertices[2].position[0] - (1+sizeX/100)*v1_x
+    this.vertices[3].position[1] = this.vertices[2].position[1] - (1+sizeX/100)*v1_y
+    this.rotate(a)
   }
 }

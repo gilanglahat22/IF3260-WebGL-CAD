@@ -430,7 +430,7 @@ const selectObject = (x, y, unionSelect = false) => {
   }
 
   document.getElementById("range-slider").style.visibility = "visible";
-  if (selectedObject.type != "POLY" && selectedObject.type != "LINE") {
+  if (selectedObject.type != "POLY") {
     document.getElementById("input-resize").style.visibility = "visible";
     document.getElementById("submitResize-button").style.visibility = "visible";
     if (selectedObject.type == "RECT") {

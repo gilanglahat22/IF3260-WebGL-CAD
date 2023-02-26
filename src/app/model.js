@@ -123,11 +123,12 @@ class Model {
       }
     }
   }
-
+  // ONLY FOR LINE
   resizeByMetrix(sizeX,sizeY){
-    var incsizeSide = Math.max(sizeX,sizeY)/2; 
-    var x = this.vertices[0].position[0] + 0.2;
-    var y = this.vertices[0].position[1] + 0.2;
-    this.resize(0,x,y);
+    const xDistance = Math.abs(this.vertices[0].position[0] - this.vertices[1].position[0]);
+    const yDistance = Math.abs(this.vertices[0].position[1] - this.vertices[1].position[1]);
+
+    this.vertices[1].position[0] += xDistance * (sizeX / 100);
+    this.vertices[1].position[1] -= yDistance * (sizeX / 100);
   }
 }
